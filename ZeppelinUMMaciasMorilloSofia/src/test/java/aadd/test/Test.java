@@ -2,10 +2,14 @@ package aadd.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.zeppelinum.ServicioGestionPlataforma;
+import aadd.persistencia.jpa.bean.*;
 
 class Test {
 	@org.junit.jupiter.api.Test
@@ -16,7 +20,28 @@ class Test {
 				"12345", TipoUsuario.RESTAURANTE);
 		assertTrue(usuario != null);
 	}
-
+	
+	@org.junit.jupiter.api.Test
+	void crearCategoria() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		Integer categoria = servicio.crearCategoria("Familiar");
+		assertTrue(categoria != null);
+	}
+	
+	@org.junit.jupiter.api.Test
+	void addCategoria(){
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		boolean exito = servicio.añadirCategoria(1, 1);
+		assertTrue(exito);
+	}
+	@org.junit.jupiter.api.Test
+	void cambiarDispPlato(){
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		boolean exito = servicio.changeDisponibilidadPlato(4, false);
+		assertTrue(exito);
+	}
+	
+	
 	@org.junit.jupiter.api.Test
 	void validarUsuario() { // con la opcion createextenddatabase da error porque ya estan creadas (son
 							// warnings) y no pasa nada
@@ -29,9 +54,11 @@ class Test {
 	void crearRestaurantePlato() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 
-		Integer rest = servicio.registrarRestaurante("La periquita", 1);
+		List<Integer> categorias= new LinkedList<Integer>();
+		categorias.add(1);
+		Integer rest = servicio.registrarRestaurante("McGonzalo", 1, categorias); //TODO: Null está bien puesto?????????? !!!!!
 		assertTrue(rest != null);
-		boolean exito = servicio.nuevoPlato("Marmitako de bonito", "plato de bonito, patatas y cebolla con verduras",
+		boolean exito = servicio.nuevoPlato("CBO", "pollo queso y bacon",
 				20d, rest);
 		assertTrue(exito);
 

@@ -2,6 +2,7 @@ package aadd.persistencia.jpa.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -108,5 +109,22 @@ public class Restaurante implements Serializable {
 	public void setResponsable(Usuario responsable) {
 		this.responsable = responsable;
 	}
+
+	public List<CategoriaRestaurante> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<CategoriaRestaurante> categorias) {
+		this.categorias = categorias;
+	}
+	
+	public void addCategoria(CategoriaRestaurante c) {
+		if (categorias == null) {
+			categorias = new LinkedList<CategoriaRestaurante>();
+		}
+		this.categorias.add(c);	
+	}
+	
+	
 
 }

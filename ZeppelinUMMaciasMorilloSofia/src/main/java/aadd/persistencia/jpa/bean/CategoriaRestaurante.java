@@ -1,7 +1,6 @@
 package aadd.persistencia.jpa.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -10,13 +9,14 @@ import javax.persistence.*;
  *
  */
 @Entity
+@Table(name = "categoria")
 public class CategoriaRestaurante implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	@Column(name = "categoria")
-	private String categoria;
+	@Column(name = "nombre")
+	private String nombre;
 	
 	//Podemos quitarlo para dejarlo mas simple	(unidireccional)
 	//@ManyToMany(mappedBy= "categorias", cascade = CascadeType.ALL)
@@ -37,12 +37,12 @@ public class CategoriaRestaurante implements Serializable {
 		this.id = id;
 	}
 
-	public String getCategoria() {
-		return categoria;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 }

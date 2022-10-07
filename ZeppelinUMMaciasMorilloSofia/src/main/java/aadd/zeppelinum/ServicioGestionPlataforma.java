@@ -8,10 +8,12 @@ import javax.persistence.EntityManager;
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
+import aadd.persistencia.jpa.bean.CategoriaRestaurante;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.persistencia.jpa.bean.Usuario;
+import aadd.persistencia.jpa.dao.CategoriaRestauranteDAO;
 import aadd.persistencia.jpa.dao.EntityManagerHelper;
 import aadd.persistencia.jpa.dao.PlatoDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
@@ -85,8 +87,10 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	public Integer registrarRestaurante(String nombre, Integer responsable) { // entra el nombre del restaurante y el id
-																				// del responsable
+	public Integer registrarRestaurante(String nombre, Integer responsable, List<Integer> listaC) { // entra el nombre
+																									// del restaurante y
+																									// el id
+																									// del responsable
 
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -94,12 +98,18 @@ public class ServicioGestionPlataforma {
 
 			Restaurante r = new Restaurante(); // crea el restaurante e inicializa sus datos
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(responsable);
+			for (Integer c : listaC) { // podemos recuperarlo de golpe
+				CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
+				r.addCategoria(cat);
+			}
+
 			r.setResponsable(u); // el responsable ya debe de estar en la BD
 			r.setNombre(nombre);
 			r.setFechaAlta(LocalDate.now());
 			r.setValoracionGlobal(0d);
 			r.setNumPenalizaciones(0);
 			r.setNumValoraciones(0);
+			// TODO: Permitir crear un restaurante con un listado de categorias.
 
 			RestauranteDAO.getRestauranteDAO().save(r, em);
 
@@ -116,6 +126,29 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
+	public boolean añadirCategoria(Integer categoria, Integer restaurante) {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+		try {
+			em.getTransaction().begin();
+
+			CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(categoria); // recupera la entidad usuario de la BBDD
+			Restaurante res =  RestauranteDAO.getRestauranteDAO().findById(restaurante);
+			res.addCategoria(cat);
+			
+			em.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
+		}
+
+	}
+
 	public boolean nuevoPlato(String titulo, String descripcion, double precio, Integer restaurante) {
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -130,6 +163,28 @@ public class ServicioGestionPlataforma {
 			p.setDisponibilidad(true);
 
 			PlatoDAO.getPlatoDAO().save(p, em); // y lo persistimos
+
+			em.getTransaction().commit();
+			return true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
+		}
+	}
+	
+	public boolean changeDisponibilidadPlato(Integer plato, boolean disp) {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+		try {
+			em.getTransaction().begin(); // abrimos transaccion
+
+			Plato p = PlatoDAO.getPlatoDAO().findById(plato);
+			p.setDisponibilidad(disp);
 
 			em.getTransaction().commit();
 			return true;
@@ -172,7 +227,7 @@ public class ServicioGestionPlataforma {
 		return PlatoDAO.getPlatoDAO().findPlatosDisponiblesByRestaurante(restaurante);
 	}
 
-	//nos devuelve los restaurantes segun el filtro
+	// nos devuelve los restaurantes segun el filtro
 	public List<RestauranteDTO> getRestaurantesByFiltros(String keyword, boolean verNovedades,
 			boolean ordernarByValoracion, boolean ceroIncidencias) {
 		if (keyword != null && keyword.isBlank()) {
@@ -181,10 +236,33 @@ public class ServicioGestionPlataforma {
 		LocalDate fecha = null;
 		if (verNovedades) { // filtramos por aquellos dados de alta la última semana
 			fecha = LocalDate.now();
-			fecha = fecha.minusWeeks(1); 
+			fecha = fecha.minusWeeks(1);
 		}
 		return RestauranteDAO.getRestauranteDAO().findRestauranteByFiltros(keyword, fecha, ordernarByValoracion,
 				ceroIncidencias);
+	}
+
+	public Integer crearCategoria(String nombre) { // entra el nombre de la categoria y su id
+		EntityManager em = EntityManagerHelper.getEntityManager();
+		try {
+			em.getTransaction().begin();
+
+			CategoriaRestaurante c = new CategoriaRestaurante(); // crea la categoria e inicializa sus datos
+			c.setNombre(nombre);
+
+			CategoriaRestauranteDAO.getCategoriaRestauranteDAO().save(c, em);
+
+			em.getTransaction().commit();
+			return c.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
+		}
 	}
 
 }
