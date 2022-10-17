@@ -41,9 +41,19 @@ public class UsuarioDAO extends ExtensionDAO<Usuario> {
 																											// el nombre
 																											// de la
 																											// consulta
-																											// nombrada
+																						// nombrada
 			query.setParameter("email", email); // y el paramatro de la consulta
 			return transformarToDTO(query.getResultList()); // resultados de la consulta
+		} catch (RuntimeException re) {
+			throw re;
+		}
+	}
+	
+	public List<UsuarioDTO> findByTipoRestauranteNoValidado(){
+		try {
+			String queryString = "SELECT u FROM Usuario u WHERE u.tipo=restaurante AND u.validado=0";
+			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
+			return transformarToDTO(query.getResultList());
 		} catch (RuntimeException re) {
 			throw re;
 		}

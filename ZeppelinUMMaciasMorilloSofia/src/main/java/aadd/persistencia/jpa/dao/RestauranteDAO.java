@@ -35,6 +35,47 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 		return rs;
 	}
 
+	
+	public List<RestauranteDTO> findRestauranteByResponsable(Integer id_responsable)
+	{
+		try {
+			String queryString = " SELECT r FROM Restaurante r " + " INNER JOIN r.platos p on p.disponibilidad = true " // Con
+																														// el
+																														// inner
+																														// join
+																														// me
+																														// aseguro
+																														// de
+																														// que
+																														// no
+																														// aparezcan
+																														// restaurantes
+																														// con
+																														// 0
+																														// platos
+																														// disponibles
+					+ " WHERE r.id is not null ";// Ponemos una condición que siempre es cierta para poder enlazar las
+													// condiciones más fácilmente
+
+			if (id_responsable != null) {
+				queryString += " AND r.responsable like :id_responsable ";
+			}
+
+			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
+			if (id_responsable != null) {
+				query.setParameter("id_responsable", "%" + id_responsable + "%"); // like % cualquier cosa delante o detras
+			}
+			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+			return transformarToDTO(query.getResultList());
+		} catch (RuntimeException re) {
+			throw re;
+		}
+	}
+	
+	
+	
+	
+		
 	// consulta puramente JPQL no nombrada por todo el rollo de los ifs (o algo de
 	// eso)
 	public List<RestauranteDTO> findRestauranteByFiltros(String keyword, LocalDate fechaAlta, boolean mejorValorados,

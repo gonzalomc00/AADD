@@ -227,6 +227,7 @@ public class ServicioGestionPlataforma {
 		return PlatoDAO.getPlatoDAO().findPlatosDisponiblesByRestaurante(restaurante);
 	}
 
+
 	// nos devuelve los restaurantes segun el filtro
 	public List<RestauranteDTO> getRestaurantesByFiltros(String keyword, boolean verNovedades,
 			boolean ordernarByValoracion, boolean ceroIncidencias) {
@@ -240,6 +241,15 @@ public class ServicioGestionPlataforma {
 		}
 		return RestauranteDAO.getRestauranteDAO().findRestauranteByFiltros(keyword, fecha, ordernarByValoracion,
 				ceroIncidencias);
+	}
+	
+	// nos devuelve los restaurantes segun el filtro
+	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable) {
+		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable);
+	}
+	//METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO RESTAURANTE NO VALIDADOS
+	public List<UsuarioDTO> getUsuarioTipoRestauranteNoValidados(){
+		return UsuarioDAO.getUsuarioDAO().findByTipoRestauranteNoValidado();
 	}
 
 	public Integer crearCategoria(String nombre) { // entra el nombre de la categoria y su id
