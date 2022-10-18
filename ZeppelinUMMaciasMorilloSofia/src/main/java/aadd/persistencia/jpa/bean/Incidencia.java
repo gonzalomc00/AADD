@@ -10,6 +10,9 @@ import javax.persistence.*;
  *
  */
 @Entity
+@Table(name = "incidencia")
+@NamedQueries({
+	@NamedQuery(name = "Incidencia.findByUsuario", query = " SELECT i FROM Incidencia i WHERE i.usuario = :usuario")})
 public class Incidencia implements Serializable {
 
 	@Id
@@ -26,6 +29,9 @@ public class Incidencia implements Serializable {
 	@Column(name = "comentario")
 	@Lob
 	private String comentario;
+	
+	@Column(name = "fecha_cierre", columnDefinition="DATE")
+	private LocalDate fechaCierre;
 	
 	@JoinColumn(name= "usuario")
 	@ManyToOne
@@ -87,4 +93,30 @@ public class Incidencia implements Serializable {
 		this.comentario = comentario;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Restaurante getRestaurante() {
+		return restaurante;
+	}
+
+	public void setRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
+	}
+
+	public LocalDate getFechaCierre() {
+		return fechaCierre;
+	}
+
+	public void setFechaCierre(LocalDate fechaCierre) {
+		this.fechaCierre = fechaCierre;
+	}
+	
+
+	
 }

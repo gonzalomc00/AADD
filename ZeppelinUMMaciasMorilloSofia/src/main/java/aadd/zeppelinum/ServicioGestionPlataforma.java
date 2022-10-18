@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
@@ -15,6 +16,7 @@ import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.persistencia.jpa.bean.Usuario;
 import aadd.persistencia.jpa.dao.CategoriaRestauranteDAO;
 import aadd.persistencia.jpa.dao.EntityManagerHelper;
+import aadd.persistencia.jpa.dao.IncidenciaDAO;
 import aadd.persistencia.jpa.dao.PlatoDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
@@ -247,11 +249,17 @@ public class ServicioGestionPlataforma {
 	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable) {
 		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable);
 	}
-	//METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO RESTAURANTE NO VALIDADOS
+	//METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO RESTAURANTE NO VALIDADOS 
 	public List<UsuarioDTO> getUsuarioTipoRestauranteNoValidados(){
-		return UsuarioDAO.getUsuarioDAO().findByTipoRestauranteNoValidado();
+		return UsuarioDAO.getUsuarioDAO().findUsuarioByTipoRestauranteNoValidado();
 	}
 
+	public List<IncidenciaDTO> getIncidenciaByUsuario(Integer id_usuario){
+		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaByUsuario(id_usuario);
+
+		
+	}
+	
 	public Integer crearCategoria(String nombre) { // entra el nombre de la categoria y su id
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
