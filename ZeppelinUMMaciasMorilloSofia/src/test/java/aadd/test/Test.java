@@ -9,6 +9,8 @@ import java.util.List;
 
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.zeppelinum.ServicioGestionPlataforma;
+import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.bean.*;
 
 class Test {
@@ -29,6 +31,19 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
+	void crearRestaurantePlato() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+
+		List<Integer> categorias= new LinkedList<Integer>();
+		Integer rest = servicio.registrarRestaurante("McGonzalo", 1, categorias); //TODO: Null está bien puesto?????????? !!!!!
+		assertTrue(rest != null);
+		boolean exito = servicio.nuevoPlato("CBO", "pollo queso y bacon",
+				20d, rest);
+		assertTrue(exito);
+
+	}
+	
+	@org.junit.jupiter.api.Test
 	void addCategoria(){
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		boolean exito = servicio.añadirCategoria(1, 1);
@@ -37,7 +52,7 @@ class Test {
 	@org.junit.jupiter.api.Test
 	void cambiarDispPlato(){
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		boolean exito = servicio.changeDisponibilidadPlato(4, false);
+		boolean exito = servicio.changeDisponibilidadPlato(2, false);
 		assertTrue(exito);
 	}
 	
@@ -50,19 +65,7 @@ class Test {
 		assertTrue(exito);
 	}
 
-	@org.junit.jupiter.api.Test
-	void crearRestaurantePlato() {
-		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 
-		List<Integer> categorias= new LinkedList<Integer>();
-		categorias.add(1);
-		Integer rest = servicio.registrarRestaurante("McGonzalo", 1, categorias); //TODO: Null está bien puesto?????????? !!!!!
-		assertTrue(rest != null);
-		boolean exito = servicio.nuevoPlato("CBO", "pollo queso y bacon",
-				20d, rest);
-		assertTrue(exito);
-
-	}
 
 	@org.junit.jupiter.api.Test
 	public void loginTest() {
@@ -99,5 +102,13 @@ class Test {
 															//primer true false (que es las novedades por si fuera necesario)
 	        assertTrue(servicio.getRestaurantesByFiltros("venta",true,true,true).size()==0);
 	}
+	
+	
+	@org.junit.jupiter.api.Test
+	public void buscarRestaurantesPorResponsable() {
+		ServicioGestionPlataforma servicio= ServicioGestionPlataforma.getServicioGestionPlataforma();
+		List<RestauranteDTO> u= servicio.getRestaurantesByResponsable(1);
+		assertTrue(u.size()==1);
+	}
+	}
 
-}

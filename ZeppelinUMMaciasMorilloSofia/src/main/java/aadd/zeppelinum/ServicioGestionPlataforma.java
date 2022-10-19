@@ -267,7 +267,7 @@ public class ServicioGestionPlataforma {
 
 			CategoriaRestaurante c = new CategoriaRestaurante(); // crea la categoria e inicializa sus datos
 			c.setNombre(nombre);
-
+ 
 			CategoriaRestauranteDAO.getCategoriaRestauranteDAO().save(c, em);
 
 			em.getTransaction().commit();
