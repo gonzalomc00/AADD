@@ -1,9 +1,13 @@
 package aadd.zeppelinum;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
 
 import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PlatoDTO;
@@ -21,6 +25,8 @@ import aadd.persistencia.jpa.dao.IncidenciaDAO;
 import aadd.persistencia.jpa.dao.PlatoDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
+import aadd.persistencia.mongo.bean.Direccion;
+import aadd.persistencia.mongo.dao.DireccionDAO;
 
 public class ServicioGestionPlataforma {
 
@@ -90,10 +96,11 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	public Integer registrarRestaurante(String nombre, Integer responsable, List<Integer> listaC) { // entra el nombre
-																									// del restaurante y
-																									// el id
-																									// del responsable
+	public Integer registrarRestaurante(String nombre, Integer responsable, List<Integer> listaC, String calle,
+			String codigoPostal, Integer numero, String ciudad, Double latitud, Double longitud) { // entra el nombre
+		// del restaurante y
+		// el id
+		// del responsable
 
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -115,6 +122,18 @@ public class ServicioGestionPlataforma {
 			// TODO: Permitir crear un restaurante con un listado de categorias.
 
 			RestauranteDAO.getRestauranteDAO().save(r, em);
+			// Codigo nuevo MONGO
+			em.flush();
+			Direccion d = new Direccion();
+			d.setCalle(calle);
+			d.setCiudad(ciudad);
+			d.setCodigoPostal(codigoPostal);
+			d.setCoordenadas(new Point(new Position(longitud, latitud)));
+			d.setNumero(numero);
+			d.setRestaurante(r.getId());
+
+			DireccionDAO.getDireccionDAO().save(d);
+			//////
 
 			em.getTransaction().commit();
 			return r.getId();
@@ -128,31 +147,31 @@ public class ServicioGestionPlataforma {
 			em.close();
 		}
 	}
-	
+
 	public Integer registrarIncidencia(LocalDate fechaCreacion, String descripcion, LocalDate fechaAlta,
 			String comentario, LocalDate fechaCierre, Integer usuario, Integer restaurante) {
 
-		EntityManager em = EntityManagerHelper.getEntityManager(); 
+		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
 			em.getTransaction().begin(); // comenzamos una transaccion
 
-			Incidencia i = new Incidencia(); // recibe los datos para crear un usuario por primera vez
+			Incidencia incedencia = new Incidencia(); // recibe los datos para crear un usuario por primera vez
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(usuario);
-			Restaurante r= RestauranteDAO.getRestauranteDAO().findById(restaurante);
-			i.setFechaCreacion(fechaCreacion);
-			i.setDescripcion(descripcion);
-			i.setFechaAlta(fechaAlta);
-			i.setComentario(comentario);
-			i.setFechaCierre(fechaCierre);
-			i.setUsuario(u);
-			i.setRestaurante(r);
-			
+			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante);
+			incedencia.setFechaCreacion(fechaCreacion);
+			incedencia.setDescripcion(descripcion);
+			incedencia.setFechaAlta(fechaAlta);
+			incedencia.setComentario(comentario);
+			incedencia.setFechaCierre(fechaCierre);
+			incedencia.setUsuario(u);
+			incedencia.setRestaurante(r);
 
-			IncidenciaDAO.getIncidenciaDAO().save(i, em); // persistimos la entidad (con el metodo save para que haga el
-														// persist)
+			
+			IncidenciaDAO.getIncidenciaDAO().save(incedencia, em); // persistimos la entidad (con el metodo save para que haga el
+															// persist)
 
 			em.getTransaction().commit(); // importante hacer el commit
-			return i.getId();
+			return incedencia.getId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -171,10 +190,16 @@ public class ServicioGestionPlataforma {
 		try {
 			em.getTransaction().begin();
 
-			CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(categoria); // recupera la entidad usuario de la BBDD
-			Restaurante res =  RestauranteDAO.getRestauranteDAO().findById(restaurante);
+			CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(categoria); // recupera
+																													// la
+																													// entidad
+																													// usuario
+																													// de
+																													// la
+																													// BBDD
+			Restaurante res = RestauranteDAO.getRestauranteDAO().findById(restaurante);
 			res.addCategoria(cat);
-			
+
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
@@ -217,7 +242,7 @@ public class ServicioGestionPlataforma {
 			em.close();
 		}
 	}
-	
+
 	public boolean changeDisponibilidadPlato(Integer plato, boolean disp) {
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -267,7 +292,6 @@ public class ServicioGestionPlataforma {
 		return PlatoDAO.getPlatoDAO().findPlatosDisponiblesByRestaurante(restaurante);
 	}
 
-
 	// nos devuelve los restaurantes segun el filtro
 	public List<RestauranteDTO> getRestaurantesByFiltros(String keyword, boolean verNovedades,
 			boolean ordernarByValoracion, boolean ceroIncidencias) {
@@ -282,22 +306,23 @@ public class ServicioGestionPlataforma {
 		return RestauranteDAO.getRestauranteDAO().findRestauranteByFiltros(keyword, fecha, ordernarByValoracion,
 				ceroIncidencias);
 	}
-	
+
 	// nos devuelve los restaurantes segun el filtro
 	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable) {
 		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable);
 	}
-	//METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO RESTAURANTE NO VALIDADOS 
-	public List<UsuarioDTO> getUsuarioTipoRestauranteNoValidados(){
+
+	// METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO
+	// RESTAURANTE NO VALIDADOS
+	public List<UsuarioDTO> getUsuarioTipoRestauranteNoValidados() {
 		return UsuarioDAO.getUsuarioDAO().findUsuarioByTipoRestauranteNoValidado();
 	}
 
-	public List<IncidenciaDTO> getIncidenciaByUsuario(Integer id_usuario){
+	public List<IncidenciaDTO> getIncidenciaByUsuario(Integer id_usuario) {
 		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaByUsuario(id_usuario);
 
-		
 	}
-	
+
 	public Integer crearCategoria(String nombre) { // entra el nombre de la categoria y su id
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -305,7 +330,7 @@ public class ServicioGestionPlataforma {
 
 			CategoriaRestaurante c = new CategoriaRestaurante(); // crea la categoria e inicializa sus datos
 			c.setNombre(nombre);
- 
+
 			CategoriaRestauranteDAO.getCategoriaRestauranteDAO().save(c, em);
 
 			em.getTransaction().commit();
@@ -319,6 +344,37 @@ public class ServicioGestionPlataforma {
 			}
 			em.close();
 		}
+	}
+
+	//// MONGO restaurante -parte sql parte mongo
+	public List<RestauranteDTO> getRestaurantesByCercanía(Double latitud, Double longitud, int limite, int skip) {
+		List<Direccion> direcciones = DireccionDAO.getDireccionDAO().findOrdenadoPorCercania(latitud, longitud, limite,
+				skip);
+
+		RestauranteDAO restauranteDAO = RestauranteDAO.getRestauranteDAO();
+		List<RestauranteDTO> restaurantes = new ArrayList<>();
+		for (Direccion d : direcciones) {
+			Restaurante r = restauranteDAO.findById(d.getRestaurante());
+			Position coordenadas = d.getCoordenadas().getCoordinates();
+
+			RestauranteDTO restauranteDTO = new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal(),
+					coordenadas.getValues().get(0), coordenadas.getValues().get(1), d.getCalle(), d.getCodigoPostal(),
+					d.getCiudad(), d.getNumero());
+			restaurantes.add(restauranteDTO);
+		}
+		return restaurantes;
+	}
+
+	public RestauranteDTO getDatosRestaurante(RestauranteDTO restaurante) {
+		Direccion d = DireccionDAO.getDireccionDAO().findByRestaurante(restaurante.getId());
+		Position coordenadas = d.getCoordenadas().getCoordinates();
+		restaurante.setLongitud(coordenadas.getValues().get(0));
+		restaurante.setLatitud(coordenadas.getValues().get(1));
+		restaurante.setCalle(d.getCalle());
+		restaurante.setCiudad(d.getCiudad());
+		restaurante.setCodigoPostal(d.getCodigoPostal());
+		restaurante.setNumero(d.getNumero());
+		return restaurante;
 	}
 
 }
