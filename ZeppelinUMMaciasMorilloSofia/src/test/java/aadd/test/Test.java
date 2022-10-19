@@ -2,7 +2,6 @@ package aadd.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,14 +23,14 @@ class Test {
 				"12345", TipoUsuario.RESTAURANTE);
 		assertTrue(usuario != null);
 	}
-	
+
 	@org.junit.jupiter.api.Test
 	void crearCategoria() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		Integer categoria = servicio.crearCategoria("Familiar");
 		assertTrue(categoria != null);
 	}
-	
+
 	@org.junit.jupiter.api.Test
 	void crearRestaurantePlato() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
@@ -51,14 +50,14 @@ class Test {
 		boolean exito = servicio.añadirCategoria(1, 1);
 		assertTrue(exito);
 	}
+
 	@org.junit.jupiter.api.Test
-	void cambiarDispPlato(){
+	void cambiarDispPlato() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		boolean exito = servicio.changeDisponibilidadPlato(2, false);
 		assertTrue(exito);
 	}
-	
-	
+
 	@org.junit.jupiter.api.Test
 	void validarUsuario() { // con la opcion createextenddatabase da error porque ya estan creadas (son
 							// warnings) y no pasa nada
@@ -96,13 +95,12 @@ class Test {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		assertTrue(servicio.getMenuByRestaurante(1).size() == 1);
 	}
-	
+
 	@org.junit.jupiter.api.Test
 	public void buscarRestaurantes() {
-	        ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-	assertTrue(servicio.getRestaurantesByFiltros("periqui",true,true,true).size()==1);
-															//primer true false (que es las novedades por si fuera necesario)
-	        assertTrue(servicio.getRestaurantesByFiltros("venta",true,true,true).size()==0);
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		assertTrue(servicio.getRestaurantesByFiltros("periqui", true, true, true).size() == 1);
+		assertTrue(servicio.getRestaurantesByFiltros("venta", true, true, true).size() == 0);
 	}
 	
 	
