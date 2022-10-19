@@ -19,7 +19,7 @@ public class Incidencia implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	@Column(name = "fecha creacion")
+	@Column(name = "fecha creacion",columnDefinition= "DATE")
 	private LocalDate fechaCreacion;
 	@Column(name = "descripcion")
 	@Lob

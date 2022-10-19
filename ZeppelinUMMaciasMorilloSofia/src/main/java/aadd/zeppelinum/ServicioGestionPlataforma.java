@@ -10,6 +10,7 @@ import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.bean.CategoriaRestaurante;
+import aadd.persistencia.jpa.bean.Incidencia;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoUsuario;
@@ -125,6 +126,43 @@ public class ServicioGestionPlataforma {
 				em.getTransaction().rollback();
 			}
 			em.close();
+		}
+	}
+	
+	public Integer registrarIncidencia(LocalDate fechaCreacion, String descripcion, LocalDate fechaAlta,
+			String comentario, LocalDate fechaCierre, Integer usuario, Integer restaurante) {
+
+		EntityManager em = EntityManagerHelper.getEntityManager(); 
+		try {
+			em.getTransaction().begin(); // comenzamos una transaccion
+
+			Incidencia i = new Incidencia(); // recibe los datos para crear un usuario por primera vez
+			Usuario u = UsuarioDAO.getUsuarioDAO().findById(usuario);
+			Restaurante r= RestauranteDAO.getRestauranteDAO().findById(restaurante);
+			i.setFechaCreacion(fechaCreacion);
+			i.setDescripcion(descripcion);
+			i.setFechaAlta(fechaAlta);
+			i.setComentario(comentario);
+			i.setFechaCierre(fechaCierre);
+			i.setUsuario(u);
+			i.setRestaurante(r);
+			
+
+			IncidenciaDAO.getIncidenciaDAO().save(i, em); // persistimos la entidad (con el metodo save para que haga el
+														// persist)
+
+			em.getTransaction().commit(); // importante hacer el commit
+			return i.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally { // siempre tener el bloque finally por si hay un error al final del codigo y la
+					// transaccion se queda a medio abierta (MUY PELIGROSO)
+			if (em.getTransaction().isActive()) { // comprueba si se ha dejado activa la transaccion (si ha habido algun
+													// problema)
+				em.getTransaction().rollback(); // deshace lo hecho
+			}
+			em.close(); // cerramos entity manager
 		}
 	}
 

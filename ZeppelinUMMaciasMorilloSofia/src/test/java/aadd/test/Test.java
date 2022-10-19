@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mysql.cj.result.LocalDateTimeValueFactory;
+
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -18,7 +20,7 @@ class Test {
 	void crearUsuario() { // lo podemos ver actualizando la BBDD
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		LocalDate fechaNacimiento = LocalDate.of(1990, 1, 8);
-		Integer usuario = servicio.registrarUsuario("Periquita", "Palotes", fechaNacimiento, "periquita@palotes.es",
+		Integer usuario = servicio.registrarUsuario("Pepe", "Alcaraz", fechaNacimiento, "misterbinario@umu.es",
 				"12345", TipoUsuario.RESTAURANTE);
 		assertTrue(usuario != null);
 	}
@@ -109,6 +111,23 @@ class Test {
 		ServicioGestionPlataforma servicio= ServicioGestionPlataforma.getServicioGestionPlataforma();
 		List<RestauranteDTO> u= servicio.getRestaurantesByResponsable(1);
 		assertTrue(u.size()==1);
+	}
+	
+	@org.junit.jupiter.api.Test
+	public void buscarUsuariosRestauranteSinValidar() {
+		ServicioGestionPlataforma servicio= ServicioGestionPlataforma.getServicioGestionPlataforma();
+		List<UsuarioDTO> u = servicio.getUsuarioTipoRestauranteNoValidados();
+		assertTrue(u.size()==1);
+	}
+	
+	@org.junit.jupiter.api.Test
+	public void crearIncidencia() {
+		ServicioGestionPlataforma servicio= ServicioGestionPlataforma.getServicioGestionPlataforma();
+		LocalDate fechaCreacion= LocalDate.now();
+		LocalDate fechaCierre = LocalDate.of(2023, 11, 10);
+		LocalDate fechaAlta = LocalDate.of(2022, 10, 20);
+		Integer i = servicio.registrarIncidencia(fechaCreacion, "No tenia suficientes pepinillos", fechaAlta," Quiero mas pepinillos" , fechaCierre,2,1);
+		assertTrue(i != null);
 	}
 	}
 

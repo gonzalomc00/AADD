@@ -52,7 +52,7 @@ public class UsuarioDAO extends ExtensionDAO<Usuario> {
 	public List<UsuarioDTO> findUsuarioByTipoRestauranteNoValidado(){
 		try {
 			String queryString = "SELECT u FROM Usuario u"
-					+"WHERE u.id is not null AND u.tipo=restaurante AND u.validado=0";
+					+" WHERE u.id is not null AND u.tipo like 'RESTAURANTE' AND u.validado=0";
 			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
 			return transformarToDTO(query.getResultList());
 		} catch (RuntimeException re) {
