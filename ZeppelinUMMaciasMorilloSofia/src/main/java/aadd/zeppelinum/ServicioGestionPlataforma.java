@@ -55,7 +55,11 @@ public class ServicioGestionPlataforma {
 			usu.setEmail(email);
 			usu.setClave(clave);
 			usu.setTipo(tipo);
-			usu.setValidado(false);
+			//CÓDIGO NUEVO
+			if(tipo.name().equals("RESTAURANTE"))
+			    usu.setValidado(false);
+			else
+			    usu.setValidado(true);
 
 			UsuarioDAO.getUsuarioDAO().save(usu, em); // persistimos la entidad (con el metodo save para que haga el
 														// persist)

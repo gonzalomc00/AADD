@@ -115,7 +115,7 @@ public class ServicioGestionPedido {
 	}
 	
 	//EJERCICIOS BOLETIN MONGO
-	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion, Integer repartidor, HashMap<Integer,Integer>platos) {
+/*	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion, Integer repartidor, HashMap<Integer,Integer>platos) {
 		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
 
 		// creamos el pedido e inicializamos los datos
@@ -188,5 +188,5 @@ public class ServicioGestionPedido {
 			return true;
 		} else
 			return false;
-	}
+	}*/
 }

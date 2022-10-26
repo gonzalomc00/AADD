@@ -14,7 +14,7 @@ public class Pedido implements Serializable {
 	private Integer cliente;
 	private Integer restaurante;
 	//TODO: fechas calculadas en el método de realizar pedido
-	private LocalDate fechaAhora;
+	private LocalDate fechaHora;
 	private LocalDate fechaEsperado;
 	private String comentario;
 	private String datosDireccion; // TODO: Preguntar si es direccion o String (seg String)
