@@ -1,6 +1,9 @@
 package aadd.zeppelinum;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,13 +11,20 @@ import javax.persistence.EntityManager;
 import org.bson.types.ObjectId;
 
 import aadd.persistencia.dto.OpinionDTO;
+import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.Usuario;
 import aadd.persistencia.jpa.dao.EntityManagerHelper;
+import aadd.persistencia.jpa.dao.PlatoDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
+import aadd.persistencia.mongo.bean.EstadoPedido;
+import aadd.persistencia.mongo.bean.ItemPedido;
 import aadd.persistencia.mongo.bean.Opinion;
+import aadd.persistencia.mongo.bean.Pedido;
+import aadd.persistencia.mongo.bean.TipoEstado;
 import aadd.persistencia.mongo.dao.OpinionDAO;
+import aadd.persistencia.mongo.dao.PedidoDAO;
 
 public class ServicioGestionPedido {
 
@@ -102,5 +112,81 @@ public class ServicioGestionPedido {
 			opinionesDTO.add(opinionDTO);
 		}
 		return opinionesDTO;
+	}
+	
+	//EJERCICIOS BOLETIN MONGO
+	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion, Integer repartidor, HashMap<Integer,Integer>platos) {
+		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
+
+		// creamos el pedido e inicializamos los datos
+		Pedido p = new Pedido();
+		p.setCliente(cliente);
+		p.setComentario(comentario);
+		p.setRestaurante(restaurante);
+		p.setRepartidor(repartidor);
+		p.setDatosDireccion(direccion);
+		p.setFechaHora(LocalDate.now());
+		p.setFechaEsperado(LocalDate.now()); //TODO: como sumar una hora al tiemp actual
+		
+		//creamos lista estados - Ya veremos
+		List<EstadoPedido> estados = new LinkedList<EstadoPedido>();
+
+		//Estado
+		EstadoPedido ep = new EstadoPedido();
+		ep.setEstado(TipoEstado.INICIO);
+		ep.setFechaEstado(LocalDate.now());
+		
+		//ItemPedido
+		
+		
+		//TODO: revisar como se recorre -> crear un metodo en itemPedidoç
+		for (Integer plato: platos.keySet()) {
+			ItemPedido ip = new ItemPedido();
+			Plato plto = PlatoDAO.getPlatoDAO().findById(plato);
+			double total = plto.getPrecio() * platos.get(plato);
+			ip.setCantidad(platos.get(plato));
+			ip.setPlato(plato);
+			ip.setPrecioTotal(total);
+			p.addItem(ip);
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		ObjectId id = opinionDAO.save(o);
+		if (id != null) {
+			// si se ha creado tengo que modificar la nota del restaurante
+			EntityManager em = EntityManagerHelper.getEntityManager();
+			try {
+				em.getTransaction().begin();
+				Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante);
+				Integer numeroValoraciones = r.getNumValoraciones();
+				Integer nuevoNumValoraciones = numeroValoraciones + 1;
+				r.setNumValoraciones(nuevoNumValoraciones);
+				if (r.getNumValoraciones() == 0) { // si no hay mas valoraciones, esa es la media
+					r.setValoracionGlobal(valoracion);
+				} else { // si hay alguna valoracion recalcular la media
+					Double nota = r.getValoracionGlobal();
+					double nuevaGlobal = ((nota * numeroValoraciones) + valoracion) / nuevoNumValoraciones;
+					r.setValoracionGlobal(nuevaGlobal);
+				}
+				em.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				if (em.getTransaction().isActive()) {
+					em.getTransaction().rollback();
+				}
+				em.close();
+			}
+			return true;
+		} else
+			return false;
 	}
 }
