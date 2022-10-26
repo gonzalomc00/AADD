@@ -76,7 +76,7 @@ public class ServicioGestionPedido {
 		OpinionDAO opinionDAO = OpinionDAO.getOpinionDAO();
 		List<Opinion> opiniones = opinionDAO.findByUsuario(usuario); //recuperamos las opiniones del dao
 		List<OpinionDTO> opinionesDTO = new ArrayList<>();
-
+	
 		for (Opinion o : opiniones) {
 			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(o.getRestaurante()); //recupero el nombre del restaurante de esa opinion
 			OpinionDTO opinionDTO = new OpinionDTO(); 

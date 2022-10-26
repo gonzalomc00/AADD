@@ -1,19 +1,18 @@
 package aadd.test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.mysql.cj.result.LocalDateTimeValueFactory;
-
+import aadd.persistencia.dto.IncidenciaDTO;
+import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
-import aadd.persistencia.dto.RestauranteDTO;
-import aadd.persistencia.dto.UsuarioDTO;
-import aadd.persistencia.jpa.bean.*;
 
 class Test {
 	@org.junit.jupiter.api.Test
@@ -152,25 +151,39 @@ class Test {
 		LocalDate fechaCierre = LocalDate.of(2023, 11, 10);
 		LocalDate fechaAlta = LocalDate.of(2022, 10, 20);
 		Integer i = servicio.registrarIncidencia(fechaCreacion, "No tenia suficientes pepinillos", fechaAlta,
-				"Quiero mas pepinillos", fechaCierre, 2, 1);
+				"Quiero mas pepinillos",null,2,1);
 		assertTrue(i != null);
+	}
+	
+	@org.junit.jupiter.api.Test
+	public void buscarIncidenciaByUsuario() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		List<IncidenciaDTO> i =servicio.getIncidenciaByUsuario(2);
+		assertTrue(i.size()==1);
+	}
+	
+	@org.junit.jupiter.api.Test
+	public void buscarIncidenciaSinCerrar() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		List<IncidenciaDTO> i= servicio.getIncidenciaSinCerrar();
+		assertTrue(i.size()==1);
 	}
 
 	// TEST OPINIONES MONGO
 	@org.junit.jupiter.api.Test
 	void crearOpinion() {
 		ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();
-		servicio.opinar(2, 5, "Todo estupendo y muy rico", 10d);
-		servicio.opinar(2, 1, "La comida llegó un poco fría", 7.5d);
-		servicio.opinar(2, 6, "El menú es un poco escaso, pero todo muy bueno", 8d);
-		servicio.opinar(2, 7, "Nos trajeron un plato cambiado", 5d);
-		servicio.opinar(2, 8, "Siempre repetimos", 10d);
+		servicio.opinar(4, 5, "Todo estupendo y muy rico", 10d);
+		servicio.opinar(4, 1, "La comida llegó un poco fría", 7.5d);
+		servicio.opinar(4, 3, "El menú es un poco escaso, pero todo muy bueno", 8d);
+		servicio.opinar(4, 4, "Nos trajeron un plato cambiado", 5d);
 	}
 
 	@org.junit.jupiter.api.Test
 	void buscarOpiniones() {
 		ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();
-		assertTrue(servicio.findByUsuario(2).size() == 5);
+		assertTrue(servicio.findByUsuario(4).size() == 4);
 		assertTrue(servicio.findByRestaurante(5).size() == 1);
 	}
+
 }

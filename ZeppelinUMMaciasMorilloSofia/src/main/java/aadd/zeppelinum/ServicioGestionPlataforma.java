@@ -123,6 +123,7 @@ public class ServicioGestionPlataforma {
 
 			RestauranteDAO.getRestauranteDAO().save(r, em);
 			// Codigo nuevo MONGO
+			//Forzamos un flush para que mysql nos de un id para el restaurante
 			em.flush();
 			Direccion d = new Direccion();
 			d.setCalle(calle);
@@ -155,23 +156,23 @@ public class ServicioGestionPlataforma {
 		try {
 			em.getTransaction().begin(); // comenzamos una transaccion
 
-			Incidencia incedencia = new Incidencia(); // recibe los datos para crear un usuario por primera vez
+			Incidencia incidencia = new Incidencia(); // recibe los datos para crear un usuario por primera vez
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(usuario);
 			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante);
-			incedencia.setFechaCreacion(fechaCreacion);
-			incedencia.setDescripcion(descripcion);
-			incedencia.setFechaAlta(fechaAlta);
-			incedencia.setComentario(comentario);
-			incedencia.setFechaCierre(fechaCierre);
-			incedencia.setUsuario(u);
-			incedencia.setRestaurante(r);
+			incidencia.setFechaCreacion(fechaCreacion);
+			incidencia.setDescripcion(descripcion);
+			incidencia.setFechaAlta(fechaAlta);
+			incidencia.setComentario(comentario);
+			incidencia.setFechaCierre(fechaCierre);
+			incidencia.setUsuario(u);
+			incidencia.setRestaurante(r);
 
 			
-			IncidenciaDAO.getIncidenciaDAO().save(incedencia, em); // persistimos la entidad (con el metodo save para que haga el
+			IncidenciaDAO.getIncidenciaDAO().save(incidencia, em); // persistimos la entidad (con el metodo save para que haga el
 															// persist)
 
 			em.getTransaction().commit(); // importante hacer el commit
-			return incedencia.getId();
+			return incidencia.getId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -320,6 +321,10 @@ public class ServicioGestionPlataforma {
 
 	public List<IncidenciaDTO> getIncidenciaByUsuario(Integer id_usuario) {
 		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaByUsuario(id_usuario);
+
+	}
+	public List<IncidenciaDTO> getIncidenciaSinCerrar() {
+		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaSinCerrar();
 
 	}
 

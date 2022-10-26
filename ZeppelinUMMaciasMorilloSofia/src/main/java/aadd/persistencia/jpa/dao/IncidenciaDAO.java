@@ -41,7 +41,7 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
 	public List<IncidenciaDTO> findIncidenciaSinCerrar(){
 		try {
 			String queryString = " SELECT i FROM Incidencia i "
-					+ " WHERE i.id is not null AND fechaCierre is null ";
+					+ " WHERE i.id is not null AND i.fechaCierre is null ";
 			
 			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);

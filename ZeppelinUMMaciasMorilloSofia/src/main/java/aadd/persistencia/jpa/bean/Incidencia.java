@@ -12,25 +12,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "incidencia")
 @NamedQueries({
-	@NamedQuery(name = "Incidencia.findByUsuario", query = " SELECT i FROM Incidencia i WHERE i.usuario = :usuario")})
+	@NamedQuery(name = "Incidencia.findByUsuario", query = " SELECT i FROM Incidencia i WHERE i.usuario.id = :usuario")})
 public class Incidencia implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	@Column(name = "fecha creacion", columnDefinition= "DATE")
+	@Column(name = "fechaCreacion", columnDefinition= "DATE")
 	private LocalDate fechaCreacion;
 	@Column(name = "descripcion")
 	@Lob
 	private String descripcion;
-	@Column(name = "fecha_alta", columnDefinition = "DATE")
+	@Column(name = "fechaAlta", columnDefinition = "DATE")
 	private LocalDate fechaAlta;
 	@Column(name = "comentario")
 	@Lob
 	private String comentario;
 	
-	@Column(name = "fecha_cierre", columnDefinition="DATE")
+	@Column(name = "fechaCierre", columnDefinition="DATE")
 	private LocalDate fechaCierre;
 	
 	@JoinColumn(name= "usuario")
