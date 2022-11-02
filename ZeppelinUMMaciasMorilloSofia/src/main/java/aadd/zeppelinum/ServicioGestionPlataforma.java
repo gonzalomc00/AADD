@@ -100,7 +100,7 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	public Integer registrarRestaurante(String nombre, Integer responsable, List<Integer> listaC, String calle,
+	public Integer registrarRestaurante(String nombre, Integer responsable, String calle,
 			String codigoPostal, Integer numero, String ciudad, Double latitud, Double longitud) { // entra el nombre
 		// del restaurante y
 		// el id
@@ -112,10 +112,11 @@ public class ServicioGestionPlataforma {
 
 			Restaurante r = new Restaurante(); // crea el restaurante e inicializa sus datos
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(responsable);
+			/**
 			for (Integer c : listaC) { // podemos recuperarlo de golpe
 				CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
 				r.addCategoria(cat);
-			}
+			}**/
 
 			r.setResponsable(u); // el responsable ya debe de estar en la BD
 			r.setNombre(nombre);
@@ -385,5 +386,11 @@ public class ServicioGestionPlataforma {
 		restaurante.setNumero(d.getNumero());
 		return restaurante;
 	}
+	
+	//boletin jsf
+	public RestauranteDTO getRestaurante(Integer idRestaurante) {
+        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
+        return new RestauranteDTO(idRestaurante, restaurante.getNombre(), restaurante.getValoracionGlobal());
+}
 
 }

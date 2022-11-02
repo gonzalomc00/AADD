@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import org.bson.types.ObjectId;
 
 import aadd.persistencia.dto.OpinionDTO;
+import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.Usuario;
@@ -189,4 +190,6 @@ public class ServicioGestionPedido {
 		} else
 			return false;
 	}*/
+	
+
 }

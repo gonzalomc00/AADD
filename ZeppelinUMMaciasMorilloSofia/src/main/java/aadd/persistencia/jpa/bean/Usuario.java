@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "usuario")
 //CONSULTAS NOMBRADAS EN LA CABECERA DE LA CLASE
 @NamedQueries({
-		@NamedQuery(name = "Usuario.findByEmailClave", query = " SELECT u FROM Usuario u WHERE u.email = :email and u.clave = :clave "),
+		@NamedQuery(name = "Usuario.findByEmailClave", query = " SELECT u FROM Usuario u WHERE u.email = :email and u.clave = :clave AND u.validado = true"),
 		@NamedQuery(name = "Usuario.findByEmail", query = " SELECT u FROM Usuario u WHERE u.email = :email ")})
 
 //la consulta se invoca desde UsuarioDAO, al registrarse y logearse se recuperarán los datos desde UsuarioDAO, sin que la capa de la vista lo vea.
