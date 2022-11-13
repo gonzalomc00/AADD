@@ -1,10 +1,8 @@
 package aadd.zeppelinum;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,7 +10,7 @@ import javax.persistence.EntityManager;
 import org.bson.types.ObjectId;
 
 import aadd.persistencia.dto.OpinionDTO;
-import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.Usuario;
@@ -117,7 +115,7 @@ public class ServicioGestionPedido {
 	}
 	
 	//EJERCICIOS BOLETIN MONGO
-	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion, Integer repartidor, HashMap<Integer,Integer>platos) {
+	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion, HashMap<Integer,Integer>platos) {
 		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
 
 		// creamos el pedido e inicializamos los datos
@@ -125,19 +123,17 @@ public class ServicioGestionPedido {
 		p.setCliente(cliente);
 		p.setComentario(comentario);
 		p.setRestaurante(restaurante);
-		p.setRepartidor(repartidor);
 		p.setDatosDireccion(direccion);
 		p.setFechaHora(LocalDate.now());
 		p.setFechaEsperado(LocalDate.now()); //TODO: como sumar una hora al tiemp actual cambiar a date?
 		
 		//creamos lista estados - Ya veremos
-		List<EstadoPedido> estados = new LinkedList<EstadoPedido>();
 
 		//Estado
 		EstadoPedido ep = new EstadoPedido();
 		ep.setEstado(TipoEstado.INICIO);
 		ep.setFechaEstado(LocalDate.now());
-		
+		p.addEstado(ep);
 		//ItemPedido		
 		
 		//TODO: revisar como se recorre -> crear un metodo en itemPedido
@@ -153,45 +149,74 @@ public class ServicioGestionPedido {
 			p.addItem(ip);
 			
 		}
-		return true;
+		
+		Object id= pedidoDAO.save(p);
+		if(id!=null) {
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
-		
-		
-		
-		
-		/**
-		ObjectId id = opinionDAO.save(o);
-		if (id != null) {
-			// si se ha creado tengo que modificar la nota del restaurante
-			EntityManager em = EntityManagerHelper.getEntityManager();
-			try {
-				em.getTransaction().begin();
-				Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante);
-				Integer numeroValoraciones = r.getNumValoraciones();
-				Integer nuevoNumValoraciones = numeroValoraciones + 1;
-				r.setNumValoraciones(nuevoNumValoraciones);
-				if (r.getNumValoraciones() == 0) { // si no hay mas valoraciones, esa es la media
-					r.setValoracionGlobal(valoracion);
-				} else { // si hay alguna valoracion recalcular la media
-					Double nota = r.getValoracionGlobal();
-					double nuevaGlobal = ((nota * numeroValoraciones) + valoracion) / nuevoNumValoraciones;
-					r.setValoracionGlobal(nuevaGlobal);
-				}
-				em.getTransaction().commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			} finally {
-				if (em.getTransaction().isActive()) {
-					em.getTransaction().rollback();
-				}
-				em.close();
-			}
-			return true;
-		} else
-			return false;
-	}*/
 	
+	public void editarEstado(Pedido p, TipoEstado estado) {
+		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
+		EstadoPedido ep = new EstadoPedido();
+		p.addEstado(ep);
+		pedidoDAO.updateEstado(p.getId(),ep);
+	}
+	
+	public List<PedidoDTO> findPedidoByCliente(Integer cliente){
+		PedidoDAO pedidoDAO= PedidoDAO.getPedidoDAO();
+		List<Pedido> pedidos= pedidoDAO.findByCliente(cliente);
+		List<PedidoDTO> pedidosDTO= new ArrayList<PedidoDTO>();
+		Usuario cl= UsuarioDAO.getUsuarioDAO().findById(cliente);
+		for(Pedido p: pedidos) {
+			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(p.getRestaurante()); //recupero el nombre del restaurante de esa opinion
+			PedidoDTO pd= new PedidoDTO();
+			pd.setNombreCliente(cl.getNombre());
+			pd.setNombreRestaurante(r.getNombre());
+			pd.setFechaHora(p.getFechaHora());
+			pd.setFechEsperado(p.getFechaEsperado());
+			pd.setComentario(p.getComentario());
+			pd.setDatosDireccion(p.getDatosDireccion());
+			pd.setImporte(p.getImporte());
+			
+			Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+			pd.setNombreRepartidor(u.getNombre());
+			
+			pedidosDTO.add(pd);
+		}
+		return pedidosDTO;
+	}
+	
+	public List<PedidoDTO> findPedidoByRestaurante(Integer restaurante){
+		PedidoDAO pedidoDAO= PedidoDAO.getPedidoDAO();
+		List<Pedido> pedidos= pedidoDAO.findByRestaurante(restaurante);
+		List<PedidoDTO> pedidosDTO= new ArrayList<PedidoDTO>();
+		Restaurante re= RestauranteDAO.getRestauranteDAO().findById(restaurante);
+		for(Pedido p: pedidos) {
+			Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getCliente()); //recupero el nombre del restaurante de esa opinion
+			PedidoDTO pd= new PedidoDTO();
+			pd.setNombreRestaurante(re.getNombre());
+			pd.setNombreCliente(u.getNombre());
+			pd.setFechaHora(p.getFechaHora());
+			pd.setFechEsperado(p.getFechaEsperado());
+			pd.setComentario(p.getComentario());
+			pd.setDatosDireccion(p.getDatosDireccion());
+			pd.setImporte(p.getImporte());
+			
+			Usuario r = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+			pd.setNombreRepartidor(r.getNombre());
+			
+			pedidosDTO.add(pd);
+		}
+		return pedidosDTO;
+	}
+	
+	public void asignarRepartidor(Pedido p,Integer repartidor) {
+		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
+		pedidoDAO.asignarRepartidor(p.getId(),repartidor);
+	}
 
 }

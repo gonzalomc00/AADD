@@ -4,10 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 import aadd.persistencia.dto.IncidenciaDTO;
+import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.bean.TipoUsuario;
@@ -185,5 +186,45 @@ class Test {
 		assertTrue(servicio.findByUsuario(4).size() == 4);
 		assertTrue(servicio.findByRestaurante(5).size() == 1);
 	}
+	
+	@org.junit.jupiter.api.Test
+	void crearPedido() {
+		ServicioGestionPedido servicio= ServicioGestionPedido.getServicioGestionPedido();
+		HashMap<Integer, Integer> platos= new HashMap<Integer,Integer>();
+		platos.put(1,1);
+		assertTrue(servicio.realizarPedido(2, 1, "Esto es una prueba", "Direccion de prueba", platos));
+
+	}
+	
+	@org.junit.jupiter.api.Test
+	void buscarPedidoByCliente() {
+		ServicioGestionPedido servicio= ServicioGestionPedido.getServicioGestionPedido();
+		List<PedidoDTO> pedidos= servicio.findPedidoByCliente(1);
+		for(PedidoDTO p : pedidos) {
+			System.out.println(p.getNombreCliente());
+			System.out.println(p.getNombreRestaurante());
+			System.out.println("-----------------------------------");
+			
+		}
+		
+		
+	}
+	
+	@org.junit.jupiter.api.Test
+	void buscarPedidoByRestaurante() {
+		ServicioGestionPedido servicio= ServicioGestionPedido.getServicioGestionPedido();
+		List<PedidoDTO> pedidos= servicio.findPedidoByRestaurante(1);
+		for(PedidoDTO p : pedidos) {
+			System.out.println(p.getNombreCliente());
+			System.out.println(p.getNombreRestaurante());
+			System.out.println("-----------------------------------");
+			
+		}
+		
+		
+	}
+	
+	
+	
 
 }

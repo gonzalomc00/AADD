@@ -100,6 +100,14 @@ public class Pedido implements Serializable {
 		items.add(ip);
 	}
 	
+	public void addEstado(EstadoPedido ep) {
+		if(estados==null) {
+			estados= new LinkedList<EstadoPedido>();
+		}
+		estados.add(ep);
+		
+	}
+	
 	
 	
 }
