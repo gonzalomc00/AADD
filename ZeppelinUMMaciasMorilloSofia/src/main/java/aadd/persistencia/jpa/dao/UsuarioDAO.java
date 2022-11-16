@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import aadd.persistencia.dto.UsuarioDTO;
+import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.persistencia.jpa.bean.Usuario;
 
 public class UsuarioDAO extends ExtensionDAO<Usuario> {
@@ -58,6 +59,27 @@ public class UsuarioDAO extends ExtensionDAO<Usuario> {
 		} catch (RuntimeException re) {
 			throw re;
 		}
+	}
+	
+	public List<Integer> findIdsByTipo(List<TipoUsuario> tipos){
+	    try {
+	        String queryString = " select model.id from "+name+" model "
+	            + " where  model.validado = true and (";
+	        for(int i=0;i<tipos.size();i++) {
+	            queryString +=" model.tipo = :tipo"+i;
+	            if(i<tipos.size()-1) {
+	                queryString +=" or ";
+	            }
+	        }
+	        queryString +=")";
+	        Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
+	        for(int i=0;i<tipos.size();i++) {
+	            query.setParameter("tipo"+i, tipos.get(i));
+	        }
+	        return query.getResultList();
+	    } catch (RuntimeException re) {
+	        throw re;
+	    }
 	}
 
 	public List<UsuarioDTO> transformarToDTO(List<Usuario> usuarios) {

@@ -12,6 +12,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class ExtensionMongoDAO<T> {
 
 	protected static MongoClient mongoClient; //objeto que usamos para conectarnos a la base de datos mongo
@@ -29,6 +34,12 @@ public abstract class ExtensionMongoDAO<T> {
 				CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
 		createCollection();
+		
+		LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+		Logger rootLogger = loggerContext.getLogger("org.mongodb.driver");
+		rootLogger.setLevel(Level.OFF);
+		
+
 	}
 
 	public abstract void createCollection();
