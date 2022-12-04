@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
+import aadd.persistencia.dto.EstadisticaOpinionDTO;
 import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -32,8 +34,16 @@ public class ServicioGestionPlataforma {
 
 	private static ServicioGestionPlataforma servicio;
 
+	private static ZeppelinUMRemoto zeppelinumRemoto;
+
 	public static ServicioGestionPlataforma getServicioGestionPlataforma() {
 		if (servicio == null) {
+			try {
+				zeppelinumRemoto = (ZeppelinUMRemoto) InitialContextUtil.getInstance().lookup(
+						"ejb:AADD2022/ZeppelinUMMaciasManzanaresEJB/ZeppelinUMRemoto!aadd.zeppelinum.ZeppelinUMRemoto");
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
 			servicio = new ServicioGestionPlataforma();
 		}
 		return servicio;
@@ -55,11 +65,11 @@ public class ServicioGestionPlataforma {
 			usu.setEmail(email);
 			usu.setClave(clave);
 			usu.setTipo(tipo);
-			//CÓDIGO NUEVO
-			if(tipo.name().equals("RESTAURANTE"))
-			    usu.setValidado(false);
+			// CÓDIGO NUEVO
+			if (tipo.name().equals("RESTAURANTE"))
+				usu.setValidado(false);
 			else
-			    usu.setValidado(true);
+				usu.setValidado(true);
 
 			UsuarioDAO.getUsuarioDAO().save(usu, em); // persistimos la entidad (con el metodo save para que haga el
 														// persist)
@@ -100,8 +110,8 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	public Integer registrarRestaurante(String nombre, Integer responsable, String calle,
-			String codigoPostal, Integer numero, String ciudad, Double latitud, Double longitud) { // entra el nombre
+	public Integer registrarRestaurante(String nombre, Integer responsable, String calle, String codigoPostal,
+			Integer numero, String ciudad, Double latitud, Double longitud) { // entra el nombre
 		// del restaurante y
 		// el id
 		// del responsable
@@ -113,10 +123,11 @@ public class ServicioGestionPlataforma {
 			Restaurante r = new Restaurante(); // crea el restaurante e inicializa sus datos
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(responsable);
 			/**
-			for (Integer c : listaC) { // podemos recuperarlo de golpe
-				CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
-				r.addCategoria(cat);
-			}**/
+			 * for (Integer c : listaC) { // podemos recuperarlo de golpe
+			 * CategoriaRestaurante cat =
+			 * CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
+			 * r.addCategoria(cat); }
+			 **/
 
 			r.setResponsable(u); // el responsable ya debe de estar en la BD
 			r.setNombre(nombre);
@@ -128,7 +139,7 @@ public class ServicioGestionPlataforma {
 
 			RestauranteDAO.getRestauranteDAO().save(r, em);
 			// Codigo nuevo MONGO
-			//Forzamos un flush para que mysql nos de un id para el restaurante
+			// Forzamos un flush para que mysql nos de un id para el restaurante
 			em.flush();
 			Direccion d = new Direccion();
 			d.setCalle(calle);
@@ -172,9 +183,9 @@ public class ServicioGestionPlataforma {
 			incidencia.setUsuario(u);
 			incidencia.setRestaurante(r);
 
-			
-			IncidenciaDAO.getIncidenciaDAO().save(incidencia, em); // persistimos la entidad (con el metodo save para que haga el
-															// persist)
+			IncidenciaDAO.getIncidenciaDAO().save(incidencia, em); // persistimos la entidad (con el metodo save para
+																	// que haga el
+			// persist)
 
 			em.getTransaction().commit(); // importante hacer el commit
 			return incidencia.getId();
@@ -328,6 +339,7 @@ public class ServicioGestionPlataforma {
 		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaByUsuario(id_usuario);
 
 	}
+
 	public List<IncidenciaDTO> getIncidenciaSinCerrar() {
 		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaSinCerrar();
 
@@ -386,15 +398,23 @@ public class ServicioGestionPlataforma {
 		restaurante.setNumero(d.getNumero());
 		return restaurante;
 	}
-	
-	//boletin jsf
+
+	// boletin jsf
 	public RestauranteDTO getRestaurante(Integer idRestaurante) {
-        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
-        return new RestauranteDTO(idRestaurante, restaurante.getNombre(), restaurante.getValoracionGlobal());
-}
-	
-	public List<Integer> getIdUsuariosByTipo(List<TipoUsuario> tipos){
-	    return UsuarioDAO.getUsuarioDAO().findIdsByTipo(tipos);
+		Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
+		return new RestauranteDTO(idRestaurante, restaurante.getNombre(), restaurante.getValoracionGlobal());
+	}
+
+	public List<Integer> getIdUsuariosByTipo(List<TipoUsuario> tipos) {
+		return UsuarioDAO.getUsuarioDAO().findIdsByTipo(tipos);
+	}
+
+	public List<EstadisticaOpinionDTO> getEstadisticasOpinion(Integer idUsuario) {
+		return zeppelinumRemoto.getEstadisticasOpinion(idUsuario);
+	}
+
+	public Integer getNumVisitas(Integer idUsuario) {
+		return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}
 
 }

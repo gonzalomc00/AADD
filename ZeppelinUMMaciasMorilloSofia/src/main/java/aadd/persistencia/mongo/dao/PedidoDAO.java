@@ -56,9 +56,11 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 		return pedidos;
 	}
 
+	//filtrar por pedidos que no tienen riders, por estado tambien
 	public void asignarRepartidor(ObjectId id, Integer repartidor) {
 		Bson filter= Filters.eq("id",id);
 		Document actualizacion= new Document("$set", new Document("repartidor",repartidor));
 		collection.updateOne(filter, actualizacion);		
 	}
+	
 }

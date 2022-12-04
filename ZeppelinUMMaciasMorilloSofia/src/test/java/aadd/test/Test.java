@@ -224,6 +224,12 @@ class Test {
 		
 	}
 	
+	@org.junit.jupiter.api.Test
+    void hacerpedido() {
+    ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();   
+    servicio.crearPedido();
+}
+	
 	
 	
 

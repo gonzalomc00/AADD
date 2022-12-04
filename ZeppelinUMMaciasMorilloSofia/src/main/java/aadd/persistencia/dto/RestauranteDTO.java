@@ -3,7 +3,7 @@ package aadd.persistencia.dto;
 import java.io.Serializable;
 
 public class RestauranteDTO implements Serializable{
-
+//en el dto solo metemos lo que queremos mostrar al usuario 
     protected Integer id;
     protected String nombre;
     protected Double valoracionGlobal;  
