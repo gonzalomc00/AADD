@@ -17,13 +17,15 @@ public class UsuarioDTO implements Serializable{
 	protected String apellidos;
 	protected TipoUsuario tipo;
 	protected LocalDate fechaNacimiento;
+	protected String email;
 
-	public UsuarioDTO(Integer id, String nombre, String apellidos, LocalDate fechaNacimiento, TipoUsuario tipo) {
+	public UsuarioDTO(Integer id, String nombre, String apellidos, LocalDate fechaNacimiento, TipoUsuario tipo, String email) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 		this.tipo = tipo;
+		this.email=email;
 	}
 	// getters y setters
 
@@ -65,6 +67,14 @@ public class UsuarioDTO implements Serializable{
 
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

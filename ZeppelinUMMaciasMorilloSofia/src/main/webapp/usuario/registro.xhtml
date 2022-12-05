@@ -2,7 +2,8 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 	<ui:param name="menuseleccionado" value="estilo3" />
 
 	<ui:define name="title">
@@ -15,7 +16,8 @@
 					<h:form>
 						<h:panelGrid columns="2">
 							<h:outputText value="Nombre"></h:outputText>
-							<h:inputText id="nombre" value="#{registroWeb.nombre}" required="true"/>
+							<h:inputText id="nombre" value="#{registroWeb.nombre}"
+								required="true" />
 							<h:outputText value="Apellidos"></h:outputText>
 							<h:inputText value="#{registroWeb.apellidos}"></h:inputText>
 
@@ -37,6 +39,13 @@
 								<f:selectItem itemValue="CLIENTE" itemLabel="Cliente" />
 								<f:selectItem itemValue="RESTAURANTE"
 									itemLabel="Gestor de restaurante" />
+								<c:if test="#{userSessionWeb.isLogin()}">
+									<c:if test="#{userSessionWeb.isAdmin()}">
+										<f:selectItem itemValue="RIDER" itemLabel="Rider" />
+									</c:if>
+								</c:if>
+
+
 							</h:selectOneMenu>
 						</h:panelGrid>
 						<h:messages id="errors" infoStyle="color:blue"
