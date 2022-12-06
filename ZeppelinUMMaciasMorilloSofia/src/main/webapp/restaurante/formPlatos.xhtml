@@ -19,7 +19,7 @@
 			<p:button value="Volver" href="form.xhtml" style="margin-right:5px"
 				icon="fa fa-arrow-left"></p:button> <!--  boton de volver para atras -->
 			<p:commandButton value="Dar plato de alta" icon="fa fa-utensils"
-				oncomplete="PF('nuevoPlato').show();" update="nuevo"></p:commandButton>
+				oncomplete="PF('nuevoPlato').show();" update="nuevo" rendered="#{userSessionWeb.isRestaurante()}"></p:commandButton> <!-- solo se renderiza para usuarios de tipo restaurante, si no se pulsa este boton no se abre el dialog-->
 			<br />
 			<p:messages showDetail="true" id="info" />  
 			<p:dataTable var="plato" style="prueba"
@@ -36,6 +36,7 @@
 				</p:column>
 			</p:dataTable>
 			<p:growl showDetail="true" id="info2" />
+			
 			<p:dialog header="Dar de alta plato" modal="true"
 				widgetVar="nuevoPlato" width="650">
 				<p:outputPanel id="nuevo" style="margin: 10px;">
@@ -60,6 +61,7 @@
 					</p:ajaxStatus>
 				</p:outputPanel>
 			</p:dialog>
+			
 		</h:form>
 	</ui:define>
 </ui:composition>
