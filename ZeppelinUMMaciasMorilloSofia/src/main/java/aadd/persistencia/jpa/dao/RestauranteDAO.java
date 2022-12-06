@@ -27,6 +27,7 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 		return restauranteDAO;
 	}
 
+
 	public List<RestauranteDTO> transformarToDTO(List<Restaurante> restaurantes) {
 		List<RestauranteDTO> rs = new ArrayList<RestauranteDTO>();
 		for (Restaurante r : restaurantes) {
@@ -36,11 +37,16 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 	}
 
 	
-	public List<RestauranteDTO> findRestauranteByResponsable(Integer id_responsable)
+	public List<RestauranteDTO> findRestauranteByResponsable(Integer id_responsable,boolean conPlatos)
 	{
 		try {
-			String queryString = " SELECT r FROM Restaurante r " + " INNER JOIN r.platos p on p.disponibilidad = true " 
-					+ " WHERE r.id is not null ";
+			String queryString = " SELECT r FROM Restaurante r " ;
+			if(conPlatos) {
+				queryString+=" INNER JOIN r.platos p on p.disponibilidad = true " ;
+			}
+					
+					
+			queryString+=" WHERE r.id is not null ";
 
 			if (id_responsable != null) {
 				queryString += " AND r.responsable.id like :id_responsable ";

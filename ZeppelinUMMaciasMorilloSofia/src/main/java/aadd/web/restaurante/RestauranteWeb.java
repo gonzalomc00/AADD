@@ -2,7 +2,6 @@ package aadd.web.restaurante;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +19,7 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
 import aadd.persistencia.dto.CategoriaRestauranteDTO;
+import aadd.persistencia.dto.RestauranteDTO;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
@@ -51,9 +51,22 @@ public class RestauranteWeb implements Serializable{
         servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
     }
     @PostConstruct
-    public void obtenerUsuarioSesion() {
+    public void init() {
         responsableId = usuarioSesion.getUsuario().getId();
+        	List<RestauranteDTO> restaurantes_user= servicio.getRestaurantesByResponsable(responsableId,false);
+
+    		for(RestauranteDTO r: restaurantes_user) {
+    			servicio.getDatosRestaurante(r);
+    			System.out.println(r.getNombre());
+    			System.out.println(r.getLatitud());
+    			System.out.println(r.getLongitud());
+    			LatLng coord= new LatLng(r.getLatitud(),r.getLongitud());
+    			simpleModel.addOverlay(new Marker<Integer>(coord,r.getNombre(),r.getId()));
+    		}
+        
     }
+    
+  
 
     public void onPointSelect(PointSelectEvent event) {
         LatLng latlng = event.getLatLng();
