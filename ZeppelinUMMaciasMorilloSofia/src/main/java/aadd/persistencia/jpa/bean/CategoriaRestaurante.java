@@ -10,6 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "categoria")
+@NamedQueries({
+	@NamedQuery(name = "CategoriaRestaurante.findByNombre", query = " SELECT c FROM CategoriaRestaurante c WHERE c.nombre = :nombre ")})
 public class CategoriaRestaurante implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
+import aadd.persistencia.dto.CategoriaRestauranteDTO;
 import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -38,20 +40,20 @@ class Test {
 	@org.junit.jupiter.api.Test
 	void crearCategoria() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		Integer categoria = servicio.crearCategoria("Familiar");
+		Integer categoria = servicio.crearCategoria("Nocturno");
 		assertTrue(categoria != null);
 	}
-
-/**	@org.junit.jupiter.api.Test TODO: HE CAMBIADO LOS PARAMETROS DEL RESTAURANTE
+/*
+	@org.junit.jupiter.api.Test 
 	void crearRestaurantePlato() { // MONGO INCLUIDO
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		List<Integer> categorias = new LinkedList<Integer>();
 
-		Integer rest = servicio.registrarRestaurante("Puerta de Murcia", 1, categorias, "Rio Madera", "30110", null,
+		Integer rest = servicio.registrarRestaurante("Puerta de Murcia", 1, "Rio Madera", "30110", null,
 				"Murcia", 38.009109654488476, -1.1339542029796663);
-		Integer rest2 = servicio.registrarRestaurante("Pistatxo", 1, categorias, "Alfaro", "30001", 12, "Murcia",
+		Integer rest2 = servicio.registrarRestaurante("Pistatxo", 1, "Alfaro", "30001", 12, "Murcia",
 				37.98654993575417, -1.1305437741450695);
-		Integer rest3 = servicio.registrarRestaurante("El Barrilero de Jose", 1, categorias, "Marqués de Espinardo",
+		Integer rest3 = servicio.registrarRestaurante("El Barrilero de Jose", 1, "Marqués de Espinardo",
 				"30100", 4, "Murcia", 38.00805160364204, -1.152337749004084);
 		assertTrue(rest != null);
 		assertTrue(rest2 != null);
@@ -59,8 +61,8 @@ class Test {
 		boolean exito = servicio.nuevoPlato("Marmitako de bonito", "plato de bonito, patatas y cebolla con verduras",
 				20d, rest);
 		assertTrue(exito);
-	}**/
-
+	}
+*/
 	/// teST PARA ORDENAR RESTAURANTES POR CERCANIA
 	@org.junit.jupiter.api.Test
 	void buscarRestaurantesOrdenados() { // SI FUNCIONA
@@ -229,6 +231,15 @@ class Test {
     ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();   
     servicio.crearPedido();
 }
+	
+	@org.junit.jupiter.api.Test
+	public void findCategoriaRestaurantes() {
+		ServicioGestionPlataforma servicio=ServicioGestionPlataforma.getServicioGestionPlataforma();
+		List<CategoriaRestauranteDTO> categorias=servicio.findAllCategorias();
+		for(CategoriaRestauranteDTO c: categorias) {
+			System.out.println(c.getNombreCategoria());
+		}
+	}
 	
 	
 	

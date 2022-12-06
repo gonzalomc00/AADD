@@ -2,6 +2,8 @@ package aadd.web.restaurante;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -17,6 +19,7 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
+import aadd.persistencia.dto.CategoriaRestauranteDTO;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
@@ -34,6 +37,7 @@ public class RestauranteWeb implements Serializable{
     private String codigoPostal;
     private Integer numero;
     private String ciudad;
+    private List<Integer> categoriasSel;
     private MapModel<Integer> simpleModel;
     @Inject
     private FacesContext facesContext;
@@ -69,15 +73,23 @@ public class RestauranteWeb implements Serializable{
     }
 
     public void crearRestaurante() {
-        Integer restauranteId = servicio.registrarRestaurante(nombreRestaurante, responsableId, calle, codigoPostal, numero, ciudad, latitudSelected, longitudSelected);
+    	for(Integer s: categoriasSel) {
+    		System.out.println(s);
+    	}
+        Integer restauranteId = servicio.registrarRestaurante(nombreRestaurante, responsableId, calle, codigoPostal, numero, ciudad, latitudSelected, longitudSelected, categoriasSel);
 
-        if (restauranteId == null) {
+       if (restauranteId == null) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El restaurante no se ha podido crear", ""));
         } else {
             LatLng coord = new LatLng(latitudSelected, longitudSelected); //si se ha creado se actualiza la vista y se añade un marcador en el mapa para marcar el restaurante
             simpleModel.addOverlay(new Marker<Integer>(coord, nombreRestaurante, restauranteId));
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Restaurante creado correctamente", ""));
         }
+        
+    }
+    
+    public List<CategoriaRestauranteDTO> getCategorias(){
+    	return servicio.findAllCategorias();
     }
     
     //getters y setters -- filtrar por los necesarios
@@ -154,5 +166,13 @@ public class RestauranteWeb implements Serializable{
 	public void setServicio(ServicioGestionPlataforma servicio) {
 		this.servicio = servicio;
 	}
+	public List<Integer> getCategoriasSel() {
+		return categoriasSel;
+	}
+	public void setCategoriasSel(List<Integer> categoriasSel) {
+		this.categoriasSel = categoriasSel;
+	}
+	
+	
 
 }

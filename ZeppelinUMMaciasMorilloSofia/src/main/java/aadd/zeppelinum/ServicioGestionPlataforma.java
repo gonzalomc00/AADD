@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
+import aadd.persistencia.dto.CategoriaRestauranteDTO;
 import aadd.persistencia.dto.EstadisticaOpinionDTO;
 import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PlatoDTO;
@@ -111,7 +112,7 @@ public class ServicioGestionPlataforma {
 	}
 
 	public Integer registrarRestaurante(String nombre, Integer responsable, String calle, String codigoPostal,
-			Integer numero, String ciudad, Double latitud, Double longitud) { // entra el nombre
+			Integer numero, String ciudad, Double latitud, Double longitud,List<Integer> listaC) { // entra el nombre
 		// del restaurante y
 		// el id
 		// del responsable
@@ -122,12 +123,13 @@ public class ServicioGestionPlataforma {
 
 			Restaurante r = new Restaurante(); // crea el restaurante e inicializa sus datos
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(responsable);
-			/**
-			 * for (Integer c : listaC) { // podemos recuperarlo de golpe
-			 * CategoriaRestaurante cat =
-			 * CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
-			 * r.addCategoria(cat); }
-			 **/
+			
+			for (Integer c : listaC) { // podemos recuperarlo de golpe
+			  System.out.println(c);
+			  CategoriaRestaurante cat =
+			  CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
+			  r.addCategoria(cat); }
+			 
 
 			r.setResponsable(u); // el responsable ya debe de estar en la BD
 			r.setNombre(nombre);
@@ -397,6 +399,10 @@ public class ServicioGestionPlataforma {
 		restaurante.setCodigoPostal(d.getCodigoPostal());
 		restaurante.setNumero(d.getNumero());
 		return restaurante;
+	}
+	
+	public List<CategoriaRestauranteDTO> findAllCategorias(){
+		return CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findAllCategoriasRestaurante();
 	}
 
 	// boletin jsf
