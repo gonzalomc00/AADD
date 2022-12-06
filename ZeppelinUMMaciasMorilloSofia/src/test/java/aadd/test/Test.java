@@ -43,18 +43,18 @@ class Test {
 		Integer categoria = servicio.crearCategoria("Nocturno");
 		assertTrue(categoria != null);
 	}
-/*
+
 	@org.junit.jupiter.api.Test 
 	void crearRestaurantePlato() { // MONGO INCLUIDO
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		List<Integer> categorias = new LinkedList<Integer>();
 
 		Integer rest = servicio.registrarRestaurante("Puerta de Murcia", 1, "Rio Madera", "30110", null,
-				"Murcia", 38.009109654488476, -1.1339542029796663);
+				"Murcia", 38.009109654488476, -1.1339542029796663,categorias);
 		Integer rest2 = servicio.registrarRestaurante("Pistatxo", 1, "Alfaro", "30001", 12, "Murcia",
-				37.98654993575417, -1.1305437741450695);
+				37.98654993575417, -1.1305437741450695,categorias);
 		Integer rest3 = servicio.registrarRestaurante("El Barrilero de Jose", 1, "Marqués de Espinardo",
-				"30100", 4, "Murcia", 38.00805160364204, -1.152337749004084);
+				"30100", 4, "Murcia", 38.00805160364204, -1.152337749004084,categorias);
 		assertTrue(rest != null);
 		assertTrue(rest2 != null);
 		assertTrue(rest3 != null);
@@ -62,7 +62,7 @@ class Test {
 				20d, rest);
 		assertTrue(exito);
 	}
-*/
+
 	/// teST PARA ORDENAR RESTAURANTES POR CERCANIA
 	@org.junit.jupiter.api.Test
 	void buscarRestaurantesOrdenados() { // SI FUNCIONA
@@ -136,8 +136,10 @@ class Test {
 	@org.junit.jupiter.api.Test
 	public void buscarRestaurantesPorResponsable() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		List<RestauranteDTO> u = servicio.getRestaurantesByResponsable(1);
-		assertTrue(u.size() == 1);
+		List<RestauranteDTO> u = servicio.getRestaurantesByResponsable(2,false);
+		for(RestauranteDTO r: u) {
+			System.out.println(r.getNombre());
+		}
 	}
 
 	@org.junit.jupiter.api.Test

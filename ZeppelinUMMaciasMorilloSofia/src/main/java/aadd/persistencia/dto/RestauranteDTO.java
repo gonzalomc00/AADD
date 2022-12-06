@@ -15,6 +15,7 @@ public class RestauranteDTO implements Serializable{
     private String ciudad;
     private Integer numero;
     
+    
     public RestauranteDTO(Integer id, String nombre, Double valoracionGlobal) {
         super();
         this.id = id;

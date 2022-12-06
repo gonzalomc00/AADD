@@ -327,8 +327,8 @@ public class ServicioGestionPlataforma {
 	}
 
 	// nos devuelve los restaurantes segun el filtro
-	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable) {
-		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable);
+	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable,boolean conPlatos) {
+		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable,conPlatos);
 	}
 
 	// METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO
