@@ -42,11 +42,15 @@ Crear restaurante
 						<h:outputText value="Ciudad" />
 						<p:inputText value="#{restauranteWeb.ciudad}"></p:inputText>
 						<h:outputText value="Categorias" />
-						<p:selectManyMenu value="#{restauranteWeb.categoriasSel}" showCheckbox="true" converter="javax.faces.Integer">
+						<p:selectCheckboxMenu
+									value="#{restauranteWeb.categoriasSel}"
+									emptyLabel="Please select..." updateLabel="true"
+									filter="true" filterMatchMode="startsWith"
+									converter="javax.faces.Integer">
 							<f:selectItems value="#{restauranteWeb.categorias}"
 								var="categoria" itemValue="#{categoria.id}"
 								itemLabel="#{categoria.nombreCategoria}" />
-						</p:selectManyMenu>
+						</p:selectCheckboxMenu>
 					</h:panelGrid>
 					<p:commandButton value="Cerrar" style="margin-right:5px"
 						onclick="PF('crearRestaurante').hide();" />

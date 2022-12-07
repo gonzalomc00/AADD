@@ -14,6 +14,7 @@ import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.bean.TipoUsuario;
+import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
@@ -40,7 +41,7 @@ class Test {
 	@org.junit.jupiter.api.Test
 	void crearCategoria() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		Integer categoria = servicio.crearCategoria("Nocturno");
+		Integer categoria = servicio.crearCategoria("Familiar");
 		assertTrue(categoria != null);
 	}
 
@@ -61,6 +62,15 @@ class Test {
 		boolean exito = servicio.nuevoPlato("Marmitako de bonito", "plato de bonito, patatas y cebolla con verduras",
 				20d, rest);
 		assertTrue(exito);
+	}
+	
+	@org.junit.jupiter.api.Test
+	public void crearRestauranteGalicia() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		List<Integer> categorias = new LinkedList<Integer>();
+
+		Integer rest = servicio.registrarRestaurante("GALICIA", 3, "Rio Madera", "30110", null,
+				"Murcia", 42.900339282896546,-7.763330083553408 ,categorias);
 	}
 
 	/// teST PARA ORDENAR RESTAURANTES POR CERCANIA
@@ -241,6 +251,19 @@ class Test {
 		for(CategoriaRestauranteDTO c: categorias) {
 			System.out.println(c.getNombreCategoria());
 		}
+	}
+	
+	@org.junit.jupiter.api.Test
+	public void findRestauranteByCategoria() {
+		List<Integer> categorias= new LinkedList<Integer>();
+		categorias.add(1);
+		List<RestauranteDTO> rests= RestauranteDAO.getRestauranteDAO().findRestauranteByFiltrosLazy(null, null, false, false,0,100,categorias);
+		for(RestauranteDTO r: rests) {
+			System.out.println(r.getNombre());
+		}
+	
+		
+		
 	}
 	
 	

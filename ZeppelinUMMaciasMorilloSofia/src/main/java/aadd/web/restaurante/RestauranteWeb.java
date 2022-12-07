@@ -53,6 +53,7 @@ public class RestauranteWeb implements Serializable{
     @PostConstruct
     public void init() {
         responsableId = usuarioSesion.getUsuario().getId();
+      
         	List<RestauranteDTO> restaurantes_user= servicio.getRestaurantesByResponsable(responsableId,false);
 
     		for(RestauranteDTO r: restaurantes_user) {
@@ -63,7 +64,8 @@ public class RestauranteWeb implements Serializable{
     			LatLng coord= new LatLng(r.getLatitud(),r.getLongitud());
     			simpleModel.addOverlay(new Marker<Integer>(coord,r.getNombre(),r.getId()));
     		}
-        
+    		
+    		   
     }
     
   
@@ -86,11 +88,10 @@ public class RestauranteWeb implements Serializable{
     }
 
     public void crearRestaurante() {
-    	for(Integer s: categoriasSel) {
-    		System.out.println(s);
-    	}
+   
         Integer restauranteId = servicio.registrarRestaurante(nombreRestaurante, responsableId, calle, codigoPostal, numero, ciudad, latitudSelected, longitudSelected, categoriasSel);
-
+System.out.println(latitudSelected);
+System.out.println(longitudSelected);
        if (restauranteId == null) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El restaurante no se ha podido crear", ""));
         } else {

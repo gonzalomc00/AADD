@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.client.model.geojson.Position;
 
+import aadd.persistencia.dto.CategoriaRestauranteDTO;
 import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.jpa.bean.CategoriaRestaurante;
 import aadd.persistencia.jpa.bean.Restaurante;
+import aadd.persistencia.jpa.dao.CategoriaRestauranteDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.mongo.bean.Direccion;
 import aadd.persistencia.mongo.dao.DireccionDAO;
@@ -17,7 +20,7 @@ import aadd.persistencia.mongo.dao.DireccionDAO;
 @Service
 public class ServicioGestionSpring {
 
-    public List<RestauranteDTO> buscarRestaurantesLazy(String keyword, boolean verNovedades, boolean ordernarByValoracion,boolean ceroIncidencias, Double latitud, Double longitud, int start, int max) {
+    public List<RestauranteDTO> buscarRestaurantesLazy(String keyword, boolean verNovedades, boolean ordernarByValoracion,boolean ceroIncidencias, Double latitud, Double longitud, int start, int max, List<Integer> categorias) {
         RestauranteDAO restauranteDAO = RestauranteDAO.getRestauranteDAO();
         if(keyword != null && keyword.isBlank()) {
             keyword = null;
@@ -28,8 +31,8 @@ public class ServicioGestionSpring {
             fecha = fecha.minusWeeks(1);
         }
         // si hemos filtrado por algo, buscamos según filtros
-        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias) {
-            return restauranteDAO.findRestauranteByFiltrosLazy(keyword, fecha, ordernarByValoracion, ceroIncidencias, start, max);
+        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias || (categorias!=null && categorias.size()>0)) {
+            return restauranteDAO.findRestauranteByFiltrosLazy(keyword, fecha, ordernarByValoracion, ceroIncidencias, start, max, categorias);
         }
 
         // si no hemos filtrado, búscamos ordenados por localización
@@ -58,4 +61,8 @@ public class ServicioGestionSpring {
         }
         return RestauranteDAO.getRestauranteDAO().countRestaurantesByFiltros(keyword, fecha, ceroIncidencias).intValue();
     }
+
+	public List<CategoriaRestauranteDTO> findAllCategorias() {
+		return CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findAllCategoriasRestaurante();
+	}
 }
