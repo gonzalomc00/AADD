@@ -57,10 +57,9 @@
 				<h:inputText value="#{restauranteMenuList.comentario}" />
 			</h:panelGrid>
 
-			<h:messages id="errors" infoStyle="color:blue"
-				warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
+
 			<p:commandButton value="Realizar Pedido"
-				action="#{restauranteMenuList.crearPedido()}"/>
+				action="#{restauranteMenuList.crearPedido()}" />
 
 			<p:growl showDetail="true" id="info2" />
 
@@ -89,7 +88,8 @@
 				</p:outputPanel>
 			</p:dialog>
 
-
+			<h:messages id="errors" infoStyle="color:blue"
+				warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
 		</h:form>
 	</ui:define>
 </ui:composition>

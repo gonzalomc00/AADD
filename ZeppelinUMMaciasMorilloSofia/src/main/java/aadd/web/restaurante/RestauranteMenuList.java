@@ -11,8 +11,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.map.LatLng;
-import org.primefaces.model.map.Marker;
 
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -30,6 +28,7 @@ public class RestauranteMenuList implements Serializable {
 
 	@Inject
 	private FacesContext facesContext;
+	
 	@Inject
 	private UserSessionWeb sesion;
 
@@ -54,6 +53,8 @@ public class RestauranteMenuList implements Serializable {
 	
 	public RestauranteMenuList() {
 		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		servicioPedido = ServicioGestionPedido.getServicioGestionPedido();
+
 		pedido = new HashMap<Integer, Integer>();
 		
 	}
@@ -99,7 +100,6 @@ public class RestauranteMenuList implements Serializable {
 	}
 	
 	public void crearPedido() {
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         boolean realizado = servicioPedido.realizarPedido(userId, idRestaurante, comentario, direccion, pedido);
        if (realizado == false) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido realizar este pedido", ""));
