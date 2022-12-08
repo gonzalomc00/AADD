@@ -49,7 +49,7 @@ public class ServicioGestionSpring {
         }
         
 
-    }
+	}
 
     public int countRestaurantes(String keyword, boolean verNovedades,boolean ceroIncidencias) {
         if(keyword != null && keyword.isBlank()) {

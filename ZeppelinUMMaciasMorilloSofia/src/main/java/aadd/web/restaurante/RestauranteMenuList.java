@@ -11,9 +11,13 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.Marker;
+
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.web.usuario.UserSessionWeb;
+import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
 @Named
@@ -41,15 +45,17 @@ public class RestauranteMenuList implements Serializable {
 
 	private Integer userId;
 	private boolean responsable;
-	
-	//PEDIDO
-	private HashMap<Integer,Integer> pedido;
-	private Integer cantidad;
 
+	// PEDIDO
+	private ServicioGestionPedido servicioPedido;
+	private HashMap<Integer, Integer> pedido;
+	private String comentario;
+	private String direccion;
+	
 	public RestauranteMenuList() {
 		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		cantidad=0;
-		pedido= new HashMap<Integer,Integer>();
+		pedido = new HashMap<Integer, Integer>();
+		
 	}
 
 	@PostConstruct
@@ -91,9 +97,20 @@ public class RestauranteMenuList implements Serializable {
 			loadMenu();
 		}
 	}
+	
+	public void crearPedido() {
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        boolean realizado = servicioPedido.realizarPedido(userId, idRestaurante, comentario, direccion, pedido);
+       if (realizado == false) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido realizar este pedido", ""));
+        } else {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido realizado correctamente", ""));
+        }
+        
+    }
 
 	public void cambiarDisponible(Integer plato) {
-		
+
 		servicio.changeDisponibilidadPlato(plato, true);
 
 	}
@@ -159,42 +176,60 @@ public class RestauranteMenuList implements Serializable {
 		this.responsable = responsable;
 	}
 
-	public HashMap<Integer,Integer> getPedido() {
+	public HashMap<Integer, Integer> getPedido() {
 		return pedido;
 	}
 
-	public void setPedido(HashMap<Integer,Integer> pedido) {
+	public void setPedido(HashMap<Integer, Integer> pedido) {
 		this.pedido = pedido;
 	}
 
-	public Integer getCantidad() {
-		return cantidad;
+	public void sumarCantidad(Integer plato) {
+		Integer cantidad = pedido.get(plato);
+		if (!pedido.containsKey(plato)) {
+			pedido.put(plato, 1);
+		} else {
+			cantidad = cantidad + 1;
+			pedido.put(plato, cantidad);
+		}
 	}
 
-	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
-	}
-	
-	public void sumarCantidad(Integer plato) {
-		Integer cantidad=pedido.get(plato);
-		if(cantidad==null) {
-			pedido.put(plato, 1);
-		}
-		else {
-			pedido.put(plato, cantidad++);
-		}
-	}
-	
 	public void restarCantidad(Integer plato) {
-		Integer cantidad=pedido.get(plato);
-		if(cantidad!=null) {
-			if(cantidad--==0) {
+		Integer cantidad = pedido.get(plato);
+		if (pedido.containsKey(plato)) {
+			if (cantidad-- == 0) {
 				pedido.remove(plato);
 			} else {
-			pedido.put(plato, cantidad--);
+				pedido.put(plato, cantidad--);
 			}
 		}
-	
+
 	}
+
+	public int obtenerCantidad(Integer plato) {
+		if (!pedido.containsKey(plato)) {
+			return 0;
+		}
+		return pedido.get(plato);
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	
+	
+	
 
 }

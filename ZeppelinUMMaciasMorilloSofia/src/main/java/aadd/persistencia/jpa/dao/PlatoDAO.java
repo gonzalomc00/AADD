@@ -1,11 +1,16 @@
 package aadd.persistencia.jpa.dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
 
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
+
 import aadd.persistencia.dto.PlatoDTO;
+import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.jpa.bean.Plato;
 
 public class PlatoDAO extends ExtensionDAO<Plato> {
@@ -47,4 +52,5 @@ public class PlatoDAO extends ExtensionDAO<Plato> {
 		}
 		return menu;
 	}
+
 }

@@ -39,11 +39,29 @@
 					<h:outputText value="#{plato.precio}" />
 				</p:column>
 				<p:column style="width: 200px;" headerText="Cantidad">
-					 <p:commandButton icon="pi pi-plus" action="#{restauranteMenuList.añadirPedido(plato.id)}" update="tabla_header"/>
-       				 <p:commandButton icon="pi pi-minus" action="#{restauranteMenuList.quitarPedido(plato.id)}" update="tabla_header" />
+					<p:commandButton icon="pi pi-plus"
+						action="#{restauranteMenuList.sumarCantidad(plato.id)}"
+						update="tabla_header" />
+					<h:outputText
+						value="#{restauranteMenuList.obtenerCantidad(plato.id)}" />
+					<p:commandButton icon="pi pi-minus"
+						action="#{restauranteMenuList.restarCantidad(plato.id)}"
+						update="tabla_header" />
 				</p:column>
-				
 			</p:dataTable>
+
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Direccion: " />
+				<h:inputText value="#{restauranteMenuList.direccion}" />
+				<h:outputLabel value="Comentarios Adicionales:" />
+				<h:inputText value="#{restauranteMenuList.comentario}" />
+			</h:panelGrid>
+
+			<h:messages id="errors" infoStyle="color:blue"
+				warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
+			<p:commandButton value="Realizar Pedido"
+				action="#{restauranteMenuList.crearPedido()}"/>
+
 			<p:growl showDetail="true" id="info2" />
 
 			<p:dialog header="Dar de alta plato" modal="true"
@@ -70,6 +88,7 @@
 					</p:ajaxStatus>
 				</p:outputPanel>
 			</p:dialog>
+
 
 		</h:form>
 	</ui:define>

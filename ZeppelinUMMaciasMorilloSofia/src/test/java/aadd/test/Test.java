@@ -133,7 +133,7 @@ class Test {
 	@org.junit.jupiter.api.Test
 	public void platosByRestaurante() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		assertTrue(servicio.getMenuByRestaurante(1).size() == 1);
+		assertTrue(servicio.getMenuByRestaurante(1, false).size() == 1);
 	}
 
 	@org.junit.jupiter.api.Test
