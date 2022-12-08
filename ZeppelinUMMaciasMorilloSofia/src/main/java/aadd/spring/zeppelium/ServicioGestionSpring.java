@@ -31,7 +31,7 @@ public class ServicioGestionSpring {
             fecha = fecha.minusWeeks(1);
         }
         // si hemos filtrado por algo, buscamos según filtros
-        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias || (categorias!=null && categorias.size()>0)) {
+        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias || categorias!=null) {
             return restauranteDAO.findRestauranteByFiltrosLazy(keyword, fecha, ordernarByValoracion, ceroIncidencias, start, max, categorias);
         }
 
@@ -47,6 +47,7 @@ public class ServicioGestionSpring {
             }
             return restaurantes;
         }
+        
 
     }
 

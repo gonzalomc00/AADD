@@ -6,7 +6,8 @@ public class RestauranteDTO implements Serializable{
 //en el dto solo metemos lo que queremos mostrar al usuario 
     protected Integer id;
     protected String nombre;
-    protected Double valoracionGlobal;  
+    protected Double valoracionGlobal; 
+    protected Integer resposable;
     
     private Double longitud;
     private Double latitud;
@@ -35,6 +36,7 @@ public class RestauranteDTO implements Serializable{
         this.codigoPostal = codigoPostal;
         this.ciudad = ciudad;
         this.numero = numero;
+       
     }
 
 	public Integer getId() {
@@ -107,6 +109,14 @@ public class RestauranteDTO implements Serializable{
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+	}
+
+	public Integer getResposable() {
+		return resposable;
+	}
+
+	public void setResposable(Integer resposable) {
+		this.resposable = resposable;
 	}
     
     

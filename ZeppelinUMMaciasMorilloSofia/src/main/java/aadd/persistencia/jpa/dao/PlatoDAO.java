@@ -23,10 +23,16 @@ public class PlatoDAO extends ExtensionDAO<Plato> {
 	}
 
 	// metodos que transforman un plato en platoDTO
-	public List<PlatoDTO> findPlatosDisponiblesByRestaurante(Integer restaurante) {
+	public List<PlatoDTO> findPlatosDisponiblesByRestaurante(Integer restaurante, boolean mostrarTodos) {
 		try {
-			Query query = EntityManagerHelper.getEntityManager()
-					.createNamedQuery("Plato.findPlatosDisponiblesByRestaurante");
+			Query query;
+			if (!mostrarTodos) {
+				query = EntityManagerHelper.getEntityManager()
+						.createNamedQuery("Plato.findPlatosDisponiblesByRestaurante");
+			
+			} else {
+				query = EntityManagerHelper.getEntityManager().createNamedQuery("Plato.findAllPlatosByRestaurante");
+			}
 			query.setParameter("restaurante", restaurante);
 			return transformarToDTO(query.getResultList());
 		} catch (RuntimeException re) {
@@ -37,7 +43,7 @@ public class PlatoDAO extends ExtensionDAO<Plato> {
 	public List<PlatoDTO> transformarToDTO(List<Plato> platos) {
 		List<PlatoDTO> menu = new ArrayList<PlatoDTO>();
 		for (Plato p : platos) {
-			menu.add(new PlatoDTO(p.getId(), p.getDescripcion(), p.getTitulo(), p.getPrecio()));
+			menu.add(new PlatoDTO(p.getId(), p.getDescripcion(), p.getTitulo(), p.getPrecio(),p.isDisponibilidad()));
 		}
 		return menu;
 	}

@@ -307,8 +307,8 @@ public class ServicioGestionPlataforma {
 	}
 
 //metodo en el servicio que dado el id de un restaurante nos devuelva todo su menu disponible
-	public List<PlatoDTO> getMenuByRestaurante(Integer restaurante) {
-		return PlatoDAO.getPlatoDAO().findPlatosDisponiblesByRestaurante(restaurante);
+	public List<PlatoDTO> getMenuByRestaurante(Integer restaurante, boolean mostrarTodos) {
+		return PlatoDAO.getPlatoDAO().findPlatosDisponiblesByRestaurante(restaurante, mostrarTodos);
 	}
 
 	// nos devuelve los restaurantes segun el filtro
@@ -380,7 +380,8 @@ public class ServicioGestionPlataforma {
 		for (Direccion d : direcciones) {
 			Restaurante r = restauranteDAO.findById(d.getRestaurante());
 			Position coordenadas = d.getCoordenadas().getCoordinates();
-
+			
+			
 			RestauranteDTO restauranteDTO = new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal(),
 					coordenadas.getValues().get(0), coordenadas.getValues().get(1), d.getCalle(), d.getCodigoPostal(),
 					d.getCiudad(), d.getNumero());
@@ -401,14 +402,16 @@ public class ServicioGestionPlataforma {
 		return restaurante;
 	}
 	
-	public List<CategoriaRestauranteDTO> findAllCategorias(){
+	public List<CategoriaRestauranteDTO> getAllCategorias(){
 		return CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findAllCategoriasRestaurante();
 	}
 
 	// boletin jsf
 	public RestauranteDTO getRestaurante(Integer idRestaurante) {
 		Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
-		return new RestauranteDTO(idRestaurante, restaurante.getNombre(), restaurante.getValoracionGlobal());
+		RestauranteDTO restauranteDTO= new RestauranteDTO(idRestaurante, restaurante.getNombre(),restaurante.getValoracionGlobal());
+		restauranteDTO.setResposable(restaurante.getResponsable().getId());
+		return restauranteDTO;
 	}
 
 	public List<Integer> getIdUsuariosByTipo(List<TipoUsuario> tipos) {
@@ -422,5 +425,6 @@ public class ServicioGestionPlataforma {
 	public Integer getNumVisitas(Integer idUsuario) {
 		return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}
+
 
 }

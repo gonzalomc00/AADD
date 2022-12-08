@@ -247,7 +247,7 @@ class Test {
 	@org.junit.jupiter.api.Test
 	public void findCategoriaRestaurantes() {
 		ServicioGestionPlataforma servicio=ServicioGestionPlataforma.getServicioGestionPlataforma();
-		List<CategoriaRestauranteDTO> categorias=servicio.findAllCategorias();
+		List<CategoriaRestauranteDTO> categorias=servicio.getAllCategorias();
 		for(CategoriaRestauranteDTO c: categorias) {
 			System.out.println(c.getNombreCategoria());
 		}

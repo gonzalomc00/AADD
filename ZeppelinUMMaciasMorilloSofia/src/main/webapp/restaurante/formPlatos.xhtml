@@ -3,25 +3,31 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 	template="/WEB-INF/template/template_privada.xhtml">
 	<ui:param name="menuseleccionado" value="estilo2" />
 	<ui:define name="title">Menú de un restaurante</ui:define>
 	<ui:define name="metadata">
-		<f:metadata> <!-- atributo id mapealo con este id, y una vez hecho ejecuta el metodo loadMenu del restaurante; en metadata se definen los parametros que nos entran -->
+		<f:metadata>
+			<!-- atributo id mapealo con este id, y una vez hecho ejecuta el metodo loadMenu del restaurante; en metadata se definen los parametros que nos entran -->
 			<f:viewParam name="id" value="#{restauranteMenuList.idRestaurante}" />
 			<f:viewAction action="#{restauranteMenuList.loadMenu()}" />
 		</f:metadata>
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="menu">
-			<h3>#{restauranteMenuList.restauranteSeleccionado.nombre}</h3> <!--  nombre del restaurante -->
+			<h3>#{restauranteMenuList.restauranteSeleccionado.nombre}</h3>
+			<!--  nombre del restaurante -->
 			<br />
 			<p:button value="Volver" href="form.xhtml" style="margin-right:5px"
-				icon="fa fa-arrow-left"></p:button> <!--  boton de volver para atras -->
+				icon="fa fa-arrow-left"></p:button>
+			<!--  boton de volver para atras -->
 			<p:commandButton value="Dar plato de alta" icon="fa fa-utensils"
-				oncomplete="PF('nuevoPlato').show();" update="nuevo" rendered="#{userSessionWeb.isRestaurante()}"></p:commandButton> <!-- solo se renderiza para usuarios de tipo restaurante, si no se pulsa este boton no se abre el dialog-->
+				oncomplete="PF('nuevoPlato').show();" update="nuevo"
+				rendered="#{restauranteMenuList.responsable}"></p:commandButton>
+			<!-- solo se renderiza para usuarios de tipo restaurante, si no se pulsa este boton no se abre el dialog-->
 			<br />
-			<p:messages showDetail="true" id="info" />  
+			<p:messages showDetail="true" id="info" />
 			<p:dataTable var="plato" style="prueba"
 				value="#{restauranteMenuList.menu}" rows="50" id="tabla_header"
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
@@ -33,10 +39,12 @@
 					<h:outputText value="#{plato.precio}" />
 				</p:column>
 				<p:column style="width: 200px;" headerText="Opciones">
+				
 				</p:column>
+				
 			</p:dataTable>
 			<p:growl showDetail="true" id="info2" />
-			
+
 			<p:dialog header="Dar de alta plato" modal="true"
 				widgetVar="nuevoPlato" width="650">
 				<p:outputPanel id="nuevo" style="margin: 10px;">
@@ -61,7 +69,7 @@
 					</p:ajaxStatus>
 				</p:outputPanel>
 			</p:dialog>
-			
+
 		</h:form>
 	</ui:define>
 </ui:composition>

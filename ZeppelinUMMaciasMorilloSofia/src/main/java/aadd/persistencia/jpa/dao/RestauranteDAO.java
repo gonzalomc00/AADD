@@ -120,11 +120,9 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 			if (categorias != null && categorias.size()>0) {
 				queryString += " INNER JOIN r.categorias c ";// Con el inner join me aseguro de que no aparezcan
 																// restaurantes con
-			} // 0 platos disponibles
-			queryString += " WHERE r.id is not null ";// Ponemos una condición que siempre es cierta para poder enlazar
-														// las
-			// condiciones más fácilmente
-
+			} 
+			
+			queryString += " WHERE r.id is not null ";
 			if (keyword != null) {
 				queryString += " AND r.nombre like :keyword ";
 			}

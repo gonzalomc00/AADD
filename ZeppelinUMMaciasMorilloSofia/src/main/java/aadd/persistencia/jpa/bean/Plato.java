@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "plato")
 @NamedQueries({
-		@NamedQuery(name = "Plato.findPlatosDisponiblesByRestaurante", query = " SELECT p FROM Plato p WHERE p.disponibilidad = true and p.restaurante.id = :restaurante ") })
+		@NamedQuery(name = "Plato.findPlatosDisponiblesByRestaurante", query = " SELECT p FROM Plato p WHERE p.disponibilidad = true and p.restaurante.id = :restaurante "), 
+		@NamedQuery (name= "Plato.findAllPlatosByRestaurante", query = " SELECT p FROM Plato p WHERE p.restaurante.id = :restaurante ")})
 //vamos a devolver a la vista plato pero NO la entidad plato, sino un platoDTO con lo que nos interese.
 public class Plato implements Serializable {
 	@Id
