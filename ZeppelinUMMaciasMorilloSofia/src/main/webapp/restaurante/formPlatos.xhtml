@@ -38,8 +38,9 @@
 				<p:column headerText="Precio">
 					<h:outputText value="#{plato.precio}" />
 				</p:column>
-				<p:column style="width: 200px;" headerText="Opciones">
-				
+				<p:column style="width: 200px;" headerText="Cantidad">
+					 <p:commandButton icon="pi pi-plus" action="#{restauranteMenuList.añadirPedido(plato.id)}" update="tabla_header"/>
+       				 <p:commandButton icon="pi pi-minus" action="#{restauranteMenuList.quitarPedido(plato.id)}" update="tabla_header" />
 				</p:column>
 				
 			</p:dataTable>
