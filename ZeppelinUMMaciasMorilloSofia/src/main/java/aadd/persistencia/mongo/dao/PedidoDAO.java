@@ -30,7 +30,7 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 	}
 	
 	public void updateEstado(ObjectId id, EstadoPedido p) {
-		Bson filter= Filters.eq("id",id);
+		Bson filter= Filters.eq("_id",id);
 		Document actualizacion= new Document("$push", new Document("estados",p));
 		collection.updateOne(filter, actualizacion);
 	}

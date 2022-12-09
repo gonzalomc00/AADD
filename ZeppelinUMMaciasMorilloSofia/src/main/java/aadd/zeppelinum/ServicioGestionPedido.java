@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -11,6 +12,7 @@ import javax.persistence.EntityManager;
 
 import org.bson.types.ObjectId;
 
+import aadd.persistencia.dto.EstadoPedidoDTO;
 import aadd.persistencia.dto.ItemPedidoDTO;
 import aadd.persistencia.dto.OpinionDTO;
 import aadd.persistencia.dto.PedidoDTO;
@@ -147,7 +149,7 @@ public class ServicioGestionPedido {
 		// Estado
 		EstadoPedido ep = new EstadoPedido();
 		ep.setEstado(TipoEstado.INICIO);
-		ep.setFechaEstado(LocalDate.now());
+		ep.setFechaEstado(LocalDateTime.now());
 		p.addEstado(ep);
 		// ItemPedido
 
@@ -174,11 +176,12 @@ public class ServicioGestionPedido {
 
 	}
 
-	public void editarEstado(Pedido p, TipoEstado estado) {
+	public void editarEstado(ObjectId id, TipoEstado estado) {
 		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
 		EstadoPedido ep = new EstadoPedido();
-		p.addEstado(ep);
-		pedidoDAO.updateEstado(p.getId(), ep);
+		ep.setEstado(estado);
+		ep.setFechaEstado(LocalDateTime.now());
+		pedidoDAO.updateEstado(id, ep);
 	}
 
 	public List<PedidoDTO> findPedidoByCliente(Integer cliente) {
@@ -191,6 +194,7 @@ public class ServicioGestionPedido {
 																								// restaurante de esa
 																								// opinion
 			PedidoDTO pd = new PedidoDTO();
+			pd.setId(p.getId());
 			pd.setNombreCliente(cl.getNombre());
 			pd.setNombreRestaurante(r.getNombre());
 			pd.setFechaHora(p.getFechaHora());
@@ -209,7 +213,10 @@ public class ServicioGestionPedido {
 			} else {
 				pd.setNombreRepartidor("No asignado");
 			}
-
+			for(EstadoPedido ep: p.getEstados()) {
+				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
+			}
+			
 			pedidosDTO.add(pd);
 		}
 		return pedidosDTO;
@@ -224,6 +231,7 @@ public class ServicioGestionPedido {
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getCliente()); // recupero el nombre del restaurante de
 																				// esa opinion
 			PedidoDTO pd = new PedidoDTO();
+			pd.setId(p.getId());
 			pd.setNombreRestaurante(re.getNombre());
 			pd.setNombreCliente(u.getNombre());
 			pd.setFechaHora(p.getFechaHora());
@@ -243,7 +251,12 @@ public class ServicioGestionPedido {
 			} else {
 				pd.setNombreRepartidor("No asignado");
 			}
+			
 
+			for(EstadoPedido ep: p.getEstados()) {
+				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
+			}
+			
 			pedidosDTO.add(pd);
 		}
 		return pedidosDTO;

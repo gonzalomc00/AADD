@@ -46,7 +46,33 @@
 					<p:column headerText="Fecha de llegada esperada">
 						<h:outputText value="#{pedido.fechaEsperado}" />
 					</p:column>
+					<p:column headerText="Estado">
+						<h:outputText value="#{pedido.ultimoEstado.nombreEstado}" />
+					</p:column>
+					<p:column headerText="Cambiar estado">
+						<p:commandButton type="botonAceptar" value="Aceptar"
+							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'ACEPTADO')}"
+							rendered="#{pedido.ultimoEstado.nombreEstado eq 'INICIO'}"
+							styleClass="ui-button-success" update="tablaPedidos"
+							style="margin-bottom:5px" />
 
+						<p:commandButton type="botonRechazar" value="Cancelar"
+							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'CANCELADO')}"
+							rendered="#{pedido.ultimoEstado.nombreEstado eq 'INICIO'}"
+							styleClass="ui-button-danger" update="tablaPedidos" />
+
+						<p:commandButton type="botonRechazar" value="Preparado"
+							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'PREPARADO')}"
+							rendered="#{pedido.ultimoEstado.nombreEstado eq 'ACEPTADO'}"
+							styleClass="ui-button-info" update="tablaPedidos" />
+
+						<p:commandButton type="botonRechazar" value="Recogido"
+							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'RECOGIDO')}"
+							rendered="#{pedido.ultimoEstado.nombreEstado eq 'PREPARADO'}"
+							styleClass="ui-button-info" update="tablaPedidos" />
+
+
+					</p:column>
 					<p:rowExpansion>
 						<div class="pedidoDetalles">
 							<p:dataTable var="itemPedido" value="#{pedido.items}">

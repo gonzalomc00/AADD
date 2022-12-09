@@ -8,7 +8,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.bson.types.ObjectId;
+
 import aadd.persistencia.dto.PedidoDTO;
+import aadd.persistencia.mongo.bean.TipoEstado;
 import aadd.zeppelinum.ServicioGestionPedido;
 
 @Named
@@ -31,6 +34,26 @@ public class PedidoRestauranteList implements Serializable {
 	public void loadPedidos() {
 		pedidos=servicio.findPedidoByRestaurante(restauranteId);
 		
+	}
+	
+	public void cambiarEstadoPedido(ObjectId id, String estado) {
+		switch(estado) {
+			case "ACEPTADO":
+				servicio.editarEstado(id, TipoEstado.ACEPTADO);
+				break;
+			case "CANCELADO":
+				servicio.editarEstado(id, TipoEstado.CANCELADO);
+				break;
+			case "PREPARADO":
+				servicio.editarEstado(id, TipoEstado.PREPARADO);
+				break;
+			case "RECOGIDO":
+				servicio.editarEstado(id, TipoEstado.RECOGIDO);
+				break;
+			
+			
+		}
+		loadPedidos();
 	}
 	
 	

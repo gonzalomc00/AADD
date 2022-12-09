@@ -58,6 +58,7 @@
 						rendered="#{not plato.disponible}" update="menu" />
 					<p:commandButton value="Cambiar a no disponible" action="#{restauranteMenuList.cambiarNoDisponible(plato.id)}"
 					rendered="#{plato.disponible}" update="menu" />
+					
 				</p:column>
 				</c:if>
 			</p:dataTable>

@@ -25,6 +25,8 @@ public class Pedido implements Serializable {
 	private List<EstadoPedido> estados;
 	private List<ItemPedido> items;
 	
+	
+
 	//getters y setters
 
 	public ObjectId getId() {

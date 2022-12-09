@@ -1,19 +1,28 @@
 package aadd.persistencia.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.bson.types.ObjectId;
 
 public class PedidoDTO {
+	
+	
+	//ID del pedido
+	private ObjectId id;
 	
 	private String nombreCliente;
 	private String nombreRestaurante;
 	private LocalDateTime fechaHora;
-	private LocalDateTime fechEsperado;
+	private LocalDateTime fechaEsperado;
 	private String comentario;
 	private String datosDireccion;
 	private Double importe;
 	private String nombreRepartidor;
 	private List<ItemPedidoDTO> items;
+	private List<EstadoPedidoDTO> estados;
+
 	
 	
 	public String getNombreCliente() {
@@ -34,11 +43,11 @@ public class PedidoDTO {
 	public void setFechaHora(LocalDateTime fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	public LocalDateTime getFechEsperado() {
-		return fechEsperado;
+	public LocalDateTime getFechaEsperado() {
+		return fechaEsperado;
 	}
-	public void setFechEsperado(LocalDateTime fechEsperado) {
-		this.fechEsperado = fechEsperado;
+	public void setFechaEsperado(LocalDateTime fechaEsperado) {
+		this.fechaEsperado = fechaEsperado;
 	}
 	public String getComentario() {
 		return comentario;
@@ -77,7 +86,33 @@ public class PedidoDTO {
 		}
 		items.add(item);
 	}
+	public List<EstadoPedidoDTO> getEstados() {
+		return estados;
+	}
+	public void setEstado(List<EstadoPedidoDTO> estados) {
+		this.estados = estados;
+	}
+	public void addEstado(EstadoPedidoDTO estado) {
+
+		if(estados==null) {
+			estados= new LinkedList<EstadoPedidoDTO>();
+		}
+		estados.add(estado);
+		
+		
+	}
 	
+	public EstadoPedidoDTO getUltimoEstado() {
+		
+		return estados.get(estados.size()-1);
+		
+	}
+	public ObjectId getId() {
+		return id;
+	}
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
 	
 
 }
