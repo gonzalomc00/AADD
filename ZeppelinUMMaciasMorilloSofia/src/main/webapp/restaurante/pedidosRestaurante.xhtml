@@ -20,8 +20,9 @@
 		<div class="card">
 			<h:form id="tablaPedidos">
 				<p:dataTable id="listaPedidos" var="pedido"
-					value="#{pedidoRestauranteList.pedidos}" rowKey="#{pedido.nombreCliente}">
-					
+					value="#{pedidoRestauranteList.pedidos}"
+					rowKey="#{pedido.nombreCliente}">
+
 					<f:facet name="header">
 				Pulsa sobre la flecha para ver los detalles del envío
             </f:facet>
@@ -47,11 +48,45 @@
 					</p:column>
 
 					<p:rowExpansion>
-						<div class="pedido">
-							<div class="product-list-item"></div>
+						<div class="pedidoDetalles">
+							<p:dataTable var="itemPedido" value="#{pedido.items}">
+								<p:column headerText="Nombre del plato">
+									<h:outputText value="#{itemPedido.nombrePlato}" />
+								</p:column>
+								<p:column headerText="Precio del plato">
+									<h:outputText value="#{itemPedido.precioPlato}">
+										<f:convertNumber type="currency" currencySymbol="€" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Unidades">
+									<h:outputText value="#{itemPedido.cantidad}">
+
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Coste total">
+									<h:outputText value="#{itemPedido.costeTotal}">
+										<f:convertNumber type="currency" currencySymbol="€" />
+									</h:outputText>
+								</p:column>
+
+							</p:dataTable>
 						</div>
+
+						<h1>Detalles del envío:</h1>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Dirección de envío: " />
+							<h:outputLabel value="#{pedido.datosDireccion}" />
+							<h:outputLabel value="Nombre repartidor:" />
+							<h:outputLabel value="#{pedido.nombreRepartidor}" />
+							<h:outputLabel value="Comentario: " />
+							<h:outputLabel value="#{pedido.comentario}" />
+
+						</h:panelGrid>
+
 					</p:rowExpansion>
 				</p:dataTable>
+
+
 			</h:form>
 		</div>
 	</ui:define>

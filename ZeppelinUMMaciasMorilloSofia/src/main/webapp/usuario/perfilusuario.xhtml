@@ -1,27 +1,27 @@
 <ui:composition template="/WEB-INF/template/template_privada.xhtml"
-xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core">
-    
-    	<ui:param name="menuseleccionado" value="estilo4" />
-    <ui:define name="title">
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:param name="menuseleccionado" value="estilo4" />
+	<ui:define name="title">
 Perfil de usuario
 </ui:define>
-    <ui:define name="content">
-     <h2>¡Hola #{userSessionWeb.usuario.nombre}!</h2>
-     <hr/>
-     <h:panelGrid columns="2">
-            <h:outputLabel value="Email: " />
-            <h:outputLabel value="#{userSessionWeb.usuario.email}"/>
-            <h:outputLabel value="Rango:" />
-            <h:outputLabel value="#{userSessionWeb.usuario.tipo}" />
-            <h:outputLabel value="Fecha de nacimiento: " />
-            <h:outputLabel value="#{userSessionWeb.usuario.fechaNacimiento}"/>
-            
-        </h:panelGrid>
-       
-        
-    
-    </ui:define>
+	<ui:define name="content">
+		<h2>¡Hola #{userSessionWeb.usuario.nombre}!</h2>
+		<hr />
+		<h:panelGrid columns="2">
+			<h:outputLabel value="Email: " />
+			<h:outputLabel value="#{userSessionWeb.usuario.email}" />
+			<h:outputLabel value="Rango:" />
+			<h:outputLabel value="#{userSessionWeb.usuario.tipo}" />
+			<h:outputLabel value="Fecha de nacimiento: " />
+			<h:outputLabel value="#{userSessionWeb.usuario.fechaNacimiento}" />
+
+		</h:panelGrid>
+
+
+
+	</ui:define>
 </ui:composition>

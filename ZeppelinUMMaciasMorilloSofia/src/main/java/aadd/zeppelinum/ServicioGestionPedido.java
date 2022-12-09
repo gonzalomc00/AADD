@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import org.bson.types.ObjectId;
 
+import aadd.persistencia.dto.ItemPedidoDTO;
 import aadd.persistencia.dto.OpinionDTO;
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.jpa.bean.Plato;
@@ -195,9 +196,17 @@ public class ServicioGestionPedido {
 			pd.setComentario(p.getComentario());
 			pd.setDatosDireccion(p.getDatosDireccion());
 			pd.setImporte(p.getImporte());
+			for (ItemPedido ip : p.getItems()) {
+				Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
+				pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
+			}
 
-			Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
-			pd.setNombreRepartidor(u.getNombre());
+			if (p.getRepartidor() != null) {
+				Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+				pd.setNombreRepartidor(u.getNombre());
+			} else {
+				pd.setNombreRepartidor("No asignado");
+			}
 
 			pedidosDTO.add(pd);
 		}
@@ -221,9 +230,16 @@ public class ServicioGestionPedido {
 			pd.setDatosDireccion(p.getDatosDireccion());
 			pd.setImporte(p.getImporte());
 
-			if(p.getRepartidor()!=null) {
-			Usuario r = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
-			pd.setNombreRepartidor(r.getNombre());
+			for (ItemPedido ip : p.getItems()) {
+				Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
+				pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
+			}
+
+			if (p.getRepartidor() != null) {
+				Usuario r = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+				pd.setNombreRepartidor(r.getNombre());
+			} else {
+				pd.setNombreRepartidor("No asignado");
 			}
 
 			pedidosDTO.add(pd);
