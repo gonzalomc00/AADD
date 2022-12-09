@@ -18,6 +18,7 @@
 
 	<ui:define name="content">
 		<div class="card">
+			<h2>Informe de Pedidos</h2>
 			<h:form id="tablaPedidos">
 				<p:dataTable id="listaPedidos" var="pedido"
 					value="#{pedidoRestauranteList.pedidos}"
@@ -94,25 +95,27 @@
 										<f:convertNumber type="currency" currencySymbol="€" />
 									</h:outputText>
 								</p:column>
-
 							</p:dataTable>
+
+							<h1>Detalles del envío:</h1>
+							<h:panelGrid columns="2">
+								<h:outputLabel value="Dirección de envío: " />
+								<h:outputLabel value="#{pedido.datosDireccion}" />
+								<h:outputLabel value="Nombre repartidor:" />
+								<h:outputLabel value="#{pedido.nombreRepartidor}" />
+								<h:outputLabel value="Comentario: " />
+								<h:outputLabel value="#{pedido.comentario}" />
+							</h:panelGrid>
 						</div>
 
-						<h1>Detalles del envío:</h1>
-						<h:panelGrid columns="2">
-							<h:outputLabel value="Dirección de envío: " />
-							<h:outputLabel value="#{pedido.datosDireccion}" />
-							<h:outputLabel value="Nombre repartidor:" />
-							<h:outputLabel value="#{pedido.nombreRepartidor}" />
-							<h:outputLabel value="Comentario: " />
-							<h:outputLabel value="#{pedido.comentario}" />
-
-						</h:panelGrid>
 
 					</p:rowExpansion>
 				</p:dataTable>
 
+			</h:form>
+			<h2>Gestión de Incidencias</h2>
 
+			<h:form>
 			</h:form>
 		</div>
 	</ui:define>

@@ -36,9 +36,8 @@ Listado de restaurantes
 							<div class="ui-g-2">
 								<p:selectCheckboxMenu
 									value="#{lazyRestauranteListWeb.categoriasSel}"
-									emptyLabel="Please select..." updateLabel="true"
-									filter="true" filterMatchMode="startsWith"
-									converter="javax.faces.Integer">
+									emptyLabel="Please select..." updateLabel="true" filter="true"
+									filterMatchMode="startsWith" converter="javax.faces.Integer">
 									<f:selectItems value="#{lazyRestauranteListWeb.categorias}"
 										var="categoria" itemValue="#{categoria.id}"
 										itemLabel="#{categoria.nombreCategoria}" />
@@ -80,13 +79,49 @@ Listado de restaurantes
 						readonly="true" stars="10" />
 				</p:column>
 				<p:column>
-					<p:linkButton outcome="formPlatos.xhtml?id=#{restaurante.id}" type="button" value="Ver carta y realizar pedido"
+					<p:linkButton outcome="formPlatos.xhtml?id=#{restaurante.id}"
+						type="button" value="Ver carta y realizar pedido"
 						icon="fa-solid fa-bowl-food">
 					</p:linkButton>
 				</p:column>
+				<p:column>
+					<p:commandButton value="Opinar" icon="fa-regular fa-envelope"
+						action="#{restauranteOpinarWeb.setRestauranteID(restaurante.id)}"
+						oncomplete="PF('nuevaOpinion').show();" update="nuevo"></p:commandButton>
+				</p:column>
+
+
 			</p:dataTable>
 
 
+
+
+
+
 		</h:form>
+		<!-- dialog para realizar una opinion -->
+
+		<p:dialog header="Realizar Opinion" modal="true"
+			widgetVar="nuevaOpinion" width="650">
+			<p:outputPanel id="nuevo" style="margin: 20px;">
+				<h:panelGrid columns="2">
+					<h:outputText value="Opinion:" />
+					<h:inputText value="#{restauranteOpinarWeb.opinion}" />
+					<h:outputText value="Valoración" />
+					<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10" />
+
+					<p:commandButton value="Cerrar"
+						onclick="PF('nuevaOpinion').hide();" />
+					<p:commandButton value="Enviar"
+						actionListener="#{restauranteOpinarWeb.crearOpinion()}"
+						oncomplete="PF('nuevaOpinon').hide();" />
+				</h:panelGrid>
+				<p:ajaxStatus>
+					<f:facet name="start">
+						<i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
+					</f:facet>
+				</p:ajaxStatus>
+			</p:outputPanel>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

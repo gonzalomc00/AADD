@@ -2,8 +2,10 @@ package aadd.web.restaurante;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,6 +13,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.PrimeFaces;
 
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -51,6 +55,10 @@ public class RestauranteMenuList implements Serializable {
 	private String comentario;
 	private String direccion;
 	private String entrega; // minutos en los que se desea el pedido
+
+	// OPINION RESTAURANTE
+	private String opinion;
+	private Double valoracion;
 
 	public RestauranteMenuList() {
 		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
@@ -99,6 +107,8 @@ public class RestauranteMenuList implements Serializable {
 			loadMenu();
 		}
 	}
+	
+	 
 
 	public void crearPedido() {
 		LocalDateTime esperado;
@@ -108,7 +118,7 @@ public class RestauranteMenuList implements Serializable {
 		} else {
 			esperado = LocalDateTime.now().plusMinutes(Integer.parseInt(entrega));
 		}
-		
+
 		boolean realizado = servicioPedido.realizarPedido(userId, idRestaurante, comentario, direccion, pedido,
 				esperado);
 		if (realizado == false) {
@@ -120,6 +130,7 @@ public class RestauranteMenuList implements Serializable {
 		}
 
 	}
+	
 
 	public void cambiarDisponible(Integer plato) {
 
@@ -249,6 +260,22 @@ public class RestauranteMenuList implements Serializable {
 
 	public void setEntrega(String entrega) {
 		this.entrega = entrega;
+	}
+
+	public String getOpinion() {
+		return opinion;
+	}
+
+	public void setOpinion(String opinion) {
+		this.opinion = opinion;
+	}
+
+	public Double getValoracion() {
+		return valoracion;
+	}
+
+	public void setValoracion(Double valoracion) {
+		this.valoracion = valoracion;
 	}
 
 }
