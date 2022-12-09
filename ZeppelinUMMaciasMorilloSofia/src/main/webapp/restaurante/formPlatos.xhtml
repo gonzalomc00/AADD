@@ -26,6 +26,9 @@
 			<p:commandButton value="Dar plato de alta" icon="fa fa-utensils"
 				oncomplete="PF('nuevoPlato').show();" update="nuevo"
 				rendered="#{restauranteMenuList.responsable}"></p:commandButton>
+			<p:button value="Gestionar pedidos" href="pedidosRestaurante.xhtml?id=#{restauranteMenuList.idRestaurante}"
+				rendered="#{restauranteMenuList.responsable}"></p:button>
+			<br />
 			<!-- solo se renderiza para usuarios de tipo restaurante, si no se pulsa este boton no se abre el dialog-->
 			<br />
 			<p:messages showDetail="true" id="info" />
@@ -49,6 +52,14 @@
 						action="#{restauranteMenuList.sumarCantidad(plato.id)}"
 						update="tabla_header" />
 				</p:column>
+				<c:if test= "#{restauranteMenuList.responsable}" >
+				<p:column headerText="Cambiar a disponibilidad">
+					<p:commandButton value="Cambiar a disponible" action="#{restauranteMenuList.cambiarDisponible(plato.id)}"
+						rendered="#{not plato.disponible}" update="menu" />
+					<p:commandButton value="Cambiar a no disponible" action="#{restauranteMenuList.cambiarNoDisponible(plato.id)}"
+					rendered="#{plato.disponible}" update="menu" />
+				</p:column>
+				</c:if>
 			</p:dataTable>
 
 			<h:panelGrid columns="2">

@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template_privada.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	<ui:param name="menuseleccionado" value="estilo6" />
+	<ui:define name="title">
+		Validar usuarios
+    </ui:define>
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewAction action="#{validarUsuarioWeb.loadUsuarios()}" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="menuUsuarios">
+			<p:dataTable var="usuario" style="prueba"
+				value="#{validarUsuarioWeb.usuarios}" rows="50" id="listaUsuarios"
+				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:column headerText="Identificador">
+					<h:outputText value="#{usuario.id}" />
+				</p:column>
+				<p:column headerText="Nombre">
+					<h:outputText value="#{usuario.nombre}" />
+				</p:column>
+				<p:column headerText="Apellidos">
+					<h:outputText value="#{usuario.apellidos}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{usuario.email}" />
+				</p:column>
+				<p:column headerText="Fecha de nacimiento">
+					<h:outputText value="#{usuario.fechaNacimiento}" />
+				</p:column>
+				<p:column headerText="Validar usuario">
+					<p:commandButton
+						actionListener="#{validarUsuarioWeb.validarUsuario(usuario.id)}"
+						value="Validar usuario" update="listaUsuarios">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

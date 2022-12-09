@@ -13,6 +13,9 @@ public class PedidoDTO {
 	private String datosDireccion;
 	private Double importe;
 	private String nombreRepartidor;
+	private List<ItemPedidoDTO> items;
+	
+	
 	public String getNombreCliente() {
 		return nombreCliente;
 	}
@@ -60,6 +63,19 @@ public class PedidoDTO {
 	}
 	public void setNombreRepartidor(String nombreRepartidor) {
 		this.nombreRepartidor = nombreRepartidor;
+	}
+	public List<ItemPedidoDTO> getItems() {
+		return items;
+	}
+	public void setItems(List<ItemPedidoDTO> items) {
+		this.items = items;
+	}
+	
+	public void addItem(ItemPedidoDTO item) {
+		if(items==null) {
+			items=new LinkedList<ItemPedidoDTO>();
+		}
+		items.add(item);
 	}
 	
 	
