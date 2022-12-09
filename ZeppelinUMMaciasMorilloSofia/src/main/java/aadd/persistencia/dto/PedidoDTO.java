@@ -7,11 +7,12 @@ public class PedidoDTO {
 	private String nombreCliente;
 	private String nombreRestaurante;
 	private LocalDate fechaHora;
-	private LocalDate fechEsperado;
+	private LocalDate fechaEsperado;
 	private String comentario;
 	private String datosDireccion;
 	private Double importe;
 	private String nombreRepartidor;
+	
 	public String getNombreCliente() {
 		return nombreCliente;
 	}
@@ -30,11 +31,11 @@ public class PedidoDTO {
 	public void setFechaHora(LocalDate fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	public LocalDate getFechEsperado() {
-		return fechEsperado;
+	public LocalDate getFechaEsperado() {
+		return fechaEsperado;
 	}
-	public void setFechEsperado(LocalDate fechEsperado) {
-		this.fechEsperado = fechEsperado;
+	public void setFechaEsperado(LocalDate fechaEsperado) {
+		this.fechaEsperado = fechaEsperado;
 	}
 	public String getComentario() {
 		return comentario;

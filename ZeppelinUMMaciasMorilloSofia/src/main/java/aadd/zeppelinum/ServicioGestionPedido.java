@@ -154,14 +154,14 @@ public class ServicioGestionPedido {
 		for (Integer plato : platos.keySet()) {
 			ItemPedido ip = new ItemPedido();
 			Plato plto = PlatoDAO.getPlatoDAO().findById(plato);
-			total = plto.getPrecio() * platos.get(plato);
+			total += plto.getPrecio() * platos.get(plato);
 			ip.setCantidad(platos.get(plato));
 			ip.setPlato(plato);
 			ip.setPrecioTotal(total);
 			p.addItem(ip);
 
 		}
-
+		p.setImporte(total);
 		Object id = pedidoDAO.save(p);
 		if (id != null) {
 			return true;
@@ -191,7 +191,7 @@ public class ServicioGestionPedido {
 			pd.setNombreCliente(cl.getNombre());
 			pd.setNombreRestaurante(r.getNombre());
 			pd.setFechaHora(p.getFechaHora());
-			pd.setFechEsperado(p.getFechaEsperado());
+			pd.setFechaEsperado(p.getFechaEsperado());
 			pd.setComentario(p.getComentario());
 			pd.setDatosDireccion(p.getDatosDireccion());
 			pd.setImporte(p.getImporte());
@@ -216,13 +216,15 @@ public class ServicioGestionPedido {
 			pd.setNombreRestaurante(re.getNombre());
 			pd.setNombreCliente(u.getNombre());
 			pd.setFechaHora(p.getFechaHora());
-			pd.setFechEsperado(p.getFechaEsperado());
+			pd.setFechaEsperado(p.getFechaEsperado());
 			pd.setComentario(p.getComentario());
 			pd.setDatosDireccion(p.getDatosDireccion());
 			pd.setImporte(p.getImporte());
 
+			if(p.getRepartidor()!=null) {
 			Usuario r = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
 			pd.setNombreRepartidor(r.getNombre());
+			}
 
 			pedidosDTO.add(pd);
 		}

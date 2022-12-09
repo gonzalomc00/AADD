@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template_privada.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	<ui:param name="menuseleccionado" value="estilo2" />
+	<ui:define name="title">
+		Pedidos de un restaurante
+    </ui:define>
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="id" value="#{pedidoRestauranteList.restauranteId}" />
+			<f:viewAction action="#{pedidoRestauranteList.loadPedidos()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<div class="card">
+			<h:form id="tablaPedidos">
+				<p:dataTable id="listaPedidos" var="pedido"
+					value="#{pedidoRestauranteList.pedidos}" rowKey="#{pedido.nombreCliente}">
+					
+					<f:facet name="header">
+				Pulsa sobre la flecha para ver los detalles del envío
+            </f:facet>
+					<p:column style="width:2rem">
+						<p:rowToggler />
+					</p:column>
+
+					<p:column headerText="Nombre del cliente">
+						<h:outputText value="#{pedido.nombreCliente}" />
+					</p:column>
+
+					<p:column headerText="Importe">
+						<h:outputText value="#{pedido.importe}">
+							<f:convertNumber type="currency" currencySymbol="€" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Fecha de creación">
+						<h:outputText value="#{pedido.fechaHora}" />
+					</p:column>
+					<p:column headerText="Fecha de llegada esperada">
+						<h:outputText value="#{pedido.fechaEsperado}" />
+					</p:column>
+
+					<p:rowExpansion>
+						<div class="pedido">
+							<div class="product-list-item"></div>
+						</div>
+					</p:rowExpansion>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
