@@ -48,6 +48,16 @@
 						action="#{restauranteMenuList.restarCantidad(plato.id)}"
 						update="tabla_header" />
 				</p:column>
+				<c:if test= "#{restauranteMenuList.responsable}" >
+				<p:column headerText="Cambiar a disponibilidad">
+					<p:commandButton value="Cambiar a disponible" action="#{restauranteMenuList.cambiarDisponible(plato.id)}"
+						rendered="#{not plato.disponible}" update="menu" />
+					<p:commandButton value="Cambiar a no disponible" action="#{restauranteMenuList.cambiarNoDisponible(plato.id)}"
+					rendered="#{plato.disponible}" update="menu" />
+					
+				
+				</p:column>
+				</c:if>
 			</p:dataTable>
 
 			<h:panelGrid columns="2">

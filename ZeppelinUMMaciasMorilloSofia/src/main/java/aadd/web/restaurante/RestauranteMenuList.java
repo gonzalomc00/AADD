@@ -112,11 +112,13 @@ public class RestauranteMenuList implements Serializable {
 	public void cambiarDisponible(Integer plato) {
 
 		servicio.changeDisponibilidadPlato(plato, true);
+		loadMenu();
 
 	}
 
 	public void cambiarNoDisponible(Integer plato) {
 		servicio.changeDisponibilidadPlato(plato, false);
+		loadMenu();
 	}
 
 	// getters y setters necesarios (hecho)
