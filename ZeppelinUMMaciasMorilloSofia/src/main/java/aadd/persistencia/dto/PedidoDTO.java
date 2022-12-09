@@ -1,13 +1,14 @@
 package aadd.persistencia.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PedidoDTO {
 	
 	private String nombreCliente;
 	private String nombreRestaurante;
-	private LocalDate fechaHora;
-	private LocalDate fechEsperado;
+	private LocalDateTime fechaHora;
+	private LocalDateTime fechEsperado;
 	private String comentario;
 	private String datosDireccion;
 	private Double importe;
@@ -24,16 +25,16 @@ public class PedidoDTO {
 	public void setNombreRestaurante(String nombreRestaurante) {
 		this.nombreRestaurante = nombreRestaurante;
 	}
-	public LocalDate getFechaHora() {
+	public LocalDateTime getFechaHora() {
 		return fechaHora;
 	}
-	public void setFechaHora(LocalDate fechaHora) {
+	public void setFechaHora(LocalDateTime fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	public LocalDate getFechEsperado() {
+	public LocalDateTime getFechEsperado() {
 		return fechEsperado;
 	}
-	public void setFechEsperado(LocalDate fechEsperado) {
+	public void setFechEsperado(LocalDateTime fechEsperado) {
 		this.fechEsperado = fechEsperado;
 	}
 	public String getComentario() {

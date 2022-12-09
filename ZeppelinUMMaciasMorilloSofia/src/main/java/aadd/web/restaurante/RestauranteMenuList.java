@@ -1,6 +1,7 @@
 package aadd.web.restaurante;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -28,7 +28,7 @@ public class RestauranteMenuList implements Serializable {
 
 	@Inject
 	private FacesContext facesContext;
-	
+
 	@Inject
 	private UserSessionWeb sesion;
 
@@ -50,18 +50,19 @@ public class RestauranteMenuList implements Serializable {
 	private HashMap<Integer, Integer> pedido;
 	private String comentario;
 	private String direccion;
-	
+	private String entrega; // minutos en los que se desea el pedido
+
 	public RestauranteMenuList() {
 		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		servicioPedido = ServicioGestionPedido.getServicioGestionPedido();
 
 		pedido = new HashMap<Integer, Integer>();
-		
+
 	}
 
 	@PostConstruct
 	public void init() {
-		// PREGUNTAR POR QUE ESTA PASANDO ESTO
+		// TODO: PREGUNTAR POR QUE ESTA PASANDO ESTO
 		if (sesion.isLogin()) {
 			userId = sesion.getUsuario().getId();
 		}
@@ -98,16 +99,27 @@ public class RestauranteMenuList implements Serializable {
 			loadMenu();
 		}
 	}
-	
+
 	public void crearPedido() {
-        boolean realizado = servicioPedido.realizarPedido(userId, idRestaurante, comentario, direccion, pedido);
-       if (realizado == false) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido realizar este pedido", ""));
-        } else {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido realizado correctamente", ""));
-        }
-        
-    }
+		LocalDateTime esperado;
+		if (entrega == null || entrega.isBlank()) {
+			esperado = LocalDateTime.now().plusMinutes(30); // si no se ha especificado un tiempo definido se establece
+															// a media hora
+		} else {
+			esperado = LocalDateTime.now().plusMinutes(Integer.parseInt(entrega));
+		}
+		
+		boolean realizado = servicioPedido.realizarPedido(userId, idRestaurante, comentario, direccion, pedido,
+				esperado);
+		if (realizado == false) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido realizar este pedido", ""));
+		} else {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido realizado correctamente", ""));
+		}
+
+	}
 
 	public void cambiarDisponible(Integer plato) {
 
@@ -228,8 +240,13 @@ public class RestauranteMenuList implements Serializable {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	
-	
-	
+
+	public String getEntrega() {
+		return entrega;
+	}
+
+	public void setEntrega(String entrega) {
+		this.entrega = entrega;
+	}
 
 }

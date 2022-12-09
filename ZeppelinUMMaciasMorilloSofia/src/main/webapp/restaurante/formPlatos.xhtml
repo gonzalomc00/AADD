@@ -16,6 +16,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="menu">
+			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 			<h3>#{restauranteMenuList.restauranteSeleccionado.nombre}</h3>
 			<!--  nombre del restaurante -->
 			<br />
@@ -39,13 +40,13 @@
 					<h:outputText value="#{plato.precio}" />
 				</p:column>
 				<p:column style="width: 200px;" headerText="Cantidad">
-					<p:commandButton icon="pi pi-plus"
-						action="#{restauranteMenuList.sumarCantidad(plato.id)}"
+					<p:commandButton icon="pi pi-minus"
+						action="#{restauranteMenuList.restarCantidad(plato.id)}"
 						update="tabla_header" />
 					<h:outputText
 						value="#{restauranteMenuList.obtenerCantidad(plato.id)}" />
-					<p:commandButton icon="pi pi-minus"
-						action="#{restauranteMenuList.restarCantidad(plato.id)}"
+					<p:commandButton icon="pi pi-plus"
+						action="#{restauranteMenuList.sumarCantidad(plato.id)}"
 						update="tabla_header" />
 				</p:column>
 			</p:dataTable>
@@ -55,6 +56,18 @@
 				<h:inputText value="#{restauranteMenuList.direccion}" />
 				<h:outputLabel value="Comentarios Adicionales:" />
 				<h:inputText value="#{restauranteMenuList.comentario}" />
+				<h:outputLabel value="Tiempo de entrega" />
+				<h:selectOneMenu id="selectorHora"
+					value="#{restauranteMenuList.entrega}" required="true"
+					label="selector">
+					<f:selectItem itemLabel="Seleccione una hora de entrega"
+						itemValue="" />
+					<f:selectItem itemLabel="Lo antes posible" itemValue="30" />
+					<f:selectItem itemLabel="En 45 minutos" itemValue="45" />
+					<f:selectItem itemLabel="En 1 hora" itemValue="60" />
+					<f:selectItem itemLabel="En 1 hora y media" itemValue="90" />
+					<f:selectItem itemLabel="En 2 horas" itemValue="120" />		
+				</h:selectOneMenu>
 			</h:panelGrid>
 
 

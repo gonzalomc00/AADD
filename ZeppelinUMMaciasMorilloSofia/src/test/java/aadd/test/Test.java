@@ -201,14 +201,14 @@ class Test {
 		assertTrue(servicio.findByRestaurante(5).size() == 1);
 	}
 	
-	@org.junit.jupiter.api.Test
+	/**@org.junit.jupiter.api.Test
 	void crearPedido() {
 		ServicioGestionPedido servicio= ServicioGestionPedido.getServicioGestionPedido();
 		HashMap<Integer, Integer> platos= new HashMap<Integer,Integer>();
 		platos.put(1,1);
 		assertTrue(servicio.realizarPedido(2, 1, "Esto es una prueba", "Direccion de prueba", platos));
 
-	}
+	}*/
 	
 	@org.junit.jupiter.api.Test
 	void buscarPedidoByCliente() {

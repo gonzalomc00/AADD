@@ -2,6 +2,7 @@ package aadd.persistencia.mongo.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,8 +15,8 @@ public class Pedido implements Serializable {
 	private Integer cliente;
 	private Integer restaurante;
 	//TODO: fechas calculadas en el método de realizar pedido
-	private LocalDate fechaHora;
-	private LocalDate fechaEsperado;
+	private LocalDateTime fechaHora;
+	private LocalDateTime fechaEsperado;
 	private String comentario;
 	private String datosDireccion; // TODO: Preguntar si es direccion o String (seg String)
 	//TODO: importe se calcula dentro??
@@ -44,16 +45,16 @@ public class Pedido implements Serializable {
 	public void setRestaurante(Integer restaurante) {
 		this.restaurante = restaurante;
 	}
-	public LocalDate getFechaHora() {
+	public LocalDateTime getFechaHora() {
 		return fechaHora;
 	}
-	public void setFechaHora(LocalDate fechaHora) {
+	public void setFechaHora(LocalDateTime fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	public LocalDate getFechaEsperado() {
+	public LocalDateTime getFechaEsperado() {
 		return fechaEsperado;
 	}
-	public void setFechaEsperado(LocalDate fechaEsperado) {
+	public void setFechaEsperado(LocalDateTime fechaEsperado) {
 		this.fechaEsperado = fechaEsperado;
 	}
 	public String getComentario() {
@@ -105,7 +106,6 @@ public class Pedido implements Serializable {
 			estados= new LinkedList<EstadoPedido>();
 		}
 		estados.add(ep);
-		
 	}
 	
 	

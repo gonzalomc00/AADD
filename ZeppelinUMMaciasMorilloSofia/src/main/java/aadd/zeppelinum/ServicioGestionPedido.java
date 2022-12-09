@@ -1,6 +1,7 @@
 package aadd.zeppelinum;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,7 +128,7 @@ public class ServicioGestionPedido {
 
 	// EJERCICIOS BOLETIN MONGO
 	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion,
-			HashMap<Integer, Integer> platos) {
+			HashMap<Integer, Integer> platos, LocalDateTime esperado) {
 		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
 
 		// creamos el pedido e inicializamos los datos
@@ -136,8 +137,9 @@ public class ServicioGestionPedido {
 		p.setComentario(comentario);
 		p.setRestaurante(restaurante);
 		p.setDatosDireccion(direccion);
-		p.setFechaHora(LocalDate.now());
-		p.setFechaEsperado(LocalDate.now()); // TODO: como sumar una hora al tiemp actual cambiar a date?
+		p.setFechaHora(LocalDateTime.now());
+		
+		p.setFechaEsperado(esperado); // TODO: como sumar una hora al tiemp actual cambiar a date?
 
 		// creamos lista estados - Ya veremos
 
