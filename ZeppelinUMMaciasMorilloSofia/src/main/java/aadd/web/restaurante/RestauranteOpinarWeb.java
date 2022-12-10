@@ -9,6 +9,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.RateEvent;
+
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
 
@@ -21,11 +23,11 @@ public class RestauranteOpinarWeb implements Serializable {
 	@Inject
 	private UserSessionWeb sesion;
 
-	protected Integer restauranteId;
-	protected Integer userId;
+	private Integer restauranteId;
+	private Integer userId;
 
-	protected Double valoracion;
-	protected String opinion;
+	private Double valoracion;
+	private String opinion;
 
 	// SERVICIO
 	private ServicioGestionPedido servicioPedido;
@@ -59,8 +61,6 @@ public class RestauranteOpinarWeb implements Serializable {
 	}
 
 	// getters y setters
-
-	
 
 	public Double getValoracion() {
 		return valoracion;

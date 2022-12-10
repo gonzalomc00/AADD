@@ -3,6 +3,7 @@ package aadd.web.pedido;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -12,27 +13,35 @@ import org.bson.types.ObjectId;
 
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.mongo.bean.TipoEstado;
+import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
 
 @Named
 @ViewScoped
-public class PedidoRestauranteList implements Serializable {
+public class PedidoUsuarioList implements Serializable {
 
 	@Inject
 	private FacesContext facesContext;
 	
 	private List<PedidoDTO> pedidos;
-	private Integer restauranteId;
 	private ServicioGestionPedido servicio;
 	
+	@Inject
+	private UserSessionWeb sesion;
+	private Integer id;
 	
-	public PedidoRestauranteList() {
+	
+	public PedidoUsuarioList() {
 		servicio= ServicioGestionPedido.getServicioGestionPedido();
 	}
 
+	@PostConstruct
+	public void init() {
+		id=sesion.getUsuario().getId();
+	}
 	
 	public void loadPedidos() {
-		pedidos=servicio.findPedidoByRestaurante(restauranteId);
+		pedidos=servicio.findPedidoByCliente(id);
 		
 	}
 	
@@ -73,13 +82,6 @@ public class PedidoRestauranteList implements Serializable {
 		this.pedidos = pedidos;
 	}
 
-	public Integer getRestauranteId() {
-		return restauranteId;
-	}
-
-	public void setRestauranteId(Integer restauranteId) {
-		this.restauranteId = restauranteId;
-	}
 
 
 	public ServicioGestionPedido getServicio() {
@@ -89,6 +91,22 @@ public class PedidoRestauranteList implements Serializable {
 
 	public void setServicio(ServicioGestionPedido servicio) {
 		this.servicio = servicio;
+	}
+
+	public UserSessionWeb getSesion() {
+		return sesion;
+	}
+
+	public void setSesion(UserSessionWeb sesion) {
+		this.sesion = sesion;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	
