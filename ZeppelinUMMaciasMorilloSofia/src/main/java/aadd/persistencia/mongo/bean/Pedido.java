@@ -110,6 +110,10 @@ public class Pedido implements Serializable {
 		estados.add(ep);
 	}
 	
+	public EstadoPedido obtenerUltimoEstado() {
+		return estados.get(estados.size()-1);
+	}
+	
 	
 	
 }
