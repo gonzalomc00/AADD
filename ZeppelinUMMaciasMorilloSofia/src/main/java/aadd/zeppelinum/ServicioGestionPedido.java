@@ -167,7 +167,8 @@ public class ServicioGestionPedido {
 
 		}
 		p.setImporte(total);
-		Object id = pedidoDAO.save(p);
+		ObjectId id = pedidoDAO.save(p);
+		zeppelinumRemoto.pedidoIniciado(id);
 		if (id != null) {
 			return true;
 		} else {
@@ -267,12 +268,6 @@ public class ServicioGestionPedido {
 		pedidoDAO.asignarRepartidor(p.getId(), repartidor);
 	}
 
-	// BOL
-	public void crearPedido() {
-		// se crea un pedido, este método deberá tener los atributos necesarios
-		// una vez creado, nos quedamos con el id que le ha generado mongodb y con eso
-		// activamos el tiemr
-		zeppelinumRemoto.pedidoIniciado("id del pedido creando en mongodb");
-	}
+
 
 }
