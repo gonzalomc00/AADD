@@ -87,7 +87,7 @@ Listado de restaurantes
 				<p:column>
 					<p:commandButton value="Opinar" icon="fa-regular fa-envelope"
 						action="#{restauranteOpinarWeb.setRestauranteId(restaurante.id)}"
-						oncomplete="PF('nuevaOpinion').show();" ></p:commandButton>
+						oncomplete="PF('nuevaOpinion').show();"></p:commandButton>
 				</p:column>
 
 
@@ -96,8 +96,9 @@ Listado de restaurantes
 
 
 			<!-- dialog para realizar una opinion -->
+		</h:form>
 
-
+		<h:form id="dialog">
 			<p:dialog header="Realizar Opinion" modal="true"
 				widgetVar="nuevaOpinion" width="650">
 				<p:outputPanel id="nuevo" style="margin: 20px;">
@@ -105,9 +106,9 @@ Listado de restaurantes
 					<h:panelGrid columns="2">
 
 						<h:outputText value="Opinion:" />
-						<h:inputText value="#{restauranteOpinarWeb.opinion}" required="true" />
+						<h:inputText value="#{restauranteOpinarWeb.opinion}" />
 						<h:outputText value="Valoración" />
-						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10" required="true">
+						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10">
 						</p:rating>
 						<p:commandButton value="Cerrar"
 							onclick="PF('nuevaOpinion').hide();" />
