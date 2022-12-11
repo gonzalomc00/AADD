@@ -16,14 +16,20 @@ Estadísticas
 							<h1>Estadísticas</h1>
 							<h:form id="torneum">
 								<div class="ui-g ui-fluid">
-									<div class="ui-g-2">Número de visitas
+									<div class="ui-g-2">Número de visitas:
 										#{estadisticasWeb.numVisitas}</div>
+									<div class="ui-g-2">Número de pedidos realizados:
+										#{estadisticasWeb.pedidosCliente}</div>
+
 									<div class="ui-g-4">
 										<p:panel header="Valoraciones">
 											<p:lineChart model="#{estadisticasWeb.lineModel}"
 												style="width: 100%; height: 300px;" />
 										</p:panel>
 									</div>
+								</div>
+								<div>
+									Número de pedidos recibidos: #{estadisticasWeb.pedidosRestaurante}
 								</div>
 							</h:form>
 						</div>

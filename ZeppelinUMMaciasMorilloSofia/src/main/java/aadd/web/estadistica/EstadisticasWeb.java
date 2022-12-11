@@ -17,76 +17,96 @@ import org.primefaces.model.charts.optionconfig.title.Title;
 
 import aadd.persistencia.dto.EstadisticaOpinionDTO;
 import aadd.web.usuario.UserSessionWeb;
+import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
 @Named
 @ViewScoped
 public class EstadisticasWeb implements Serializable {
-    @Inject
-    protected UserSessionWeb usuarioSesion;
-    protected ServicioGestionPlataforma servicioPlataforma;
-    private LineChartModel lineModel;
+	@Inject
+	protected UserSessionWeb usuarioSesion;
+	protected ServicioGestionPlataforma servicioPlataforma;
+	protected ServicioGestionPedido servicioPedido;
 
-    public EstadisticasWeb() {      
-        servicioPlataforma = ServicioGestionPlataforma.getServicioGestionPlataforma();  }
+	private LineChartModel lineModel;
 
-    @PostConstruct
-    public void initLineChart() {
-        createLineModel();
-    }
+	public EstadisticasWeb() {
+		servicioPlataforma = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		servicioPedido = ServicioGestionPedido.getServicioGestionPedido();
+	}
 
-    private void createLineModel() {
-        List<EstadisticaOpinionDTO> estadisticas = servicioPlataforma.getEstadisticasOpinion(usuarioSesion.getUsuario().getId());
-        lineModel = new LineChartModel();
-        ChartData data = new ChartData();
+	@PostConstruct
+	public void initLineChart() {
+		createLineModel();
+	}
 
-        LineChartDataSet dataSet = new LineChartDataSet();
-        List<Object> values = new ArrayList<>();
-        for (int i = 0; i < 11; i++) {
-            values.add(0);
-        }
-        for (EstadisticaOpinionDTO e : estadisticas) {
-            values.set(e.getNota().intValue(), e.getTotal());
-        }
+	private void createLineModel() {
+		List<EstadisticaOpinionDTO> estadisticas = servicioPlataforma
+				.getEstadisticasOpinion(usuarioSesion.getUsuario().getId());
+		lineModel = new LineChartModel();
+		ChartData data = new ChartData();
 
-        dataSet.setData(values);
-        dataSet.setFill(false);
-        dataSet.setLabel("Valoraciones a restaurantes");
-        dataSet.setBorderColor("rgb(75, 192, 192)");
+		LineChartDataSet dataSet = new LineChartDataSet();
+		List<Object> values = new ArrayList<>();
+		for (int i = 0; i < 11; i++) {
+			values.add(0);
+		}
+		for (EstadisticaOpinionDTO e : estadisticas) {
+			values.set(e.getNota().intValue(), e.getTotal());
+		}
 
-        data.addChartDataSet(dataSet);
+		dataSet.setData(values);
+		dataSet.setFill(false);
+		dataSet.setLabel("Valoraciones a restaurantes");
+		dataSet.setBorderColor("rgb(75, 192, 192)");
 
-        List<String> labels = new ArrayList<>();
-        labels.add("0");
-        labels.add("1");
-        labels.add("2");
-        labels.add("3");
-        labels.add("4");
-        labels.add("5");
-        labels.add("6");
-        labels.add("7");
-        labels.add("8");
-        labels.add("9");
-        labels.add("10");
-        data.setLabels(labels);
+		data.addChartDataSet(dataSet);
 
-        // Options
-        LineChartOptions options = new LineChartOptions();
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText("Line Chart");
-        options.setTitle(title);
+		List<String> labels = new ArrayList<>();
+		labels.add("0");
+		labels.add("1");
+		labels.add("2");
+		labels.add("3");
+		labels.add("4");
+		labels.add("5");
+		labels.add("6");
+		labels.add("7");
+		labels.add("8");
+		labels.add("9");
+		labels.add("10");
+		data.setLabels(labels);
 
-        lineModel.setOptions(options);
-        lineModel.setData(data);
-    }
-    public Integer getNumVisitas() {
-        return servicioPlataforma.getNumVisitas(usuarioSesion.getUsuario().getId());
-    }
-    public LineChartModel getLineModel() {
-        return lineModel;
-    }
-    public void setLineModel(LineChartModel lineModel) {
-        this.lineModel = lineModel;
-    }
+		// Options
+		LineChartOptions options = new LineChartOptions();
+		Title title = new Title();
+		title.setDisplay(true);
+		title.setText("Line Chart");
+		options.setTitle(title);
+
+		lineModel.setOptions(options);
+		lineModel.setData(data);
+	}
+
+	public Integer getNumVisitas() {
+		return servicioPlataforma.getNumVisitas(usuarioSesion.getUsuario().getId());
+	}
+
+	public Integer getPedidosCliente() {
+
+		return servicioPedido.getPedidosCliente(usuarioSesion.getUsuario().getId());
+	}
+
+	public Integer getPedidosRestaurante() {
+		return servicioPedido.getPedidosByRestaurante(usuarioSesion.getUsuario().getId());
+
+	}
+
+	public LineChartModel getLineModel() {
+		return lineModel;
+	}
+
+	public void setLineModel(LineChartModel lineModel) {
+		this.lineModel = lineModel;
+	}
+
 }

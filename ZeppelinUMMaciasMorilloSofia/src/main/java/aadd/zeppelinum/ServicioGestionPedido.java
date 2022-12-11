@@ -141,7 +141,7 @@ public class ServicioGestionPedido {
 		p.setRestaurante(restaurante);
 		p.setDatosDireccion(direccion);
 		p.setFechaHora(LocalDateTime.now());
-		
+
 		p.setFechaEsperado(esperado); // TODO: como sumar una hora al tiemp actual cambiar a date?
 
 		// creamos lista estados - Ya veremos
@@ -205,7 +205,8 @@ public class ServicioGestionPedido {
 			pd.setImporte(p.getImporte());
 			for (ItemPedido ip : p.getItems()) {
 				Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
-				pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
+				pd.addItem(
+						new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(), plato.getPrecio()));
 			}
 
 			if (p.getRepartidor() != null) {
@@ -214,10 +215,10 @@ public class ServicioGestionPedido {
 			} else {
 				pd.setNombreRepartidor("No asignado");
 			}
-			for(EstadoPedido ep: p.getEstados()) {
-				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
+			for (EstadoPedido ep : p.getEstados()) {
+				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(), ep.getFechaEstado()));
 			}
-			
+
 			pedidosDTO.add(pd);
 		}
 		return pedidosDTO;
@@ -243,7 +244,8 @@ public class ServicioGestionPedido {
 
 			for (ItemPedido ip : p.getItems()) {
 				Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
-				pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
+				pd.addItem(
+						new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(), plato.getPrecio()));
 			}
 
 			if (p.getRepartidor() != null) {
@@ -252,12 +254,11 @@ public class ServicioGestionPedido {
 			} else {
 				pd.setNombreRepartidor("No asignado");
 			}
-			
 
-			for(EstadoPedido ep: p.getEstados()) {
-				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
+			for (EstadoPedido ep : p.getEstados()) {
+				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(), ep.getFechaEstado()));
 			}
-			
+
 			pedidosDTO.add(pd);
 		}
 		return pedidosDTO;
@@ -268,6 +269,12 @@ public class ServicioGestionPedido {
 		pedidoDAO.asignarRepartidor(p.getId(), repartidor);
 	}
 
+	public Integer getPedidosCliente(Integer idUsuario) {
+		return zeppelinumRemoto.getPedidosRealizadosByUsuario(idUsuario);
+	}
 
+	public Integer getPedidosByRestaurante(Integer idUsuario) {
+		return zeppelinumRemoto.getPedidosRestaurante(idUsuario);
+	}
 
 }

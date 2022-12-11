@@ -112,7 +112,7 @@ public class ServicioGestionPlataforma {
 	}
 
 	public Integer registrarRestaurante(String nombre, Integer responsable, String calle, String codigoPostal,
-			Integer numero, String ciudad, Double latitud, Double longitud,List<Integer> listaC) { // entra el nombre
+			Integer numero, String ciudad, Double latitud, Double longitud, List<Integer> listaC) { // entra el nombre
 		// del restaurante y
 		// el id
 		// del responsable
@@ -123,13 +123,12 @@ public class ServicioGestionPlataforma {
 
 			Restaurante r = new Restaurante(); // crea el restaurante e inicializa sus datos
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(responsable);
-			
+
 			for (Integer c : listaC) { // podemos recuperarlo de golpe
-			  System.out.println(c);
-			  CategoriaRestaurante cat =
-			  CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
-			  r.addCategoria(cat); }
-			 
+				System.out.println(c);
+				CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
+				r.addCategoria(cat);
+			}
 
 			r.setResponsable(u); // el responsable ya debe de estar en la BD
 			r.setNombre(nombre);
@@ -327,8 +326,8 @@ public class ServicioGestionPlataforma {
 	}
 
 	// nos devuelve los restaurantes segun el filtro
-	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable,boolean conPlatos) {
-		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable,conPlatos);
+	public List<RestauranteDTO> getRestaurantesByResponsable(Integer id_responsable, boolean conPlatos) {
+		return RestauranteDAO.getRestauranteDAO().findRestauranteByResponsable(id_responsable, conPlatos);
 	}
 
 	// METODO QUE LLAMA A LA CLASE DAO DE USUARIO PARA QUE DEVUELVA AQUELLOS DE TIPO
@@ -380,8 +379,7 @@ public class ServicioGestionPlataforma {
 		for (Direccion d : direcciones) {
 			Restaurante r = restauranteDAO.findById(d.getRestaurante());
 			Position coordenadas = d.getCoordenadas().getCoordinates();
-			
-			
+
 			RestauranteDTO restauranteDTO = new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal(),
 					coordenadas.getValues().get(0), coordenadas.getValues().get(1), d.getCalle(), d.getCodigoPostal(),
 					d.getCiudad(), d.getNumero());
@@ -401,15 +399,16 @@ public class ServicioGestionPlataforma {
 		restaurante.setNumero(d.getNumero());
 		return restaurante;
 	}
-	
-	public List<CategoriaRestauranteDTO> getAllCategorias(){
+
+	public List<CategoriaRestauranteDTO> getAllCategorias() {
 		return CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findAllCategoriasRestaurante();
 	}
 
 	// boletin jsf
 	public RestauranteDTO getRestaurante(Integer idRestaurante) {
 		Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
-		RestauranteDTO restauranteDTO= new RestauranteDTO(idRestaurante, restaurante.getNombre(),restaurante.getValoracionGlobal());
+		RestauranteDTO restauranteDTO = new RestauranteDTO(idRestaurante, restaurante.getNombre(),
+				restaurante.getValoracionGlobal());
 		restauranteDTO.setResposable(restaurante.getResponsable().getId());
 		return restauranteDTO;
 	}
@@ -418,6 +417,7 @@ public class ServicioGestionPlataforma {
 		return UsuarioDAO.getUsuarioDAO().findIdsByTipo(tipos);
 	}
 
+	// EJB
 	public List<EstadisticaOpinionDTO> getEstadisticasOpinion(Integer idUsuario) {
 		return zeppelinumRemoto.getEstadisticasOpinion(idUsuario);
 	}
@@ -426,5 +426,6 @@ public class ServicioGestionPlataforma {
 		return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}
 
+	
 
 }
