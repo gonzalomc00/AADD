@@ -1,22 +1,16 @@
 package aadd.persistencia.mongo.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
-import org.bson.BsonNull;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Sorts;
 
 import aadd.persistencia.mongo.bean.EstadoPedido;
 import aadd.persistencia.mongo.bean.Pedido;
@@ -72,9 +66,14 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 	}
 
 	public List<Pedido> findPedidoSinRider() {
-		
 
-		Bson query= Filters.elemMatch("estados", Filters.eq("estado", "INICIO"));
+		Bson queryEstados= Document.parse("{'estados.estado':{$nin:['RECOGIDO','ENTREGADO','CANCELADO','ERROR']}}");
+		Bson queryRepartidor= Filters.exists("repartidor",false);
+		List<Bson> filtros= new LinkedList<Bson>();
+		filtros.add(queryEstados);
+		filtros.add(queryRepartidor);
+		
+		Bson query= Filters.and(filtros);
 		FindIterable<Pedido> resultados = collection.find(query);
 		MongoCursor<Pedido> it = resultados.iterator();
 		List<Pedido> pedidos = new ArrayList<Pedido>();

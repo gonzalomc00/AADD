@@ -57,6 +57,11 @@ public class PedidoRider implements Serializable {
 		loadPedidos();
 	}
 	
+	public void entregarPedido(ObjectId id) {
+		servicio.editarEstado(id, TipoEstado.ENTREGADO);
+		loadPedidos();
+	}
+	
 	
 	public FacesContext getFacesContext() {
 		return facesContext;

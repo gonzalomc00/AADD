@@ -140,8 +140,10 @@
 						<h:outputText value="#{entrega.ultimoEstado.nombreEstado}" />
 					</p:column>
 					<p:column headerText="Opciones">
-						<p:commandButton type="botonCancelar" value="Me encargo yo"
-							styleClass="ui-button-success" update="tablaPedidos"
+						<p:commandButton type="botonEntregar" value="Entregado"
+							styleClass="ui-button-success" update="tablaEntrega"
+							rendered="#{entrega.ultimoEstado.nombreEstado eq 'RECOGIDO'}"
+							action="#{pedidoRider.entregarPedido(entrega.id)}"
 							style="margin-bottom:5px" />
 							
 					</p:column>
