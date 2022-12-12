@@ -11,6 +11,7 @@ public class PedidoDTO {
 	
 	//ID del pedido
 	private ObjectId id;
+	private Integer restauranteId;
 	
 	private String nombreCliente;
 	private String nombreRestaurante;
@@ -112,6 +113,12 @@ public class PedidoDTO {
 	}
 	public void setId(ObjectId id) {
 		this.id = id;
+	}
+	public Integer getRestauranteId() {
+		return restauranteId;
+	}
+	public void setRestauranteId(Integer restauranteId) {
+		this.restauranteId = restauranteId;
 	}
 	
 	

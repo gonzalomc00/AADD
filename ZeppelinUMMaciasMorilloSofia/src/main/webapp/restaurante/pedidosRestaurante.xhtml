@@ -13,12 +13,13 @@
 		<f:metadata>
 			<f:viewParam name="id" value="#{pedidoRestauranteList.restauranteId}" />
 			<f:viewAction action="#{pedidoRestauranteList.loadPedidos()}" />
+			<f:viewAction action="#{pedidoRestauranteList.loadIncidencias()}" />
 		</f:metadata>
 	</ui:define>
 
 	<ui:define name="content">
 		<div class="card">
-			<h2>Informe de Pedidos</h2>
+			<h2>Informe de Pedidos encargados a un restaurante</h2>
 			<h:form id="tablaPedidos">
 				<p:dataTable id="listaPedidos" var="pedido"
 					value="#{pedidoRestauranteList.pedidos}"
@@ -115,7 +116,62 @@
 			</h:form>
 			<h2>Gestión de Incidencias</h2>
 
-			<h:form>
+
+			<h:form id="incidencias">
+				<p:dataTable id="listaIncidencias" var="incidencia"
+					value="#{pedidoRestauranteList.incidencias}">
+
+					<f:facet name="header">
+					</f:facet>
+					<p:column headerText="Identificador">
+						<h:outputText value="#{incidencia.id}" />
+					</p:column>
+
+					<p:column headerText="Fecha de creación">
+						<h:outputText value="#{incidencia.fechaCreacion}">
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Descripción">
+						<h:outputText value="#{incidencia.descripcion}" />
+					</p:column>
+					<p:column headerText="Responder incidencia">
+						<p:commandButton value="Responder Incidencia"
+							icon="fa-regular fa-envelope"
+							action="#{pedidoRestauranteList.seleccionarIncidencia(incidencia.id)}"
+							oncomplete="PF('nuevaIncidencia').show();"
+							update="listaIncidencias"></p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+			<h:form id="dialog">
+				<p:dialog header="Responder Incidencia" modal="true"
+					widgetVar="nuevaIncidencia" width="650">
+					<p:outputPanel id="nuevo" style="margin: 20px;">
+
+						<h:panelGrid columns="2">
+
+							<h:outputText
+								value="Introduzca un comentario para la incidencia: " />
+							<h:inputText
+								value="#{pedidoRestauranteList.comentarioIncidencia}" />
+							<p:commandButton value="Cerrar"
+								onclick="PF('nuevaIncidencia').hide();" />
+							<p:commandButton value="Enviar"
+								actionListener="#{pedidoRestauranteList.cerrarIncidencia()}"
+								oncomplete="PF('nuevaIncidencia').hide();"
+								update="incidencias:listaIncidencias" />
+						</h:panelGrid>
+						<p:ajaxStatus>
+							<f:facet name="start">
+								<i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
+							</f:facet>
+						</p:ajaxStatus>
+
+					</p:outputPanel>
+				</p:dialog>
 			</h:form>
 		</div>
 	</ui:define>

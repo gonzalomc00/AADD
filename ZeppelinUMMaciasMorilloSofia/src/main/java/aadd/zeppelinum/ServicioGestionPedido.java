@@ -198,25 +198,10 @@ public class ServicioGestionPedido {
 			pd.setId(p.getId());
 			pd.setNombreCliente(cl.getNombre());
 			pd.setNombreRestaurante(r.getNombre());
-			pd.setFechaHora(p.getFechaHora());
-			pd.setFechaEsperado(p.getFechaEsperado());
-			pd.setComentario(p.getComentario());
-			pd.setDatosDireccion(p.getDatosDireccion());
-			pd.setImporte(p.getImporte());
-			for (ItemPedido ip : p.getItems()) {
-				Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
-				pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
-			}
+			pd.setRestauranteId(r.getId());
 
-			if (p.getRepartidor() != null) {
-				Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
-				pd.setNombreRepartidor(u.getNombre());
-			} else {
-				pd.setNombreRepartidor("No asignado");
-			}
-			for(EstadoPedido ep: p.getEstados()) {
-				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
-			}
+			getDatosPedido(pd, p);
+
 			
 			pedidosDTO.add(pd);
 		}
@@ -235,37 +220,85 @@ public class ServicioGestionPedido {
 			pd.setId(p.getId());
 			pd.setNombreRestaurante(re.getNombre());
 			pd.setNombreCliente(u.getNombre());
-			pd.setFechaHora(p.getFechaHora());
-			pd.setFechaEsperado(p.getFechaEsperado());
-			pd.setComentario(p.getComentario());
-			pd.setDatosDireccion(p.getDatosDireccion());
-			pd.setImporte(p.getImporte());
-
-			for (ItemPedido ip : p.getItems()) {
-				Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
-				pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
-			}
-
-			if (p.getRepartidor() != null) {
-				Usuario r = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
-				pd.setNombreRepartidor(r.getNombre());
-			} else {
-				pd.setNombreRepartidor("No asignado");
-			}
+			pd.setRestauranteId(restaurante);
+			getDatosPedido(pd, p);
 			
-
-			for(EstadoPedido ep: p.getEstados()) {
-				pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
-			}
 			
 			pedidosDTO.add(pd);
 		}
 		return pedidosDTO;
 	}
-
-	public void asignarRepartidor(Pedido p, Integer repartidor) {
+	
+	public List<PedidoDTO> findPedidoSinRider() {
 		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
-		pedidoDAO.asignarRepartidor(p.getId(), repartidor);
+		List<Pedido> pedidos = pedidoDAO.findPedidoSinRider();
+		List<PedidoDTO> pedidosDTO = new ArrayList<PedidoDTO>();
+		for (Pedido p : pedidos) {
+			Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getCliente()); // recupero el nombre del restaurante de
+			Restaurante re= RestauranteDAO.getRestauranteDAO().findById(p.getRestaurante());															// esa opinion
+			PedidoDTO pd = new PedidoDTO();
+			pd.setId(p.getId());
+			pd.setNombreRestaurante(re.getNombre());
+			pd.setNombreCliente(u.getNombre());
+			pd.setRestauranteId(re.getId());
+
+			getDatosPedido(pd, p);
+			
+			pedidosDTO.add(pd);
+		}
+		return pedidosDTO;
+	}
+	
+	
+	public void getDatosPedido(PedidoDTO pd, Pedido p) {
+		pd.setFechaHora(p.getFechaHora());
+		pd.setFechaEsperado(p.getFechaEsperado());
+		pd.setComentario(p.getComentario());
+		pd.setDatosDireccion(p.getDatosDireccion());
+		pd.setImporte(p.getImporte());
+
+		for (ItemPedido ip : p.getItems()) {
+			Plato plato = PlatoDAO.getPlatoDAO().findById(ip.getPlato());
+			pd.addItem(new ItemPedidoDTO(plato.getTitulo(), ip.getCantidad(), ip.getPrecioTotal(),plato.getPrecio()));
+		}
+
+		if (p.getRepartidor() != null) {
+			Usuario r = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+			pd.setNombreRepartidor(r.getNombre());
+		} else {
+			pd.setNombreRepartidor("No asignado");
+		}
+		
+
+		for(EstadoPedido ep: p.getEstados()) {
+			pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
+		}
+		
+		
+	}
+
+	public void asignarRepartidor(ObjectId id_pedido, Integer repartidor) {
+		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
+		pedidoDAO.asignarRepartidor(id_pedido, repartidor);
+	}
+
+	public List<PedidoDTO> findPedidosByRider(Integer id) {
+		
+		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
+		List<Pedido> pedidos = pedidoDAO.findPedidoByRider(id);
+		List<PedidoDTO> pedidosDTO = new ArrayList<PedidoDTO>();
+		for (Pedido p : pedidos) {
+			Usuario u = UsuarioDAO.getUsuarioDAO().findById(p.getCliente()); // recupero el nombre del restaurante de
+			Restaurante re= RestauranteDAO.getRestauranteDAO().findById(p.getRestaurante());															// esa opinion
+			PedidoDTO pd = new PedidoDTO();
+			pd.setId(p.getId());
+			pd.setNombreRestaurante(re.getNombre());
+			pd.setNombreCliente(u.getNombre());
+			getDatosPedido(pd, p);
+			
+			pedidosDTO.add(pd);
+		}
+		return pedidosDTO;
 	}
 
 

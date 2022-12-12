@@ -1,6 +1,7 @@
 package aadd.zeppelinum;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,8 +168,7 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	public Integer registrarIncidencia(LocalDate fechaCreacion, String descripcion, LocalDate fechaAlta,
-			String comentario, LocalDate fechaCierre, Integer usuario, Integer restaurante) {
+	public Integer registrarIncidencia( String descripcion,Integer usuario, Integer restaurante) {
 
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -177,13 +177,10 @@ public class ServicioGestionPlataforma {
 			Incidencia incidencia = new Incidencia(); // recibe los datos para crear un usuario por primera vez
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(usuario);
 			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante);
-			incidencia.setFechaCreacion(fechaCreacion);
 			incidencia.setDescripcion(descripcion);
-			incidencia.setFechaAlta(fechaAlta);
-			incidencia.setComentario(comentario);
-			incidencia.setFechaCierre(fechaCierre);
 			incidencia.setUsuario(u);
 			incidencia.setRestaurante(r);
+			incidencia.setFechaCreacion(LocalDateTime.now());
 
 			IncidenciaDAO.getIncidenciaDAO().save(incidencia, em); // persistimos la entidad (con el metodo save para
 																	// que haga el
@@ -201,6 +198,29 @@ public class ServicioGestionPlataforma {
 				em.getTransaction().rollback(); // deshace lo hecho
 			}
 			em.close(); // cerramos entity manager
+		}
+	}
+	
+	public boolean cerrarIncidencia(Integer incidencia, String comentario)
+	{
+		EntityManager em = EntityManagerHelper.getEntityManager();
+		try {
+			em.getTransaction().begin();
+
+			Incidencia i = IncidenciaDAO.getIncidenciaDAO().findById(incidencia); // recupera la entidad usuario de la BBDD
+			i.setComentario(comentario);//marco como validado
+			i.setFechaCierre(LocalDateTime.now());
+
+			em.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
 		}
 	}
 
@@ -342,10 +362,6 @@ public class ServicioGestionPlataforma {
 
 	}
 
-	public List<IncidenciaDTO> getIncidenciaSinCerrar() {
-		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaSinCerrar();
-
-	}
 
 	public Integer crearCategoria(String nombre) { // entra el nombre de la categoria y su id
 		EntityManager em = EntityManagerHelper.getEntityManager();
@@ -424,6 +440,10 @@ public class ServicioGestionPlataforma {
 
 	public Integer getNumVisitas(Integer idUsuario) {
 		return zeppelinumRemoto.getNumVisitas(idUsuario);
+	}
+
+	public List<IncidenciaDTO> getIncidenciasByRestauranteSinCerrar(Integer restauranteId) {
+		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaSinCerrarRestaurante(restauranteId);
 	}
 
 

@@ -2,8 +2,19 @@ package aadd.persistencia.jpa.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * Entity implementation class for Entity: Incidencia
@@ -20,18 +31,16 @@ public class Incidencia implements Serializable {
 	@Column(name = "id")
 	private int id;
 	@Column(name = "fechaCreacion", columnDefinition= "DATE")
-	private LocalDate fechaCreacion;
+	private LocalDateTime fechaCreacion;
 	@Column(name = "descripcion")
 	@Lob
 	private String descripcion;
-	@Column(name = "fechaAlta", columnDefinition = "DATE")
-	private LocalDate fechaAlta;
 	@Column(name = "comentario")
 	@Lob
 	private String comentario;
 	
 	@Column(name = "fechaCierre", columnDefinition="DATE")
-	private LocalDate fechaCierre;
+	private LocalDateTime fechaCierre;
 	
 	@JoinColumn(name= "usuario")
 	@ManyToOne
@@ -61,11 +70,11 @@ public class Incidencia implements Serializable {
 		this.id = id;
 	}
 
-	public LocalDate getFechaCreacion() {
+	public LocalDateTime getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
+	public void setFechaCreacion(LocalDateTime fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 
@@ -77,13 +86,6 @@ public class Incidencia implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDate getFechaAlta() {
-		return fechaAlta;
-	}
-
-	public void setFechaAlta(LocalDate fechaAlta) {
-		this.fechaAlta = fechaAlta;
-	}
 
 	public String getComentario() {
 		return comentario;
@@ -109,11 +111,11 @@ public class Incidencia implements Serializable {
 		this.restaurante = restaurante;
 	}
 
-	public LocalDate getFechaCierre() {
+	public LocalDateTime getFechaCierre() {
 		return fechaCierre;
 	}
 
-	public void setFechaCierre(LocalDate fechaCierre) {
+	public void setFechaCierre(LocalDateTime fechaCierre) {
 		this.fechaCierre = fechaCierre;
 	}
 	

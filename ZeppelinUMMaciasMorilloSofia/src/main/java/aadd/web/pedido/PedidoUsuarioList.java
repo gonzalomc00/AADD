@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -11,10 +12,12 @@ import javax.inject.Named;
 
 import org.bson.types.ObjectId;
 
+import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.mongo.bean.TipoEstado;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
+import aadd.zeppelinum.ServicioGestionPlataforma;
 
 @Named
 @ViewScoped
@@ -24,45 +27,64 @@ public class PedidoUsuarioList implements Serializable {
 	private FacesContext facesContext;
 	
 	private List<PedidoDTO> pedidos;
+	private List<IncidenciaDTO> incidencias;
 	private ServicioGestionPedido servicio;
+	private ServicioGestionPlataforma servicioPlataforma;
 	
 	@Inject
 	private UserSessionWeb sesion;
 	private Integer id;
 	
+	private Integer restauranteIdIncidencia;
+	private ObjectId pedidoIdIncidencia;
+	private String textoIncidencia;
 	
 	public PedidoUsuarioList() {
 		servicio= ServicioGestionPedido.getServicioGestionPedido();
+		servicioPlataforma=ServicioGestionPlataforma.getServicioGestionPlataforma();
 	}
 
 	@PostConstruct
-	public void init() {
-		id=sesion.getUsuario().getId();
+	public void obtenerIdUsuario() {
+		if (sesion.isLogin()) {
+			id = sesion.getUsuario().getId();
+		}
 	}
 	
 	public void loadPedidos() {
+		if(sesion.isLogin()) {
 		pedidos=servicio.findPedidoByCliente(id);
+		}
 		
 	}
 	
-	public void cambiarEstadoPedido(ObjectId id, String estado) {
-		switch(estado) {
-			case "ACEPTADO":
-				servicio.editarEstado(id, TipoEstado.ACEPTADO);
-				break;
-			case "CANCELADO":
-				servicio.editarEstado(id, TipoEstado.CANCELADO);
-				break;
-			case "PREPARADO":
-				servicio.editarEstado(id, TipoEstado.PREPARADO);
-				break;
-			case "RECOGIDO":
-				servicio.editarEstado(id, TipoEstado.RECOGIDO);
-				break;
-			
-			
+	public void loadIncidencias() {
+		if(sesion.isLogin()) {
+		incidencias=servicioPlataforma.getIncidenciaByUsuario(id);
 		}
+	}
+	
+	public void cambiarEstadoPedido(ObjectId id, String estado) {
+		servicio.editarEstado(id, TipoEstado.ERROR);
 		loadPedidos();
+	}
+	
+	public void setDatosIncidencia(Integer id_restaurante, ObjectId id_pedido) {
+		restauranteIdIncidencia=id_restaurante;
+		pedidoIdIncidencia=id_pedido;
+	}
+	
+	public void crearIncidencia() {
+		Integer i= servicioPlataforma.registrarIncidencia(textoIncidencia, id, restauranteIdIncidencia);
+		if(i==null) {
+			  facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "La incidencia no se ha podido creado correctamente", ""));
+		}
+		else {
+			 servicio.editarEstado(pedidoIdIncidencia, TipoEstado.ERROR);
+			 loadIncidencias();
+			 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "La incidencia se ha creado correctatmente", ""));
+		}
+	
 	}
 	
 	
@@ -107,6 +129,30 @@ public class PedidoUsuarioList implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getRestauranteIdIncidencia() {
+		return restauranteIdIncidencia;
+	}
+
+	public void setRestauranteIdIncidencia(Integer restauranteIdIncidencia) {
+		this.restauranteIdIncidencia = restauranteIdIncidencia;
+	}
+
+	public String getTextoIncidencia() {
+		return textoIncidencia;
+	}
+
+	public void setTextoIncidencia(String textoIncidencia) {
+		this.textoIncidencia = textoIncidencia;
+	}
+
+	public List<IncidenciaDTO> getIncidencias() {
+		return incidencias;
+	}
+
+	public void setIncidencias(List<IncidenciaDTO> incidencias) {
+		this.incidencias = incidencias;
 	}
 	
 	

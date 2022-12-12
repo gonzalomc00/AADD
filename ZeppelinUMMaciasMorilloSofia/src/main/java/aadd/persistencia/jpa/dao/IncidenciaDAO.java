@@ -17,7 +17,6 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
 	public IncidenciaDAO(Class<Incidencia> persistedClass) {
 		super(persistedClass);
 	}
-	
 
 	private static IncidenciaDAO incidenciaDAO;
 
@@ -26,37 +25,38 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
 			incidenciaDAO = new IncidenciaDAO(Incidencia.class);
 		return incidenciaDAO;
 	}
-	
-	
-	public List<IncidenciaDTO> findIncidenciaByUsuario(int id_usuario){
+
+	public List<IncidenciaDTO> findIncidenciaByUsuario(int id_usuario) {
 		try {
-			Query query=EntityManagerHelper.getEntityManager().createNamedQuery("Incidencia.findByUsuario");
+			Query query = EntityManagerHelper.getEntityManager().createNamedQuery("Incidencia.findByUsuario");
 			query.setParameter("usuario", id_usuario);
-			return transformarToDTO(query.getResultList());
-		} catch(RuntimeException re) {
-			throw re;
-		}
-	}
-	
-	public List<IncidenciaDTO> findIncidenciaSinCerrar(){
-		try {
-			String queryString = " SELECT i FROM Incidencia i "
-					+ " WHERE i.id is not null AND i.fechaCierre is null ";
-			
-			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
-			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 			return transformarToDTO(query.getResultList());
 		} catch (RuntimeException re) {
 			throw re;
 		}
 	}
-	
+
 	public List<IncidenciaDTO> transformarToDTO(List<Incidencia> incidencias) {
 		List<IncidenciaDTO> inci = new ArrayList<IncidenciaDTO>();
 		for (Incidencia i : incidencias) {
-			inci.add(new IncidenciaDTO(i.getId(), i.getFechaAlta(), i.getDescripcion(), i.getFechaAlta(),i.getComentario(),i.getFechaCierre()));
+			inci.add(new IncidenciaDTO(i.getId(), i.getFechaCreacion(), i.getDescripcion(), i.getComentario(),
+					i.getFechaCierre()));
 		}
 		return inci;
+	}
+
+	public List<IncidenciaDTO> findIncidenciaSinCerrarRestaurante(Integer id_restaurante) {
+		try {
+			String queryString = " SELECT i FROM Incidencia i "
+					+ " WHERE i.id is not null AND i.fechaCierre is null AND i.restaurante.id like :id_restaurante ";
+
+			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
+			query.setParameter("id_restaurante", "%" + id_restaurante + "%");
+			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+			return transformarToDTO(query.getResultList());
+		} catch (RuntimeException re) {
+			throw re;
+		}
 	}
 
 }
