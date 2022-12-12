@@ -26,7 +26,8 @@
 			<p:commandButton value="Dar plato de alta" icon="fa fa-utensils"
 				oncomplete="PF('nuevoPlato').show();" update="nuevo"
 				rendered="#{restauranteMenuList.responsable}"></p:commandButton>
-			<p:button value="Gestionar pedidos" href="pedidosRestaurante.xhtml?id=#{restauranteMenuList.idRestaurante}"
+			<p:button value="Gestionar pedidos"
+				href="pedidosRestaurante.xhtml?id=#{restauranteMenuList.idRestaurante}"
 				rendered="#{restauranteMenuList.responsable}"></p:button>
 			<br />
 			<!-- solo se renderiza para usuarios de tipo restaurante, si no se pulsa este boton no se abre el dialog-->
@@ -43,23 +44,28 @@
 					<h:outputText value="#{plato.precio}" />
 				</p:column>
 				<p:column style="width: 200px;" headerText="Cantidad">
-					<p:commandButton icon="pi pi-minus"
-						action="#{restauranteMenuList.restarCantidad(plato.id)}"
-						update="tabla_header" />
-					<h:outputText
-						value="#{restauranteMenuList.obtenerCantidad(plato.id)}" />
 					<p:commandButton icon="pi pi-plus"
 						action="#{restauranteMenuList.sumarCantidad(plato.id)}"
 						update="tabla_header" />
+
+					<h3>
+						<h:outputText
+							value="#{restauranteMenuList.obtenerCantidad(plato.id)}" />
+					</h3>
+					<p:commandButton icon="pi pi-minus"
+						action="#{restauranteMenuList.restarCantidad(plato.id)}"
+						update="tabla_header" />
 				</p:column>
-				<c:if test= "#{restauranteMenuList.responsable}" >
-				<p:column headerText="Cambiar a disponibilidad">
-					<p:commandButton value="Cambiar a disponible" action="#{restauranteMenuList.cambiarDisponible(plato.id)}"
-						rendered="#{not plato.disponible}" update="menu" />
-					<p:commandButton value="Cambiar a no disponible" action="#{restauranteMenuList.cambiarNoDisponible(plato.id)}"
-					rendered="#{plato.disponible}" update="menu" />
-					
-				</p:column>
+				<c:if test="#{restauranteMenuList.responsable}">
+					<p:column headerText="Cambiar a disponibilidad">
+						<p:commandButton value="Cambiar a disponible"
+							action="#{restauranteMenuList.cambiarDisponible(plato.id)}"
+							rendered="#{not plato.disponible}" update="menu" />
+						<p:commandButton value="Cambiar a no disponible"
+							action="#{restauranteMenuList.cambiarNoDisponible(plato.id)}"
+							rendered="#{plato.disponible}" update="menu" />
+
+					</p:column>
 				</c:if>
 			</p:dataTable>
 
@@ -70,15 +76,14 @@
 				<h:inputText value="#{restauranteMenuList.comentario}" />
 				<h:outputLabel value="Tiempo de entrega" />
 				<h:selectOneMenu id="selectorHora"
-					value="#{restauranteMenuList.entrega}"
-					label="selector">
+					value="#{restauranteMenuList.entrega}" label="selector">
 					<f:selectItem itemLabel="Seleccione una hora de entrega"
 						itemValue="" />
 					<f:selectItem itemLabel="Lo antes posible" itemValue="30" />
 					<f:selectItem itemLabel="En 45 minutos" itemValue="45" />
 					<f:selectItem itemLabel="En 1 hora" itemValue="60" />
 					<f:selectItem itemLabel="En 1 hora y media" itemValue="90" />
-					<f:selectItem itemLabel="En 2 horas" itemValue="120" />		
+					<f:selectItem itemLabel="En 2 horas" itemValue="120" />
 				</h:selectOneMenu>
 			</h:panelGrid>
 
