@@ -141,7 +141,7 @@ public class ServicioGestionPedido {
 		p.setRestaurante(restaurante);
 		p.setDatosDireccion(direccion);
 		p.setFechaHora(LocalDateTime.now());
-		
+
 		p.setFechaEsperado(esperado); // TODO: como sumar una hora al tiemp actual cambiar a date?
 
 		// creamos lista estados - Ya veremos
@@ -300,7 +300,13 @@ public class ServicioGestionPedido {
 		}
 		return pedidosDTO;
 	}
+	public Integer getPedidosCliente(Integer idUsuario) {
+		return zeppelinumRemoto.getPedidosRealizadosByUsuario(idUsuario);
+	}
 
+	public Integer getPedidosByRestaurante(Integer idUsuario) {
+		return zeppelinumRemoto.getPedidosRestaurante(idUsuario);
+	}
 
 
 }
