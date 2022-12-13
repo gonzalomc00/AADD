@@ -45,7 +45,7 @@ public class PedidoRestauranteList implements Serializable {
 		pedidos=servicio.findPedidoByRestaurante(restauranteId);
 		
 	}
-	
+
 	public void loadIncidencias() {
 		incidencias=servicioPlataforma.getIncidenciasByRestauranteSinCerrar(restauranteId);
 	}

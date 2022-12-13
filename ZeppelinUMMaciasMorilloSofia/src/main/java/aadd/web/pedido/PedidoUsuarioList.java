@@ -25,69 +25,61 @@ public class PedidoUsuarioList implements Serializable {
 
 	@Inject
 	private FacesContext facesContext;
-	
+
 	private List<PedidoDTO> pedidos;
 	private List<IncidenciaDTO> incidencias;
 	private ServicioGestionPedido servicio;
 	private ServicioGestionPlataforma servicioPlataforma;
-	
+
 	@Inject
 	private UserSessionWeb sesion;
 	private Integer id;
-	
+
 	private Integer restauranteIdIncidencia;
 	private ObjectId pedidoIdIncidencia;
 	private String textoIncidencia;
-	
+
 	public PedidoUsuarioList() {
-		servicio= ServicioGestionPedido.getServicioGestionPedido();
-		servicioPlataforma=ServicioGestionPlataforma.getServicioGestionPlataforma();
+		servicio = ServicioGestionPedido.getServicioGestionPedido();
+		servicioPlataforma = ServicioGestionPlataforma.getServicioGestionPlataforma();
 	}
 
+
 	@PostConstruct
-	public void obtenerIdUsuario() {
-		if (sesion.isLogin()) {
-			id = sesion.getUsuario().getId();
-		}
+	public void loadPedidosIncidencias() {
+		id = sesion.getUsuario().getId();
+
+		pedidos = servicio.findPedidoByCliente(id);
+		incidencias = servicioPlataforma.getIncidenciaByUsuario(id);
+
 	}
+
 	
-	public void loadPedidos() {
-		if(sesion.isLogin()) {
-		pedidos=servicio.findPedidoByCliente(id);
-		}
-		
-	}
-	
-	public void loadIncidencias() {
-		if(sesion.isLogin()) {
-		incidencias=servicioPlataforma.getIncidenciaByUsuario(id);
-		}
-	}
-	
+
 	public void cambiarEstadoPedido(ObjectId id, String estado) {
 		servicio.editarEstado(id, TipoEstado.ERROR);
-		loadPedidos();
+		loadPedidosIncidencias();
 	}
-	
+
 	public void setDatosIncidencia(Integer id_restaurante, ObjectId id_pedido) {
-		restauranteIdIncidencia=id_restaurante;
-		pedidoIdIncidencia=id_pedido;
+		restauranteIdIncidencia = id_restaurante;
+		pedidoIdIncidencia = id_pedido;
 	}
-	
+
 	public void crearIncidencia() {
-		Integer i= servicioPlataforma.registrarIncidencia(textoIncidencia, id, restauranteIdIncidencia);
-		if(i==null) {
-			  facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "La incidencia no se ha podido creado correctamente", ""));
+		Integer i = servicioPlataforma.registrarIncidencia(textoIncidencia, id, restauranteIdIncidencia);
+		if (i == null) {
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"La incidencia no se ha podido creado correctamente", ""));
+		} else {
+			servicio.editarEstado(pedidoIdIncidencia, TipoEstado.ERROR);
+			loadPedidosIncidencias();
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "La incidencia se ha creado correctatmente", ""));
 		}
-		else {
-			 servicio.editarEstado(pedidoIdIncidencia, TipoEstado.ERROR);
-			 loadIncidencias();
-			 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "La incidencia se ha creado correctatmente", ""));
-		}
-	
+
 	}
-	
-	
+
 	public FacesContext getFacesContext() {
 		return facesContext;
 	}
@@ -104,12 +96,9 @@ public class PedidoUsuarioList implements Serializable {
 		this.pedidos = pedidos;
 	}
 
-
-
 	public ServicioGestionPedido getServicio() {
 		return servicio;
 	}
-
 
 	public void setServicio(ServicioGestionPedido servicio) {
 		this.servicio = servicio;
@@ -154,8 +143,5 @@ public class PedidoUsuarioList implements Serializable {
 	public void setIncidencias(List<IncidenciaDTO> incidencias) {
 		this.incidencias = incidencias;
 	}
-	
-	
-	
-	
+
 }

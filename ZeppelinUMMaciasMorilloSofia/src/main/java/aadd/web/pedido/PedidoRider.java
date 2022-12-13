@@ -22,47 +22,39 @@ public class PedidoRider implements Serializable {
 
 	@Inject
 	private FacesContext facesContext;
-	
+
 	private List<PedidoDTO> pedidosSinRider;
 	private List<PedidoDTO> pedidosRider;
 	private ServicioGestionPedido servicio;
-	
+
 	@Inject
 	private UserSessionWeb sesion;
 	private Integer id_repartidor;
-	
-	
+
 	public PedidoRider() {
-		servicio= ServicioGestionPedido.getServicioGestionPedido();
+		servicio = ServicioGestionPedido.getServicioGestionPedido();
 	}
 
 	@PostConstruct
-	public void obtenerIdUsuario() {
-		if (sesion.isLogin()) {
-			id_repartidor = sesion.getUsuario().getId();
-		}
-	}
-	
 	public void loadPedidos() {
-		pedidosSinRider=servicio.findPedidoSinRider();
+		id_repartidor = sesion.getUsuario().getId();
 
-		if(sesion.isLogin()) {
-		pedidosRider=servicio.findPedidosByRider(id_repartidor);
-		}
-		
+		pedidosSinRider = servicio.findPedidoSinRider();
+
+		pedidosRider = servicio.findPedidosByRider(id_repartidor);
+
 	}
-	
+
 	public void asignarPedido(ObjectId id) {
 		servicio.asignarRepartidor(id, id_repartidor);
 		loadPedidos();
 	}
-	
+
 	public void entregarPedido(ObjectId id) {
 		servicio.editarEstado(id, TipoEstado.ENTREGADO);
 		loadPedidos();
 	}
-	
-	
+
 	public FacesContext getFacesContext() {
 		return facesContext;
 	}
@@ -79,12 +71,9 @@ public class PedidoRider implements Serializable {
 		this.pedidosSinRider = pedidosSinRider;
 	}
 
-
-
 	public ServicioGestionPedido getServicio() {
 		return servicio;
 	}
-
 
 	public void setServicio(ServicioGestionPedido servicio) {
 		this.servicio = servicio;
@@ -113,8 +102,5 @@ public class PedidoRider implements Serializable {
 	public void setPedidosRider(List<PedidoDTO> pedidosRider) {
 		this.pedidosRider = pedidosRider;
 	}
-	
-	
-	
-	
+
 }
