@@ -10,32 +10,39 @@
 			Crear categoria
 </ui:define>
 	<ui:define name="content">
-		<h:form id="categorias">
-			<div class="card">
-				<h5>Crea una nueva categoría</h5>
-				<p:splitter style="height: 300px" styleClass="mb-5">
-					<p:splitterPanel>
-            		<h:panelGrid columns="2">
-						<h:outputText value="Nombre de la nueva categoria:" />
-						<h:inputText value="#{categoriasConstructor.nombre}" required="true" />
-						<p:commandButton  value="Crear categoría" icon="fa fa-bowl-food"
-							actionListener="#{categoriasConstructor.crearCategoria()}"
-							update="categoriasList" />
-					</h:panelGrid>
-            
-        </p:splitterPanel>
-					<p:splitterPanel
-						style="display:block; text-align:center;">
-						<div class="card">
-							<h5>Listado de categorías</h5>
-							<p:orderList id="categoriasList" value="#{categoriasConstructor.categorias}"
-								var="categoria" itemLabel="#{categoria.nombreCategoria}"
-								itemValue="#{categoria.id}" />
-						</div>
-					</p:splitterPanel>
-				</p:splitter>
-			</div>
+		<c:if test="#{userSessionWeb.admin}">
+			<h:form id="categorias">
+				<div class="card">
+					<h5>Crea una nueva categoría</h5>
+					<p:splitter style="height: 300px" styleClass="mb-5">
+						<p:splitterPanel>
+							<h:panelGrid columns="2">
+								<h:outputText value="Nombre de la nueva categoria:" />
+								<h:inputText value="#{categoriasConstructor.nombre}"
+									required="true" />
+								<p:commandButton value="Crear categoría" icon="fa fa-bowl-food"
+									actionListener="#{categoriasConstructor.crearCategoria()}"
+									update="categoriasList" />
+							</h:panelGrid>
 
-		</h:form>
+						</p:splitterPanel>
+						<p:splitterPanel style="display:block; text-align:center;">
+							<div class="card">
+								<h5>Listado de categorías</h5>
+								<p:orderList id="categoriasList"
+									value="#{categoriasConstructor.categorias}" var="categoria"
+									itemLabel="#{categoria.nombreCategoria}"
+									itemValue="#{categoria.id}" />
+							</div>
+						</p:splitterPanel>
+					</p:splitter>
+				</div>
+
+			</h:form>
+		</c:if>
+		<c:if test="#{not userSessionWeb.admin}">
+		<h1>No tienes permisos para acceder a esta funcionalidad</h1>
+		
+		</c:if>
 	</ui:define>
 </ui:composition>

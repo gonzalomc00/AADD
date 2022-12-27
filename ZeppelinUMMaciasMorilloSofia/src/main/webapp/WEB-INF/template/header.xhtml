@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <body>
 	<section id="header">
 	<h1>
@@ -11,16 +16,28 @@
 	<ul>
 		<li class="#{estilo1}"><a
 			href="#{request.contextPath}/index.xhtml">Inicio</a></li>
+
+
 		<li class="#{estilo2}"><a href="#">Gestión de restaurantes</a>
 			<ul>
+				<c:if test="#{userSessionWeb.login}">
+				<c:if test="#{userSessionWeb.restaurante}">
 				<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
 						restaurante</a></li>
+				</c:if>
+				</c:if>
+				
+				<c:if test="#{userSessionWeb.login}">
+				<c:if test="#{userSessionWeb.admin}">
 				<li><a
 					href="#{request.contextPath}/categorias/formCrearCategoria.xhtml">Crear
 						categoría</a></li>
+				</c:if>
+				</c:if>
 				<li><a href="#{request.contextPath}/restaurante/listLazy.xhtml">Ver
 						todos los restaurantes</a></li>
 			</ul></li>
+
 		<li class="#{estilo3}"><a
 			href="#{request.contextPath}/usuario/registro.xhtml">Registro</a></li>
 
@@ -29,22 +46,41 @@
 				perfil</a>
 			<ul>
 				<li><a href="#{request.contextPath}/usuario/estadisticas.xhtml">Mis
-					estadisticas</a></li>
+						estadisticas</a></li>
 			</ul></li>
 		<li><a href="#{request.contextPath}/logout">Cerrar sesión</a></li>
 
-		<li class="#{estilo5}"><a
-			href="#{request.contextPath}/noticias/infousuarios.xhtml">Comunicar
-				novedades</a></li>
 
-		<li class="#{estilo6}"><a
-			href="#{request.contextPath}/usuario/validarUsuarios.xhtml">Gestión
-				de usuarios</a></li>
-		<li class="#{estilo7}"><a
-			href="#{request.contextPath}/usuario/pedidosUsuario.xhtml">Mis pedidos</a></li>
-		<li class="#{estilo8}"><a
-			href="#{request.contextPath}/usuario/pedidosRider.xhtml">Gestión de pedidos - Rider</a></li>
-			
+		<c:if test="#{userSessionWeb.login}">
+			<li class="#{estilo5}"><a
+				href="#{request.contextPath}/noticias/infousuarios.xhtml">Comunicar
+					novedades</a></li>
+		</c:if>
+
+		<c:if test="#{userSessionWeb.login}">
+
+			<c:if test="#{userSessionWeb.admin}">
+				<li class="#{estilo6}"><a
+					href="#{request.contextPath}/usuario/validarUsuarios.xhtml">Gestión
+						de usuarios</a></li>
+			</c:if>
+		</c:if>
+
+		<c:if test="#{userSessionWeb.login}">
+
+			<li class="#{estilo7}"><a
+				href="#{request.contextPath}/usuario/pedidosUsuario.xhtml">Mis
+					pedidos</a></li>
+		</c:if>
+
+		<c:if test="#{userSessionWeb.login}">
+
+			<c:if test="#{userSessionWeb.rider}">
+				<li class="#{estilo8}"><a
+					href="#{request.contextPath}/usuario/pedidosRider.xhtml">Gestión
+						de pedidos - Rider</a></li>
+			</c:if>
+		</c:if>
 	</ul>
 	</nav> <!-- Banner --> </section>
 	<!-- Nav -->

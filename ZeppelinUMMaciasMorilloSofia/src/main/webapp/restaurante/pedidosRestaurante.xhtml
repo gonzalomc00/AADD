@@ -18,161 +18,169 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<div class="card">
-			<h2>Informe de Pedidos encargados a un restaurante</h2>
-			<h:form id="tablaPedidos">
-				<p:dataTable id="listaPedidos" var="pedido"
-					value="#{pedidoRestauranteList.pedidos}"
-					rowKey="#{pedido.nombreCliente}">
+		<c:if test="#{userSessionWeb.restaurante}">
+			<div class="card">
+				<h2>Informe de Pedidos encargados a un restaurante</h2>
+				<h:form id="tablaPedidos">
+					<p:dataTable id="listaPedidos" var="pedido"
+						value="#{pedidoRestauranteList.pedidos}"
+						rowKey="#{pedido.nombreCliente}">
 
-					<f:facet name="header">
+						<f:facet name="header">
 				Pulsa sobre la flecha para ver los detalles del envío
             </f:facet>
-					<p:column style="width:2rem">
-						<p:rowToggler />
-					</p:column>
+						<p:column style="width:2rem">
+							<p:rowToggler />
+						</p:column>
 
-					<p:column headerText="Nombre del cliente">
-						<h:outputText value="#{pedido.nombreCliente}" />
-					</p:column>
+						<p:column headerText="Nombre del cliente">
+							<h:outputText value="#{pedido.nombreCliente}" />
+						</p:column>
 
-					<p:column headerText="Importe">
-						<h:outputText value="#{pedido.importe}">
-							<f:convertNumber type="currency" currencySymbol="€" />
-						</h:outputText>
-					</p:column>
+						<p:column headerText="Importe">
+							<h:outputText value="#{pedido.importe}">
+								<f:convertNumber type="currency" currencySymbol="€" />
+							</h:outputText>
+						</p:column>
 
-					<p:column headerText="Fecha de creación">
-						<h:outputText value="#{pedido.fechaHora}" />
-					</p:column>
-					<p:column headerText="Fecha de llegada esperada">
-						<h:outputText value="#{pedido.fechaEsperado}" />
-					</p:column>
-					<p:column headerText="Estado">
-						<h:outputText value="#{pedido.ultimoEstado.nombreEstado}" />
-					</p:column>
-					<p:column headerText="Cambiar estado">
-						<p:commandButton type="botonAceptar" value="Aceptar"
-							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'ACEPTADO')}"
-							rendered="#{pedido.ultimoEstado.nombreEstado eq 'INICIO'}"
-							styleClass="ui-button-success" update="tablaPedidos"
-							style="margin-bottom:5px" />
+						<p:column headerText="Fecha de creación">
+							<h:outputText value="#{pedido.fechaHora}" />
+						</p:column>
+						<p:column headerText="Fecha de llegada esperada">
+							<h:outputText value="#{pedido.fechaEsperado}" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{pedido.ultimoEstado.nombreEstado}" />
+						</p:column>
+						<p:column headerText="Cambiar estado">
+							<p:commandButton type="botonAceptar" value="Aceptar"
+								action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'ACEPTADO')}"
+								rendered="#{pedido.ultimoEstado.nombreEstado eq 'INICIO'}"
+								styleClass="ui-button-success" update="tablaPedidos"
+								style="margin-bottom:5px" />
 
-						<p:commandButton type="botonRechazar" value="Cancelar"
-							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'CANCELADO')}"
-							rendered="#{pedido.ultimoEstado.nombreEstado eq 'INICIO'}"
-							styleClass="ui-button-danger" update="tablaPedidos" />
+							<p:commandButton type="botonRechazar" value="Cancelar"
+								action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'CANCELADO')}"
+								rendered="#{pedido.ultimoEstado.nombreEstado eq 'INICIO'}"
+								styleClass="ui-button-danger" update="tablaPedidos" />
 
-						<p:commandButton type="botonRechazar" value="Preparado"
-							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'PREPARADO')}"
-							rendered="#{pedido.ultimoEstado.nombreEstado eq 'ACEPTADO'}"
-							styleClass="ui-button-info" update="tablaPedidos" />
+							<p:commandButton type="botonRechazar" value="Preparado"
+								action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'PREPARADO')}"
+								rendered="#{pedido.ultimoEstado.nombreEstado eq 'ACEPTADO'}"
+								styleClass="ui-button-info" update="tablaPedidos" />
 
-						<p:commandButton type="botonRechazar" value="Recogido"
-							action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'RECOGIDO')}"
-							rendered="#{pedido.ultimoEstado.nombreEstado eq 'PREPARADO'}"
-							styleClass="ui-button-info" update="tablaPedidos" />
+							<p:commandButton type="botonRechazar" value="Recogido"
+								action="#{pedidoRestauranteList.cambiarEstadoPedido(pedido.id,'RECOGIDO')}"
+								rendered="#{pedido.ultimoEstado.nombreEstado eq 'PREPARADO'}"
+								styleClass="ui-button-info" update="tablaPedidos" />
 
 
-					</p:column>
-					<p:rowExpansion>
-						<div class="pedidoDetalles">
-							<p:dataTable var="itemPedido" value="#{pedido.items}">
-								<p:column headerText="Nombre del plato">
-									<h:outputText value="#{itemPedido.nombrePlato}" />
-								</p:column>
-								<p:column headerText="Precio del plato">
-									<h:outputText value="#{itemPedido.precioPlato}">
-										<f:convertNumber type="currency" currencySymbol="€" />
-									</h:outputText>
-								</p:column>
-								<p:column headerText="Unidades">
-									<h:outputText value="#{itemPedido.cantidad}">
+						</p:column>
+						<p:rowExpansion>
+							<div class="pedidoDetalles">
+								<p:dataTable var="itemPedido" value="#{pedido.items}">
+									<p:column headerText="Nombre del plato">
+										<h:outputText value="#{itemPedido.nombrePlato}" />
+									</p:column>
+									<p:column headerText="Precio del plato">
+										<h:outputText value="#{itemPedido.precioPlato}">
+											<f:convertNumber type="currency" currencySymbol="€" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Unidades">
+										<h:outputText value="#{itemPedido.cantidad}">
 
-									</h:outputText>
-								</p:column>
-								<p:column headerText="Coste total">
-									<h:outputText value="#{itemPedido.costeTotal}">
-										<f:convertNumber type="currency" currencySymbol="€" />
-									</h:outputText>
-								</p:column>
-							</p:dataTable>
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Coste total">
+										<h:outputText value="#{itemPedido.costeTotal}">
+											<f:convertNumber type="currency" currencySymbol="€" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
 
-							<h1>Detalles del envío:</h1>
+								<h1>Detalles del envío:</h1>
+								<h:panelGrid columns="2">
+									<h:outputLabel value="Dirección de envío: " />
+									<h:outputLabel value="#{pedido.datosDireccion}" />
+									<h:outputLabel value="Nombre repartidor:" />
+									<h:outputLabel value="#{pedido.nombreRepartidor}" />
+									<h:outputLabel value="Comentario: " />
+									<h:outputLabel value="#{pedido.comentario}" />
+								</h:panelGrid>
+							</div>
+
+
+						</p:rowExpansion>
+					</p:dataTable>
+
+				</h:form>
+				<h2>Gestión de Incidencias</h2>
+
+
+				<h:form id="incidencias">
+					<p:dataTable id="listaIncidencias" var="incidencia"
+						value="#{pedidoRestauranteList.incidencias}">
+
+						<f:facet name="header">
+						</f:facet>
+						<p:column headerText="Identificador">
+							<h:outputText value="#{incidencia.id}" />
+						</p:column>
+
+						<p:column headerText="Fecha de creación">
+							<h:outputText value="#{incidencia.fechaCreacion}">
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Descripción">
+							<h:outputText value="#{incidencia.descripcion}" />
+						</p:column>
+						<p:column headerText="Responder incidencia">
+							<p:commandButton value="Responder Incidencia"
+								icon="fa-regular fa-envelope"
+								action="#{pedidoRestauranteList.seleccionarIncidencia(incidencia.id)}"
+								oncomplete="PF('nuevaIncidencia').show();"
+								update="listaIncidencias"></p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+
+				<h:form id="dialog">
+					<p:dialog header="Responder Incidencia" modal="true"
+						widgetVar="nuevaIncidencia" width="650">
+						<p:outputPanel id="nuevo" style="margin: 20px;">
+
 							<h:panelGrid columns="2">
-								<h:outputLabel value="Dirección de envío: " />
-								<h:outputLabel value="#{pedido.datosDireccion}" />
-								<h:outputLabel value="Nombre repartidor:" />
-								<h:outputLabel value="#{pedido.nombreRepartidor}" />
-								<h:outputLabel value="Comentario: " />
-								<h:outputLabel value="#{pedido.comentario}" />
+
+								<h:outputText
+									value="Introduzca un comentario para la incidencia: " />
+								<h:inputText
+									value="#{pedidoRestauranteList.comentarioIncidencia}" />
+								<p:commandButton value="Cerrar"
+									onclick="PF('nuevaIncidencia').hide();" />
+								<p:commandButton value="Enviar"
+									actionListener="#{pedidoRestauranteList.cerrarIncidencia()}"
+									oncomplete="PF('nuevaIncidencia').hide();"
+									update="incidencias:listaIncidencias" />
 							</h:panelGrid>
-						</div>
+							<p:ajaxStatus>
+								<f:facet name="start">
+									<i class="pi pi-spin pi-spinner loading-icon"
+										aria-hidden="true"></i>
+								</f:facet>
+							</p:ajaxStatus>
 
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+			</div>
+		</c:if>
+		
+		<c:if test="#{not userSessionWeb.restaurante}">
+			<h1>No tienes permisos para acceder a esta funcionalidad</h1>
+		</c:if>
 
-					</p:rowExpansion>
-				</p:dataTable>
-
-			</h:form>
-			<h2>Gestión de Incidencias</h2>
-
-
-			<h:form id="incidencias">
-				<p:dataTable id="listaIncidencias" var="incidencia"
-					value="#{pedidoRestauranteList.incidencias}">
-
-					<f:facet name="header">
-					</f:facet>
-					<p:column headerText="Identificador">
-						<h:outputText value="#{incidencia.id}" />
-					</p:column>
-
-					<p:column headerText="Fecha de creación">
-						<h:outputText value="#{incidencia.fechaCreacion}">
-						</h:outputText>
-					</p:column>
-
-					<p:column headerText="Descripción">
-						<h:outputText value="#{incidencia.descripcion}" />
-					</p:column>
-					<p:column headerText="Responder incidencia">
-						<p:commandButton value="Responder Incidencia"
-							icon="fa-regular fa-envelope"
-							action="#{pedidoRestauranteList.seleccionarIncidencia(incidencia.id)}"
-							oncomplete="PF('nuevaIncidencia').show();"
-							update="listaIncidencias"></p:commandButton>
-					</p:column>
-
-				</p:dataTable>
-			</h:form>
-
-			<h:form id="dialog">
-				<p:dialog header="Responder Incidencia" modal="true"
-					widgetVar="nuevaIncidencia" width="650">
-					<p:outputPanel id="nuevo" style="margin: 20px;">
-
-						<h:panelGrid columns="2">
-
-							<h:outputText
-								value="Introduzca un comentario para la incidencia: " />
-							<h:inputText
-								value="#{pedidoRestauranteList.comentarioIncidencia}" />
-							<p:commandButton value="Cerrar"
-								onclick="PF('nuevaIncidencia').hide();" />
-							<p:commandButton value="Enviar"
-								actionListener="#{pedidoRestauranteList.cerrarIncidencia()}"
-								oncomplete="PF('nuevaIncidencia').hide();"
-								update="incidencias:listaIncidencias" />
-						</h:panelGrid>
-						<p:ajaxStatus>
-							<f:facet name="start">
-								<i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
-							</f:facet>
-						</p:ajaxStatus>
-
-					</p:outputPanel>
-				</p:dialog>
-			</h:form>
-		</div>
 	</ui:define>
 </ui:composition>

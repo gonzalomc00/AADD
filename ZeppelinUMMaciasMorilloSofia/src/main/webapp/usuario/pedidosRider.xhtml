@@ -12,176 +12,183 @@
 
 
 	<ui:define name="content">
-		<div class="card">
-			<h2>Pedidos disponibles </h2>
-			<h:form id="tablaPedidos">
-				<p:dataTable id="listaPedidos" var="pedido"
-					value="#{pedidoRider.pedidosSinRider}"
-					rowKey="#{pedido.nombreRestaurante}">
+		<c:if test="#{userSessionWeb.rider}">
+			<div class="card">
+				<h2>Pedidos disponibles</h2>
+				<h:form id="tablaPedidos">
+					<p:dataTable id="listaPedidos" var="pedido"
+						value="#{pedidoRider.pedidosSinRider}"
+						rowKey="#{pedido.nombreRestaurante}">
 
-					<f:facet name="header">
+						<f:facet name="header">
 				Pulsa sobre la flecha para ver los detalles del envío
             </f:facet>
-					<p:column style="width:2rem">
-						<p:rowToggler />
-					</p:column>
+						<p:column style="width:2rem">
+							<p:rowToggler />
+						</p:column>
 
-					<p:column headerText="Nombre del restaurante">
-						<h:outputText value="#{pedido.nombreRestaurante}" />
-					</p:column>
-					
-					<p:column headerTex="Nombre del cliente">
-						<h:outputText value="#{pedido.nombreCliente}" />
-	
-					</p:column>
+						<p:column headerText="Nombre del restaurante">
+							<h:outputText value="#{pedido.nombreRestaurante}" />
+						</p:column>
 
-					<p:column headerText="Importe">
-						<h:outputText value="#{pedido.importe}">
-							<f:convertNumber type="currency" currencySymbol="€" />
-						</h:outputText>
-					</p:column>
+						<p:column headerTex="Nombre del cliente">
+							<h:outputText value="#{pedido.nombreCliente}" />
 
-					<p:column headerText="Fecha de creación">
-						<h:outputText value="#{pedido.fechaHora}" />
-					</p:column>
-					<p:column headerText="Fecha de llegada esperada">
-						<h:outputText value="#{pedido.fechaEsperado}" />
-					</p:column>
-					<p:column headerText="Estado">
-						<h:outputText value="#{pedido.ultimoEstado.nombreEstado}" />
-					</p:column>
-					<p:column headerText="Opciones">
-						<p:commandButton type="botonAceptarPedido" value="Me encargo yo"
-							styleClass="ui-button-success" update="tablaPedidos tablaEntrega:listaEntregas"
-							action="#{pedidoRider.asignarPedido(pedido.id)}"
-							style="margin-bottom:5px" />
-							
-					</p:column>
-					<p:rowExpansion>
-						<div class="pedidoDetalles">
-							<p:dataTable var="itemPedido" value="#{pedido.items}">
-								<p:column headerText="Nombre del plato">
-									<h:outputText value="#{itemPedido.nombrePlato}" />
-								</p:column>
-								<p:column headerText="Precio del plato">
-									<h:outputText value="#{itemPedido.precioPlato}">
-										<f:convertNumber type="currency" currencySymbol="€" />
-									</h:outputText>
-								</p:column>
-								<p:column headerText="Unidades">
-									<h:outputText value="#{itemPedido.cantidad}">
+						</p:column>
 
-									</h:outputText>
-								</p:column>
-								<p:column headerText="Coste total">
-									<h:outputText value="#{itemPedido.costeTotal}">
-										<f:convertNumber type="currency" currencySymbol="€" />
-									</h:outputText>
-								</p:column>
-							</p:dataTable>
+						<p:column headerText="Importe">
+							<h:outputText value="#{pedido.importe}">
+								<f:convertNumber type="currency" currencySymbol="€" />
+							</h:outputText>
+						</p:column>
 
-							<h1>Detalles del envío:</h1>
-							<h:panelGrid columns="2">
-								<h:outputLabel value="Dirección de envío: " />
-								<h:outputLabel value="#{pedido.datosDireccion}" />
-								<h:outputLabel value="Nombre repartidor:" />
-								<h:outputLabel value="#{pedido.nombreRepartidor}" />
-								<h:outputLabel value="Comentario: " />
-								<h:outputLabel value="#{pedido.comentario}" />
-							</h:panelGrid>
-						</div>
+						<p:column headerText="Fecha de creación">
+							<h:outputText value="#{pedido.fechaHora}" />
+						</p:column>
+						<p:column headerText="Fecha de llegada esperada">
+							<h:outputText value="#{pedido.fechaEsperado}" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{pedido.ultimoEstado.nombreEstado}" />
+						</p:column>
+						<p:column headerText="Opciones">
+							<p:commandButton type="botonAceptarPedido" value="Me encargo yo"
+								styleClass="ui-button-success"
+								update="tablaPedidos tablaEntrega:listaEntregas"
+								action="#{pedidoRider.asignarPedido(pedido.id)}"
+								style="margin-bottom:5px" />
+
+						</p:column>
+						<p:rowExpansion>
+							<div class="pedidoDetalles">
+								<p:dataTable var="itemPedido" value="#{pedido.items}">
+									<p:column headerText="Nombre del plato">
+										<h:outputText value="#{itemPedido.nombrePlato}" />
+									</p:column>
+									<p:column headerText="Precio del plato">
+										<h:outputText value="#{itemPedido.precioPlato}">
+											<f:convertNumber type="currency" currencySymbol="€" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Unidades">
+										<h:outputText value="#{itemPedido.cantidad}">
+
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Coste total">
+										<h:outputText value="#{itemPedido.costeTotal}">
+											<f:convertNumber type="currency" currencySymbol="€" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
+
+								<h1>Detalles del envío:</h1>
+								<h:panelGrid columns="2">
+									<h:outputLabel value="Dirección de envío: " />
+									<h:outputLabel value="#{pedido.datosDireccion}" />
+									<h:outputLabel value="Nombre repartidor:" />
+									<h:outputLabel value="#{pedido.nombreRepartidor}" />
+									<h:outputLabel value="Comentario: " />
+									<h:outputLabel value="#{pedido.comentario}" />
+								</h:panelGrid>
+							</div>
 
 
-					</p:rowExpansion>
-				</p:dataTable>
+						</p:rowExpansion>
+					</p:dataTable>
 
-			</h:form>
-			
-			<h2>Pedidos a entregar:</h2>
+				</h:form>
 
-			<h:form id="tablaEntrega">
-				<p:dataTable id="listaEntregas" var="entrega"
-					value="#{pedidoRider.pedidosRider}"
-					rowKey="#{entrega.nombreRestaurante}">
+				<h2>Pedidos a entregar:</h2>
 
-					<f:facet name="header">
+				<h:form id="tablaEntrega">
+					<p:dataTable id="listaEntregas" var="entrega"
+						value="#{pedidoRider.pedidosRider}"
+						rowKey="#{entrega.nombreRestaurante}">
+
+						<f:facet name="header">
 				Pulsa sobre la flecha para ver los detalles del envío
             </f:facet>
-					<p:column style="width:2rem">
-						<p:rowToggler />
-					</p:column>
+						<p:column style="width:2rem">
+							<p:rowToggler />
+						</p:column>
 
-					<p:column headerText="Nombre del restaurante">
-						<h:outputText value="#{entrega.nombreRestaurante}" />
-					</p:column>
-					
-					<p:column headerTex="Nombre del cliente">
-						<h:outputText value="#{entrega.nombreCliente}" />
-	
-					</p:column>
+						<p:column headerText="Nombre del restaurante">
+							<h:outputText value="#{entrega.nombreRestaurante}" />
+						</p:column>
 
-					<p:column headerText="Importe">
-						<h:outputText value="#{entrega.importe}">
-							<f:convertNumber type="currency" currencySymbol="€" />
-						</h:outputText>
-					</p:column>
+						<p:column headerTex="Nombre del cliente">
+							<h:outputText value="#{entrega.nombreCliente}" />
 
-					<p:column headerText="Fecha de creación">
-						<h:outputText value="#{entrega.fechaHora}" />
-					</p:column>
-					<p:column headerText="Fecha de llegada esperada">
-						<h:outputText value="#{entrega.fechaEsperado}" />
-					</p:column>
-					<p:column headerText="Estado">
-						<h:outputText value="#{entrega.ultimoEstado.nombreEstado}" />
-					</p:column>
-					<p:column headerText="Opciones">
-						<p:commandButton type="botonEntregar" value="Entregado"
-							styleClass="ui-button-success" update="tablaEntrega"
-							rendered="#{entrega.ultimoEstado.nombreEstado eq 'RECOGIDO'}"
-							action="#{pedidoRider.entregarPedido(entrega.id)}"
-							style="margin-bottom:5px" />
-							
-					</p:column>
-					<p:rowExpansion>
-						<div class="pedidoDetalles2">
-							<p:dataTable var="itemPedido2" value="#{pedido.items}">
-								<p:column headerText="Nombre del plato">
-									<h:outputText value="#{itemPedido2.nombrePlato}" />
-								</p:column>
-								<p:column headerText="Precio del plato">
-									<h:outputText value="#{itemPedido2.precioPlato}">
-										<f:convertNumber type="currency" currencySymbol="€" />
-									</h:outputText>
-								</p:column>
-								<p:column headerText="Unidades">
-									<h:outputText value="#{itemPedido2.cantidad}">
+						</p:column>
 
-									</h:outputText>
-								</p:column>
-								<p:column headerText="Coste total">
-									<h:outputText value="#{itemPedido2.costeTotal}">
-										<f:convertNumber type="currency" currencySymbol="€" />
-									</h:outputText>
-								</p:column>
-							</p:dataTable>
+						<p:column headerText="Importe">
+							<h:outputText value="#{entrega.importe}">
+								<f:convertNumber type="currency" currencySymbol="€" />
+							</h:outputText>
+						</p:column>
 
-							<h1>Detalles del envío:</h1>
-							<h:panelGrid columns="2">
-								<h:outputLabel value="Dirección de envío: " />
-								<h:outputLabel value="#{entrega.datosDireccion}" />
-								<h:outputLabel value="Nombre repartidor:" />
-								<h:outputLabel value="#{entrega.nombreRepartidor}" />
-								<h:outputLabel value="Comentario: " />
-								<h:outputLabel value="#{entrega.comentario}" />
-							</h:panelGrid>
-						</div>
+						<p:column headerText="Fecha de creación">
+							<h:outputText value="#{entrega.fechaHora}" />
+						</p:column>
+						<p:column headerText="Fecha de llegada esperada">
+							<h:outputText value="#{entrega.fechaEsperado}" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{entrega.ultimoEstado.nombreEstado}" />
+						</p:column>
+						<p:column headerText="Opciones">
+							<p:commandButton type="botonEntregar" value="Entregado"
+								styleClass="ui-button-success" update="tablaEntrega"
+								rendered="#{entrega.ultimoEstado.nombreEstado eq 'RECOGIDO'}"
+								action="#{pedidoRider.entregarPedido(entrega.id)}"
+								style="margin-bottom:5px" />
+
+						</p:column>
+						<p:rowExpansion>
+							<div class="pedidoDetalles2">
+								<p:dataTable var="itemPedido2" value="#{pedido.items}">
+									<p:column headerText="Nombre del plato">
+										<h:outputText value="#{itemPedido2.nombrePlato}" />
+									</p:column>
+									<p:column headerText="Precio del plato">
+										<h:outputText value="#{itemPedido2.precioPlato}">
+											<f:convertNumber type="currency" currencySymbol="€" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Unidades">
+										<h:outputText value="#{itemPedido2.cantidad}">
+
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Coste total">
+										<h:outputText value="#{itemPedido2.costeTotal}">
+											<f:convertNumber type="currency" currencySymbol="€" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
+
+								<h1>Detalles del envío:</h1>
+								<h:panelGrid columns="2">
+									<h:outputLabel value="Dirección de envío: " />
+									<h:outputLabel value="#{entrega.datosDireccion}" />
+									<h:outputLabel value="Nombre repartidor:" />
+									<h:outputLabel value="#{entrega.nombreRepartidor}" />
+									<h:outputLabel value="Comentario: " />
+									<h:outputLabel value="#{entrega.comentario}" />
+								</h:panelGrid>
+							</div>
 
 
-					</p:rowExpansion>
-				</p:dataTable>
+						</p:rowExpansion>
+					</p:dataTable>
 
-			</h:form>
-		</div>
+				</h:form>
+			</div>
+			</c:if>
+		<c:if test="#{not userSessionWeb.rider}">
+			<h1>No tienes permisos para acceder a esta funcionalidad</h1>
+		</c:if>
+
 	</ui:define>
 </ui:composition>
