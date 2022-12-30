@@ -45,10 +45,6 @@ public class RestauranteOpinarWeb implements Serializable {
 	}
 
 	public void crearOpinion() {
-		System.out.println("RESTAURANTE " + restauranteId);
-		System.out.println("USUARIO " + userId);
-		System.out.println("OPINION " + opinion);
-		System.out.println("VALORACION " + valoracion);
 
 		boolean done = servicioPedido.opinar(userId, restauranteId, opinion, valoracion);
 		if (done == false) {

@@ -106,9 +106,9 @@ Listado de restaurantes
 					<h:panelGrid columns="2">
 
 						<h:outputText value="Opinion:" />
-						<h:inputText value="#{restauranteOpinarWeb.opinion}" />
+						<h:inputText value="#{restauranteOpinarWeb.opinion}" required="true"/>
 						<h:outputText value="Valoración" />
-						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10">
+						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10" required="true">
 						</p:rating>
 						<p:commandButton value="Cerrar"
 							onclick="PF('nuevaOpinion').hide();" />
@@ -124,6 +124,7 @@ Listado de restaurantes
 
 				</p:outputPanel>
 			</p:dialog>
+				
 		</h:form>
 	</ui:define>
 </ui:composition>

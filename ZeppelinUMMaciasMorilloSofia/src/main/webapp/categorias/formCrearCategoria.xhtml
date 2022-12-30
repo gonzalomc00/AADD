@@ -14,28 +14,24 @@
 			<h:form id="categorias">
 				<div class="card">
 					<h5>Crea una nueva categoría</h5>
-					<p:splitter style="height: 300px" styleClass="mb-5">
-						<p:splitterPanel>
+					
 							<h:panelGrid columns="2">
 								<h:outputText value="Nombre de la nueva categoria:" />
 								<h:inputText value="#{categoriasConstructor.nombre}"
 									required="true" />
-								<p:commandButton value="Crear categoría" icon="fa fa-bowl-food"
+								<p:commandButton value="Crear categoría"
 									actionListener="#{categoriasConstructor.crearCategoria()}"
 									update="categoriasList" />
 							</h:panelGrid>
 
-						</p:splitterPanel>
-						<p:splitterPanel style="display:block; text-align:center;">
 							<div class="card">
 								<h5>Listado de categorías</h5>
 								<p:orderList id="categoriasList"
 									value="#{categoriasConstructor.categorias}" var="categoria"
 									itemLabel="#{categoria.nombreCategoria}"
-									itemValue="#{categoria.id}" />
+									itemValue="#{categoria.id}" style="display:block; text-align:center"
+									 />
 							</div>
-						</p:splitterPanel>
-					</p:splitter>
 				</div>
 
 			</h:form>

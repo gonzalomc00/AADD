@@ -16,8 +16,6 @@ import javax.persistence.*;
 		@NamedQuery(name = "Usuario.findByEmailClave", query = " SELECT u FROM Usuario u WHERE u.email = :email and u.clave = :clave AND u.validado = true"),
 		@NamedQuery(name = "Usuario.findByEmail", query = " SELECT u FROM Usuario u WHERE u.email = :email ")})
 
-//la consulta se invoca desde UsuarioDAO, al registrarse y logearse se recuperarán los datos desde UsuarioDAO, sin que la capa de la vista lo vea.
-//nunca devolver el objeto completo que hemos recuperado de la base de datos, mediante el DTO. Nunca mandar hacia la capa superiores objetos de persistencia
 public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

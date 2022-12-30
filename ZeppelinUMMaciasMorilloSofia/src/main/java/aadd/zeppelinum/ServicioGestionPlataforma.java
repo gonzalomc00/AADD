@@ -114,34 +114,28 @@ public class ServicioGestionPlataforma {
 
 	public Integer registrarRestaurante(String nombre, Integer responsable, String calle, String codigoPostal,
 			Integer numero, String ciudad, Double latitud, Double longitud, List<Integer> listaC) { // entra el nombre
-		// del restaurante y
-		// el id
-		// del responsable
-
+		
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
 			em.getTransaction().begin();
 
-			Restaurante r = new Restaurante(); // crea el restaurante e inicializa sus datos
+			Restaurante r = new Restaurante(); 
 			Usuario u = UsuarioDAO.getUsuarioDAO().findById(responsable);
 
-			for (Integer c : listaC) { // podemos recuperarlo de golpe
+			for (Integer c : listaC) { 
 				System.out.println(c);
 				CategoriaRestaurante cat = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(c);
 				r.addCategoria(cat);
 			}
 
-			r.setResponsable(u); // el responsable ya debe de estar en la BD
+			r.setResponsable(u); 
 			r.setNombre(nombre);
 			r.setFechaAlta(LocalDate.now());
 			r.setValoracionGlobal(0d);
 			r.setNumPenalizaciones(0);
 			r.setNumValoraciones(0);
-			// TODO: Permitir crear un restaurante con un listado de categorias.
 
 			RestauranteDAO.getRestauranteDAO().save(r, em);
-			// Codigo nuevo MONGO
-			// Forzamos un flush para que mysql nos de un id para el restaurante
 			em.flush();
 			Direccion d = new Direccion();
 			d.setCalle(calle);
@@ -152,8 +146,8 @@ public class ServicioGestionPlataforma {
 			d.setRestaurante(r.getId());
 
 			DireccionDAO.getDireccionDAO().save(d);
-			//////
 
+			
 			em.getTransaction().commit();
 			return r.getId();
 		} catch (Exception e) {
@@ -385,7 +379,6 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	//// MONGO restaurante -parte sql parte mongo
 	public List<RestauranteDTO> getRestaurantesByCercanía(Double latitud, Double longitud, int limite, int skip) {
 		List<Direccion> direcciones = DireccionDAO.getDireccionDAO().findOrdenadoPorCercania(latitud, longitud, limite,
 				skip);

@@ -12,7 +12,6 @@ import javax.persistence.*;
 @NamedQueries({
 		@NamedQuery(name = "Plato.findPlatosDisponiblesByRestaurante", query = " SELECT p FROM Plato p WHERE p.disponibilidad = true and p.restaurante.id = :restaurante "), 
 		@NamedQuery (name= "Plato.findAllPlatosByRestaurante", query = " SELECT p FROM Plato p WHERE p.restaurante.id = :restaurante ")})
-//vamos a devolver a la vista plato pero NO la entidad plato, sino un platoDTO con lo que nos interese.
 public class Plato implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +20,7 @@ public class Plato implements Serializable {
 	@Column(name = "titulo")
 	private String titulo;
 	@Column(name = "descripcion")
-	@Lob // etiqueta que indica que un string va a ser largo en la base de datos (long
-			// text)
+	@Lob
 	private String descripcion;
 	@Column(name = "precio")
 	private Double precio;
@@ -30,9 +28,8 @@ public class Plato implements Serializable {
 	private boolean disponibilidad;
 
 	@ManyToOne
-	@JoinColumn(name = "restaurante") // el orden de las etiquetas dan igual mientras que esten encima del atributo
-										// que aplica
-	private Restaurante restaurante; // vamos a hacer la relacion restaurante-plato bidireccional
+	@JoinColumn(name = "restaurante") 
+	private Restaurante restaurante; 
 
 	private static final long serialVersionUID = 1L;
 

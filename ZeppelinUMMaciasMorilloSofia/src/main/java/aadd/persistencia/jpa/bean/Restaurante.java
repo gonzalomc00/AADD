@@ -12,17 +12,16 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "restaurante") // para nombrar la tabla en BBDD
+@Table(name = "restaurante") 
 public class Restaurante implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // ID autogenerado
-	@Column(name = "id") // @Column para darle el nombre a la columna y controlar como se ponen en la
-							// BBDD
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@Column(name = "id")
 	private Integer id; // clave primaria @ID
 	@Column(name = "nombre")
 	private String nombre;
-	@Column(name = "fecha_alta", columnDefinition = "DATE") // columnDefinition para que lo identifique como Date de SQL
+	@Column(name = "fecha_alta", columnDefinition = "DATE")
 	private LocalDate fechaAlta;
 	@Column(name = "valoracion_global")
 	private Double valoracionGlobal;
@@ -31,7 +30,7 @@ public class Restaurante implements Serializable {
 	@Column(name = "num_penalizaciones")
 	private Integer numPenalizaciones;
 	
-	@JoinColumn(name= "responsable") //define la columna para la clave ajena de esta manera!!
+	@JoinColumn(name= "responsable")
 	@ManyToOne
 	private Usuario responsable;
 	

@@ -27,31 +27,15 @@ public class DireccionDAO extends ExtensionMongoDAO<Direccion> {
 
 	@Override
 	public void createCollection() {
-		collection = db.getCollection("direccion", Direccion.class).withCodecRegistry(defaultCodecRegistry); // obtiene
-																												// la
-																												// coleccion
-																												// de
-																												// direccion
-																												// a
-																												// partir
-																												// de la
-																												// base
-																												// de
-																												// datos
-																												// obtenido
-																												// en la
-																												// extension
-																												// dao
-		collection.createIndex(Indexes.geo2dsphere("coordenadas")); // Mongo permite realizar busquedas en base a
-																	// distancias en un mapa
+		collection = db.getCollection("direccion", Direccion.class).withCodecRegistry(defaultCodecRegistry); 
+		collection.createIndex(Indexes.geo2dsphere("coordenadas")); 
 	}
 
 	public List<Direccion> findOrdenadoPorCercania(Double latitud, Double longitud, int limite, int skip) {
 		Point puntoBusqueda = new Point(new Position(longitud, latitud));
 		Bson query = Filters.near("coordenadas", puntoBusqueda, null, null); // pasamos null para que no nos limite a
 																				// una distancia concreta
-		FindIterable<Direccion> resultados = collection.find(query).limit(limite).skip(skip); // limite minimo
-		// lo que devuelve el find es una direccion no un document como tal
+		FindIterable<Direccion> resultados = collection.find(query).limit(limite).skip(skip); 
 
 		MongoCursor<Direccion> it = resultados.iterator();
 		List<Direccion> direcciones = new ArrayList<Direccion>();
