@@ -25,15 +25,15 @@ Estadísticas
 										<h1>Mis Restaurantes</h1>
 										<p:dataTable id="listaRestaurantesPropios" var="rest"
 											value="#{estadisticasWeb.listRestaurantePedidosHechos}">
-										<p:column headerText="Nombre">
-											<h:outputText value="#{rest.res}" />
-										</p:column>
-										<p:column headerText="Pedidos Gestionados">
-											<h:outputText value="#{rest.totalPedidos}" />
-										</p:column>
-										<p:column headerText="Incidencias recibididas">
-											<h:outputText value="#{rest.numIncidencias}" />
-										</p:column>
+											<p:column headerText="Nombre">
+												<h:outputText value="#{rest.res}" />
+											</p:column>
+											<p:column headerText="Pedidos Gestionados">
+												<h:outputText value="#{rest.totalPedidos}" />
+											</p:column>
+											<p:column headerText="Incidencias recibididas">
+												<h:outputText value="#{rest.numIncidencias}" />
+											</p:column>
 										</p:dataTable>
 									</div>
 				

@@ -44,7 +44,6 @@ public class PedidoUsuarioList implements Serializable {
 		servicioPlataforma = ServicioGestionPlataforma.getServicioGestionPlataforma();
 	}
 
-
 	@PostConstruct
 	public void loadPedidosIncidencias() {
 		id = sesion.getUsuario().getId();

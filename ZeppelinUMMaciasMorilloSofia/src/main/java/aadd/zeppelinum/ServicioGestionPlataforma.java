@@ -426,10 +426,18 @@ public class ServicioGestionPlataforma {
 	public List<Integer> getIdUsuariosByTipo(List<TipoUsuario> tipos) {
 		return UsuarioDAO.getUsuarioDAO().findIdsByTipo(tipos);
 	}
+	
+	public List<IncidenciaDTO> getIncidenciasByRestauranteSinCerrar(Integer restauranteId) {
+		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaSinCerrarRestaurante(restauranteId);
+	}
 
 	// EJB
 	public List<EstadisticaOpinionDTO> getEstadisticasOpinion(Integer idUsuario) {
 		return zeppelinumRemoto.getEstadisticasOpinion(idUsuario);
+	}
+
+	public Integer getNumVisitas(Integer idUsuario) {
+		return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}
 
 	public List<EstadisticaPedidoDTO> getEstadisticasPedido(Integer idUsuario) {
@@ -439,13 +447,7 @@ public class ServicioGestionPlataforma {
 		return zeppelinumRemoto.getEstadisticasRestaurantePedidoDTO(idUsuario);
 	}
 	
-	public Integer getNumVisitas(Integer idUsuario) {
-		return zeppelinumRemoto.getNumVisitas(idUsuario);
-	}
-
-	public List<IncidenciaDTO> getIncidenciasByRestauranteSinCerrar(Integer restauranteId) {
-		return IncidenciaDAO.getIncidenciaDAO().findIncidenciaSinCerrarRestaurante(restauranteId);
-	}
+	
 
 
 }

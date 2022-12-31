@@ -32,18 +32,13 @@ public class PedidoRestauranteList implements Serializable {
 
 	private ServicioGestionPlataforma servicioPlataforma;
 
-
 	private String comentarioIncidencia;
 	private Integer incidenciaSeleccionada;
-
-
 
 	public PedidoRestauranteList() {
 		servicio = ServicioGestionPedido.getServicioGestionPedido();
 		servicioPlataforma = ServicioGestionPlataforma.getServicioGestionPlataforma();
 	}
-	
-
 
 	public void loadPedidos() {
 
@@ -75,6 +70,8 @@ public class PedidoRestauranteList implements Serializable {
 		switch (estado) {
 		case "ACEPTADO":
 			servicio.editarEstado(id, TipoEstado.ACEPTADO);
+			servicio.pedidoNoEntregado(id);
+
 			break;
 		case "CANCELADO":
 			servicio.editarEstado(id, TipoEstado.CANCELADO);
@@ -85,6 +82,8 @@ public class PedidoRestauranteList implements Serializable {
 			break;
 		case "RECOGIDO":
 			servicio.editarEstado(id, TipoEstado.RECOGIDO);
+			servicio.pedidoNoEntregado(id);
+
 			break;
 		}
 		loadPedidos();
@@ -153,6 +152,5 @@ public class PedidoRestauranteList implements Serializable {
 	public void setIncidenciaSeleccionada(Integer incidenciaSeleccionada) {
 		this.incidenciaSeleccionada = incidenciaSeleccionada;
 	}
-
 
 }

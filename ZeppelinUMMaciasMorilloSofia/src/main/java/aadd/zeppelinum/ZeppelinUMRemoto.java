@@ -18,11 +18,13 @@ public interface ZeppelinUMRemoto {
 	public void pedidoNoRecogido(ObjectId pedido);
 
 	public void pedidoNoPreparado(ObjectId pedido);
-	
+
+	public void pedidoNoEntregado(ObjectId pedido);
+
 	public List<EstadisticaOpinionDTO> getEstadisticasOpinion(Integer idUsuario);
-	
+
 	public List<EstadisticaPedidoDTO> getEstadisticasPedidoDTO(Integer idUsuario);
-	
+
 	public List<EstadisticaPedidoDTO> getEstadisticasRestaurantePedidoDTO(Integer idUsuario);
 
 	public Integer getPedidosRealizadosByUsuario(Integer idUsuario);
