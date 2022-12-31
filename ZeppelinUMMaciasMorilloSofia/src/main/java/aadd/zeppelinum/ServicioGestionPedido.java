@@ -169,6 +169,8 @@ public class ServicioGestionPedido {
 		p.setImporte(total);
 		ObjectId id = pedidoDAO.save(p);
 		zeppelinumRemoto.pedidoIniciado(id);
+		zeppelinumRemoto.pedidoNoPreparado(id);
+
 		if (id != null) {
 			return true;
 		} else {
@@ -269,7 +271,6 @@ public class ServicioGestionPedido {
 			pd.setNombreRepartidor("No asignado");
 		}
 		
-
 		for(EstadoPedido ep: p.getEstados()) {
 			pd.addEstado(new EstadoPedidoDTO(ep.getEstado(),ep.getFechaEstado()));
 		}
@@ -300,13 +301,16 @@ public class ServicioGestionPedido {
 		}
 		return pedidosDTO;
 	}
+	
+	//EJB
+	public void pedidoNoRecogido(ObjectId id_pedido) {
+		zeppelinumRemoto.pedidoNoRecogido(id_pedido); //al marcar el pedido como preparado se inicia
+	}
+	
 	public Integer getPedidosCliente(Integer idUsuario) {
 		return zeppelinumRemoto.getPedidosRealizadosByUsuario(idUsuario);
 	}
-
-	public Integer getPedidosByRestaurante(Integer idUsuario) {
-		return zeppelinumRemoto.getPedidosRestaurante(idUsuario);
-	}
+	
 
 
 }

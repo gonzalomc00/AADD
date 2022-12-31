@@ -159,7 +159,7 @@ class Test {
 		assertTrue(u.size() == 1);
 	}
 
-	@org.junit.jupiter.api.Test
+/**	@org.junit.jupiter.api.Test
 	public void crearIncidencia() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		LocalDate fechaCreacion = LocalDate.now();
@@ -168,7 +168,7 @@ class Test {
 		Integer i = servicio.registrarIncidencia(fechaCreacion, "No tenia suficientes pepinillos", fechaAlta,
 				"Quiero mas pepinillos",null,2,1);
 		assertTrue(i != null);
-	}
+	}*/
 	
 	@org.junit.jupiter.api.Test
 	public void buscarIncidenciaByUsuario() {
@@ -177,12 +177,12 @@ class Test {
 		assertTrue(i.size()==1);
 	}
 	
-	@org.junit.jupiter.api.Test
+	/**@org.junit.jupiter.api.Test
 	public void buscarIncidenciaSinCerrar() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		List<IncidenciaDTO> i= servicio.getIncidenciaSinCerrar();
 		assertTrue(i.size()==1);
-	}
+	}*/
 
 	// TEST OPINIONES MONGO
 	@org.junit.jupiter.api.Test

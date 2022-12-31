@@ -16,6 +16,7 @@ import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.mongo.bean.TipoEstado;
 import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
+import aadd.zeppelinum.ZeppelinUMRemoto;
 
 @Named
 @ViewScoped
@@ -30,6 +31,7 @@ public class PedidoRestauranteList implements Serializable {
 	private ServicioGestionPedido servicio;
 
 	private ServicioGestionPlataforma servicioPlataforma;
+
 
 	private String comentarioIncidencia;
 	private Integer incidenciaSeleccionada;
@@ -79,11 +81,11 @@ public class PedidoRestauranteList implements Serializable {
 			break;
 		case "PREPARADO":
 			servicio.editarEstado(id, TipoEstado.PREPARADO);
+			servicio.pedidoNoRecogido(id);
 			break;
 		case "RECOGIDO":
 			servicio.editarEstado(id, TipoEstado.RECOGIDO);
 			break;
-
 		}
 		loadPedidos();
 	}

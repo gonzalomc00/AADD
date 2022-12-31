@@ -16,6 +16,7 @@ import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
 
 import aadd.persistencia.dto.EstadisticaOpinionDTO;
+import aadd.persistencia.dto.EstadisticaPedidoDTO;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
@@ -23,6 +24,7 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 @Named
 @ViewScoped
 public class EstadisticasWeb implements Serializable {
+
 	@Inject
 	protected UserSessionWeb usuarioSesion;
 	protected ServicioGestionPlataforma servicioPlataforma;
@@ -37,7 +39,7 @@ public class EstadisticasWeb implements Serializable {
 
 	@PostConstruct
 	public void initLineChart() {
-		createLineModel();
+		createLineModel(); //opinion
 	}
 
 	private void createLineModel() {
@@ -86,6 +88,7 @@ public class EstadisticasWeb implements Serializable {
 		lineModel.setOptions(options);
 		lineModel.setData(data);
 	}
+	
 
 	public Integer getNumVisitas() {
 		return servicioPlataforma.getNumVisitas(usuarioSesion.getUsuario().getId());
@@ -96,11 +99,14 @@ public class EstadisticasWeb implements Serializable {
 		return servicioPedido.getPedidosCliente(usuarioSesion.getUsuario().getId());
 	}
 
-	public Integer getPedidosRestaurante() {
-		return servicioPedido.getPedidosByRestaurante(usuarioSesion.getUsuario().getId());
-
+	public List<EstadisticaPedidoDTO> getListRestaurantePedidosRealizados(){
+		return servicioPlataforma.getEstadisticasPedido(usuarioSesion.getUsuario().getId());
 	}
-
+	
+	public List<EstadisticaPedidoDTO> getListRestaurantePedidosHechos(){
+		return servicioPlataforma.getEstadisticasPedidoRestaurante(usuarioSesion.getUsuario().getId());
+	}
+	
 	public LineChartModel getLineModel() {
 		return lineModel;
 	}
@@ -108,5 +114,6 @@ public class EstadisticasWeb implements Serializable {
 	public void setLineModel(LineChartModel lineModel) {
 		this.lineModel = lineModel;
 	}
+	
 
 }

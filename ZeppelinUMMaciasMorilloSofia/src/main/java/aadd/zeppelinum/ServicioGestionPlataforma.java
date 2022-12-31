@@ -13,6 +13,7 @@ import com.mongodb.client.model.geojson.Position;
 
 import aadd.persistencia.dto.CategoriaRestauranteDTO;
 import aadd.persistencia.dto.EstadisticaOpinionDTO;
+import aadd.persistencia.dto.EstadisticaPedidoDTO;
 import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
@@ -431,6 +432,13 @@ public class ServicioGestionPlataforma {
 		return zeppelinumRemoto.getEstadisticasOpinion(idUsuario);
 	}
 
+	public List<EstadisticaPedidoDTO> getEstadisticasPedido(Integer idUsuario) {
+		return zeppelinumRemoto.getEstadisticasPedidoDTO(idUsuario);
+	}
+	public List<EstadisticaPedidoDTO> getEstadisticasPedidoRestaurante(Integer idUsuario){
+		return zeppelinumRemoto.getEstadisticasRestaurantePedidoDTO(idUsuario);
+	}
+	
 	public Integer getNumVisitas(Integer idUsuario) {
 		return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}

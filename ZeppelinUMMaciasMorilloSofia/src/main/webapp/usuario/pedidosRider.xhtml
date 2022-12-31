@@ -10,7 +10,6 @@
 		Pedidos de rider
     </ui:define>
 
-
 	<ui:define name="content">
 		<c:if test="#{userSessionWeb.rider}">
 			<div class="card">
@@ -19,7 +18,6 @@
 					<p:dataTable id="listaPedidos" var="pedido"
 						value="#{pedidoRider.pedidosSinRider}"
 						rowKey="#{pedido.nombreRestaurante}">
-
 						<f:facet name="header">
 				Pulsa sobre la flecha para ver los detalles del envío
             </f:facet>

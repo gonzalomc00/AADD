@@ -13,23 +13,55 @@ Estadísticas
 				<div class="row">
 					<div class="col-12">
 						<div class="content">
-							<h1>Estadísticas</h1>
+							<h2>Estadísticas</h2>
 							<h:form id="torneum">
 								<div class="ui-g ui-fluid">
 									<div class="ui-g-2">Número de visitas:
-										#{estadisticasWeb.numVisitas}</div>
-									<div class="ui-g-2">Número de pedidos realizados:
-										#{estadisticasWeb.pedidosCliente}</div>
-
-									<div class="ui-g-4">
+										#{estadisticasWeb.numVisitas}
+										
+										</div>
+									
+									<div>
+										<h1>Mis Restaurantes</h1>
+										<p:dataTable id="listaRestaurantesPropios" var="rest"
+											value="#{estadisticasWeb.listRestaurantePedidosHechos}">
+										<p:column headerText="Nombre">
+											<h:outputText value="#{rest.res}" />
+										</p:column>
+										<p:column headerText="Pedidos Gestionados">
+											<h:outputText value="#{rest.totalPedidos}" />
+										</p:column>
+										<p:column headerText="Incidencias recibididas">
+											<h:outputText value="#{rest.numIncidencias}" />
+										</p:column>
+										</p:dataTable>
+									</div>
+				
+									
+									<div class="ui-g-6">									
 										<p:panel header="Valoraciones">
 											<p:lineChart model="#{estadisticasWeb.lineModel}"
 												style="width: 100%; height: 300px;" />
 										</p:panel>
 									</div>
-								</div>
-								<div>
-									Número de pedidos recibidos: #{estadisticasWeb.pedidosRestaurante}
+									<div class="ui-g-6">
+										<h1>Pedidos Realizados</h1>
+										<p:dataTable id="listaRestaurantes" var="res"
+											value="#{estadisticasWeb.listRestaurantePedidosRealizados}">
+										<p:column headerText="Nombre del Restaurante">
+											<h:outputText value="#{res.res}" />
+										</p:column>
+					
+										<p:column headerText="Pedidos Realizados">
+											<h:outputText value="#{res.totalPedidos}" />
+										</p:column>
+										<p:column headerText="Incidencias Interpuestas">
+											<h:outputText value="#{res.numIncidencias}" />
+										</p:column>
+										</p:dataTable>
+										Total de pedidos realizados: #{estadisticasWeb.pedidosCliente}
+									</div>
+										
 								</div>
 							</h:form>
 						</div>
