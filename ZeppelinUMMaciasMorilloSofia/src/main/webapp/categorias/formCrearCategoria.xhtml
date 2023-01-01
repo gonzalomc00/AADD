@@ -10,35 +10,58 @@
 			Crear categoria
 </ui:define>
 	<ui:define name="content">
+		<h2>Categorías</h2>
+
 		<c:if test="#{userSessionWeb.admin}">
-			<h:form id="categorias">
-				<div class="card">
-					<h5>Crea una nueva categoría</h5>
-					
+			<div class="ui-g ui-fluid">
+
+				<div class="ui-g-8">
+
+					<h:form id="categorias">
+						<p:growl id="msgs" showDetail="true"
+							skipDetailIfEqualsSummary="true" />
+						<div class="card">
+							<h5>Crea una nueva categoría</h5>
+
 							<h:panelGrid columns="2">
 								<h:outputText value="Nombre de la nueva categoria:" />
 								<h:inputText value="#{categoriasConstructor.nombre}"
-									required="true" />
+									required="true"
+									requiredMessage="El nombre de la categoría es obligatorio" />
+									<br/>
 								<p:commandButton value="Crear categoría"
 									actionListener="#{categoriasConstructor.crearCategoria()}"
-									update="categoriasList" />
+									update="categoriasList" onclick="PF('msgs').show()" style="width: 200px; margin: 15px 15px 15px 130px;"/>
 							</h:panelGrid>
+						</div>
+						<h:messages id="errors" infoStyle="color:blue"
+							warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
 
-							<div class="card">
-								<h5>Listado de categorías</h5>
-								<p:orderList id="categoriasList"
-									value="#{categoriasConstructor.categorias}" var="categoria"
-									itemLabel="#{categoria.nombreCategoria}"
-									itemValue="#{categoria.id}" style="display:block; text-align:center"
-									 />
-							</div>
+					</h:form>
 				</div>
 
-			</h:form>
+				<h:form id="categoriasList">
+					<div class="ui-g-12">
+						<div class="card">
+							<h5>Listado de categorías</h5>
+							<p:orderList id="categoriasLista"
+								value="#{categoriasConstructor.categorias}" var="categoria"
+								itemLabel="#{categoria.nombreCategoria}"
+								itemValue="#{categoria.id}"
+								style="display:block; text-align:center" />
+						</div>
+					</div>
+
+				</h:form>
+			</div>
+
+
+
+
 		</c:if>
 		<c:if test="#{not userSessionWeb.admin}">
-		<h1>No tienes permisos para acceder a esta funcionalidad</h1>
-		
+			<h1>No tienes permisos para acceder a esta funcionalidad</h1>
+
 		</c:if>
 	</ui:define>
 </ui:composition>

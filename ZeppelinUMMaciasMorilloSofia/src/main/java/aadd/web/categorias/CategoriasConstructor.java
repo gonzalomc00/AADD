@@ -19,12 +19,13 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 @ViewScoped
 public class CategoriasConstructor implements Serializable {
 
-	@Inject
-    private FacesContext facesContext;
+	
 	private String nombre;
     private ServicioGestionPlataforma servicio;
     private List<CategoriaRestauranteDTO> categorias;
 	
+    @Inject
+    private FacesContext facesContext;
 	
 	public CategoriasConstructor() {
 		servicio= ServicioGestionPlataforma.getServicioGestionPlataforma();
@@ -32,9 +33,13 @@ public class CategoriasConstructor implements Serializable {
 	
 	public void crearCategoria() {
 		 Integer categoriaId = servicio.crearCategoria(nombre);
-	       if (categoriaId == null) {
-	            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "La categoría no se ha podido crear", ""));
-	        } 
+		 if (categoriaId != null) {
+	    	   facesContext.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Categoría registrada correctamente"));
+	        } else{
+	            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "La categoría no se ha podido crear"));
+
+	        }
 	}
 	
 

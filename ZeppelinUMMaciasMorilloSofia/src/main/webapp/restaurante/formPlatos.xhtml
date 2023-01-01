@@ -17,6 +17,7 @@
 	<ui:define name="content">
 		<h:form id="menu">
 			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+
 			<h3>#{restauranteMenuList.restauranteSeleccionado.nombre}</h3>
 			<!--  nombre del restaurante -->
 			<br />
@@ -24,7 +25,7 @@
 				oncomplete="PF('nuevoPlato').show();" update="nuevo"
 				style="margin-right:5px"
 				rendered="#{restauranteMenuList.responsable}"></p:commandButton>
-				
+
 			<p:button value="Gestionar pedidos"
 				href="pedidosRestaurante.xhtml?id=#{restauranteMenuList.idRestaurante}"
 				rendered="#{restauranteMenuList.responsable}"></p:button>
@@ -76,8 +77,7 @@
 				<h:outputLabel value="Tiempo de entrega" />
 				<h:selectOneMenu id="selectorHora"
 					value="#{restauranteMenuList.entrega}" label="selector">
-					<f:selectItem itemLabel="Seleccione una hora de entrega"
-						itemValue="" />
+					Seleccione una hora de entrega 
 					<f:selectItem itemLabel="Lo antes posible" itemValue="30" />
 					<f:selectItem itemLabel="En 45 minutos" itemValue="45" />
 					<f:selectItem itemLabel="En 1 hora" itemValue="60" />
@@ -89,6 +89,7 @@
 
 			<p:commandButton value="Realizar Pedido"
 				action="#{restauranteMenuList.crearPedido()}" />
+
 
 			<p:growl showDetail="true" id="info2" />
 
@@ -116,9 +117,9 @@
 					</p:ajaxStatus>
 				</p:outputPanel>
 			</p:dialog>
-
 			<h:messages id="errors" infoStyle="color:blue"
 				warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
+
 		</h:form>
 	</ui:define>
 </ui:composition>

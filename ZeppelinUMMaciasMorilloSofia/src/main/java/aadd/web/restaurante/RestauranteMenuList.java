@@ -123,7 +123,7 @@ public class RestauranteMenuList implements Serializable {
 				esperado);
 		if (realizado == false) {
 			facesContext.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido realizar este pedido", ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido realizar este pedido"));
 		} else {
 			facesContext.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido realizado correctamente", ""));
