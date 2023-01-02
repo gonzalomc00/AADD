@@ -48,7 +48,7 @@ Listado de restaurantes
 						<div style="text-align: center;">
 							<p:commandButton value="Buscar"
 								actionListener="#{lazyRestauranteListWeb.buscar()}"
-								update="tabla_header " icon="fa fa-search" />
+								update="tabla_header total" icon="fa fa-search" />
 						</div>
 						<div style="margin: auto; text-align: center;">
 							<p:ajaxStatus>
@@ -69,8 +69,8 @@ Listado de restaurantes
 					id="total" />
 			</h2>
 			<p:dataTable var="restaurante" style="prueba"
-				value="#{lazyRestauranteListWeb}" rows="5" id="tabla_header"
-				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				value="#{lazyRestauranteListWeb}" rows="4" id="tabla_header"
+				paginator="true" rowsPerPageTemplate="4,8,{ShowAll|'All'}"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 				<p:column>
 					<h:outputText value="#{restaurante.nombre}" />

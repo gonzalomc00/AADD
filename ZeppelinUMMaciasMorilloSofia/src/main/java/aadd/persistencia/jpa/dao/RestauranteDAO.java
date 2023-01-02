@@ -117,9 +117,8 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 			boolean mejorValorados, boolean sinPenalizacion, int start, int max, List<Integer> categorias) {
 		try {
 			String queryString = " SELECT r FROM Restaurante r " + " INNER JOIN r.platos p on p.disponibilidad = true ";
-			if (categorias != null && categorias.size()>0) {
-				queryString += " INNER JOIN r.categorias c ";// Con el inner join me aseguro de que no aparezcan
-																// restaurantes con
+			if (categorias.size()>0) {
+				queryString += " INNER JOIN r.categorias c ";
 			} 
 			
 			queryString += " WHERE r.id is not null ";
@@ -129,7 +128,7 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 			if (fechaAlta != null) {
 				queryString += " AND r.fechaAlta >= :fechaAlta ";
 			}
-			if (categorias != null  && categorias.size()>0) {
+			if (categorias.size()>0) {
 				queryString += " AND (";
 				for (int i = 0; i < categorias.size(); i++) {
 					queryString += " c.id = :categoria" + i;
@@ -158,7 +157,7 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 			}
 
 			
-			if (categorias != null && categorias.size()>0) {
+			if (categorias.size()>0) {
 				for (int i = 0; i < categorias.size(); i++) {
 					query.setParameter("categoria" + i, categorias.get(i));
 				}
@@ -175,15 +174,14 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 		}
 	}
 
-	public Number countRestaurantesByFiltros(String keyword, LocalDate fechaAlta, boolean sinPenalizacion) {
+	public Number countRestaurantesByFiltros(String keyword, LocalDate fechaAlta, boolean sinPenalizacion, List<Integer> categorias) {
 		try {
-			String queryString = " SELECT count(distinct r) FROM Restaurante r "
-					+ " INNER JOIN r.platos p on p.disponibilidad = true " // Con el inner join me aseguro de que no
-																			// aparezcan restaurantes con 0 platos
-																			// disponibles
-					+ " WHERE r.id is not null ";// Ponemos una condición que siempre es cierta para poder enlazar las
-													// condiciones más fácilmente
-
+			String queryString = " SELECT count(distinct r) FROM Restaurante r " + " INNER JOIN r.platos p on p.disponibilidad = true ";
+			if (categorias.size()>0) {
+				queryString += " INNER JOIN r.categorias c ";
+			} 
+			
+			queryString += " WHERE r.id is not null ";
 			if (keyword != null) {
 				queryString += " AND r.nombre like :keyword ";
 			}
@@ -193,6 +191,16 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 			if (sinPenalizacion) {
 				queryString += " AND r.numPenalizaciones = 0 ";
 			}
+			if (categorias.size()>0) {
+				queryString += " AND (";
+				for (int i = 0; i < categorias.size(); i++) {
+					queryString += " c.id = :categoria" + i;
+					if (i < categorias.size() - 1) {
+						queryString += " or ";
+					}
+				}
+				queryString += ")";
+			}
 
 			Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
 			if (keyword != null) {
@@ -200,6 +208,12 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
 			}
 			if (fechaAlta != null) {
 				query.setParameter("fechaAlta", fechaAlta);
+			}
+			
+			if (categorias.size()>0) {
+				for (int i = 0; i < categorias.size(); i++) {
+					query.setParameter("categoria" + i, categorias.get(i));
+				}
 			}
 
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);

@@ -30,6 +30,16 @@ public class DireccionDAO extends ExtensionMongoDAO<Direccion> {
 		collection = db.getCollection("direccion", Direccion.class).withCodecRegistry(defaultCodecRegistry); 
 		collection.createIndex(Indexes.geo2dsphere("coordenadas")); 
 	}
+	public Integer countAllDirecciones(){
+		FindIterable<Direccion> resultados = collection.find();
+
+		MongoCursor<Direccion> it = resultados.iterator();
+		List<Direccion> direcciones = new ArrayList<Direccion>();
+		while (it.hasNext()) {
+			direcciones.add(it.next());
+		}
+		return direcciones.size();
+	}
 
 	public List<Direccion> findOrdenadoPorCercania(Double latitud, Double longitud, int limite, int skip) {
 		Point puntoBusqueda = new Point(new Position(longitud, latitud));

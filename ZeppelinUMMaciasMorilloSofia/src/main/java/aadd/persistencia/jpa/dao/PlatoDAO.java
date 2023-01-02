@@ -27,7 +27,6 @@ public class PlatoDAO extends ExtensionDAO<Plato> {
 		return platoDAO;
 	}
 
-	// metodos que transforman un plato en platoDTO
 	public List<PlatoDTO> findPlatosDisponiblesByRestaurante(Integer restaurante, boolean mostrarTodos) {
 		try {
 			Query query;

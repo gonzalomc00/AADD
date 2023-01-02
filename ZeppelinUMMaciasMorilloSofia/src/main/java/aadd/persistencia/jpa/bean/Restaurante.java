@@ -37,7 +37,6 @@ public class Restaurante implements Serializable {
 	@OneToMany(mappedBy= "restaurante", cascade = CascadeType.ALL) //mapped by para decir que es una misma relacion (bidireccional)
 	private List<Plato> platos;
 	
-	//Ejercicio Propuesto 
 	@JoinColumn(name = "categorias_restaurante")
 	@ManyToMany
 	private List<CategoriaRestaurante> categorias;

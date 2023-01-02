@@ -1,5 +1,6 @@
 package aadd.spring.web.restaurante;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,17 +41,18 @@ public class LazyRestauranteListWeb extends LazyDataModel<RestauranteDTO> {
     
         latitud = 38.02398012353915;
         longitud = -1.1740098866576436;
+        categoriasSel= new LinkedList<Integer>();
     }
 
     protected int findTotalResults() {
         if (total == null) {
-            total = servicioGestion.countRestaurantes(keyword, verNovedades, sinPenalizacion);
+            total = servicioGestion.countRestaurantes(keyword, verNovedades, sinPenalizacion,mejorValorados,categoriasSel);
         }
         return total;
     }
 
     public void buscar() {
-        total = servicioGestion.countRestaurantes(keyword, verNovedades, sinPenalizacion);
+        total = servicioGestion.countRestaurantes(keyword, verNovedades, sinPenalizacion,mejorValorados,categoriasSel);
     }
 
     public List<RestauranteDTO> buscarRestaurante(int inicio, int size) {

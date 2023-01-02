@@ -31,7 +31,7 @@ public class ServicioGestionSpring {
             fecha = fecha.minusWeeks(1);
         }
         // si hemos filtrado por algo, buscamos según filtros
-        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias || categorias!=null) {
+        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias || categorias.size()>0) {
             return restauranteDAO.findRestauranteByFiltrosLazy(keyword, fecha, ordernarByValoracion, ceroIncidencias, start, max, categorias);
         }
 
@@ -42,7 +42,8 @@ public class ServicioGestionSpring {
             for (Direccion d : direcciones) {
                 Restaurante r = restauranteDAO.findById(d.getRestaurante());
                 Position coordenadas = d.getCoordenadas().getCoordinates();
-                RestauranteDTO restauranteDTO = new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal(), coordenadas.getValues().get(0), coordenadas.getValues().get(1), d.getCalle(),d.getCodigoPostal(), d.getCiudad(), d.getNumero());
+                RestauranteDTO restauranteDTO = new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal(), coordenadas.getValues().get(0),
+                		coordenadas.getValues().get(1), d.getCalle(),d.getCodigoPostal(), d.getCiudad(), d.getNumero());
                 restaurantes.add(restauranteDTO);
             }
             return restaurantes;
@@ -51,7 +52,7 @@ public class ServicioGestionSpring {
 
 	}
 
-    public int countRestaurantes(String keyword, boolean verNovedades,boolean ceroIncidencias) {
+    public int countRestaurantes(String keyword, boolean verNovedades,boolean ceroIncidencias,boolean ordernarByValoracion, List<Integer> categorias) {
         if(keyword != null && keyword.isBlank()) {
             keyword = null;
         }
@@ -60,7 +61,18 @@ public class ServicioGestionSpring {
             fecha = LocalDate.now();
             fecha = fecha.minusWeeks(1);
         }
-        return RestauranteDAO.getRestauranteDAO().countRestaurantesByFiltros(keyword, fecha, ceroIncidencias).intValue();
+        
+        if ((keyword != null && !keyword.isBlank()) || fecha != null || ordernarByValoracion || ceroIncidencias || categorias.size()>0) {
+        	 return RestauranteDAO.getRestauranteDAO().countRestaurantesByFiltros(keyword, fecha, ceroIncidencias,categorias).intValue();
+        }
+
+        // si no hemos filtrado, obtenemos todos los restaurantes que hay en la base de datos. Para ello nos bastamos de ver
+        // cuantas direcciones hay almacenadas
+        else {
+            return DireccionDAO.getDireccionDAO().countAllDirecciones();
+        }
+        
+       
     }
 
 	public List<CategoriaRestauranteDTO> findAllCategorias() {
