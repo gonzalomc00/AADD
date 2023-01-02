@@ -250,17 +250,17 @@ public class ServicioGestionPlataforma {
 	public boolean nuevoPlato(String titulo, String descripcion, double precio, Integer restaurante) {
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
-			em.getTransaction().begin(); // abrimos transaccion
+			em.getTransaction().begin(); 
 
-			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante); // recuperamos restaurante
-			Plato p = new Plato(); // creamos el plato
+			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(restaurante); 
+			Plato p = new Plato(); 
 			p.setDescripcion(descripcion);
 			p.setTitulo(titulo);
 			p.setPrecio(precio);
 			p.setRestaurante(r);
 			p.setDisponibilidad(true);
 
-			PlatoDAO.getPlatoDAO().save(p, em); // y lo persistimos
+			PlatoDAO.getPlatoDAO().save(p, em); 
 
 			em.getTransaction().commit();
 			return true;
@@ -298,7 +298,6 @@ public class ServicioGestionPlataforma {
 		}
 	}
 
-	// duplicado usuario??
 	public boolean isUsuarioRegistrado(String email) {
 		List<UsuarioDTO> u = UsuarioDAO.getUsuarioDAO().findByEmail(email);
 		if (u != null && !u.isEmpty()) {
@@ -357,12 +356,12 @@ public class ServicioGestionPlataforma {
 	}
 
 
-	public Integer crearCategoria(String nombre) { // entra el nombre de la categoria y su id
+	public Integer crearCategoria(String nombre) { 
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
 			em.getTransaction().begin();
 
-			CategoriaRestaurante c = new CategoriaRestaurante(); // crea la categoria e inicializa sus datos
+			CategoriaRestaurante c = new CategoriaRestaurante(); 
 			c.setNombre(nombre);
 
 			CategoriaRestauranteDAO.getCategoriaRestauranteDAO().save(c, em);

@@ -73,7 +73,7 @@ public class RestauranteWeb implements Serializable{
         longitudSelected = latlng.getLng();
     }
 
-    public void onMarkerRestauranteSelect(OverlaySelectEvent<Integer> event) { // a través de un redirect navego a un nuevo hmtl, ? pasandole como parametro el id del restaurante
+    public void onMarkerRestauranteSelect(OverlaySelectEvent<Integer> event) { 
         Marker<Integer> marker = (Marker<Integer>) event.getOverlay();
         Integer restauranteSelectedId = (Integer) marker.getData();
         try {
@@ -95,7 +95,13 @@ public class RestauranteWeb implements Serializable{
 			facesContext.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar la calle del restaurante"));
 			return;
-		}        
+		}
+    	
+    	if (numero == null || numero==0) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indica el número de la calle del restaurante"));
+			return;
+		}  
     	if (codigoPostal == null || codigoPostal.trim().equals("")) {
 			facesContext.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar el código postal del restaurante"));

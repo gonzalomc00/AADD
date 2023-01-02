@@ -101,6 +101,23 @@ public class RestauranteMenuList implements Serializable {
 	}
 
 	public void crearPlato() {
+		if (titulo == null || titulo.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Indique el nombre del plato"));
+			return;
+		}
+		
+		if (descripcion == null || descripcion.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Indique una descripción para el plato"));
+			return;
+		}
+		
+		if (precio==null || precio==0) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Indique un precio válido para el plato"));
+			return;
+		}
 		boolean exito = servicio.nuevoPlato(titulo, descripcion, precio, idRestaurante);
 		if (exito) {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Plato creado con éxito"));

@@ -9,7 +9,6 @@
 	<ui:define name="title">Menú de un restaurante</ui:define>
 	<ui:define name="metadata">
 		<f:metadata>
-			<!-- atributo id mapealo con este id, y una vez hecho ejecuta el metodo loadMenu del restaurante; en metadata se definen los parametros que nos entran -->
 			<f:viewParam name="id" value="#{restauranteMenuList.idRestaurante}" />
 			<f:viewAction action="#{restauranteMenuList.loadMenu()}" />
 		</f:metadata>

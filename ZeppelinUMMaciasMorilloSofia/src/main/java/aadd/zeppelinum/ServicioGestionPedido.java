@@ -129,7 +129,6 @@ public class ServicioGestionPedido {
 		return opinionesDTO;
 	}
 
-	// EJERCICIOS BOLETIN MONGO
 	public boolean realizarPedido(Integer cliente, Integer restaurante, String comentario, String direccion,
 			HashMap<Integer, Integer> platos, LocalDateTime esperado) {
 		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
@@ -142,10 +141,7 @@ public class ServicioGestionPedido {
 		p.setDatosDireccion(direccion);
 		p.setFechaHora(LocalDateTime.now());
 
-		p.setFechaEsperado(esperado); // TODO: como sumar una hora al tiemp actual cambiar a date?
-
-		// creamos lista estados - Ya veremos
-
+		p.setFechaEsperado(esperado);
 		// Estado
 		EstadoPedido ep = new EstadoPedido();
 		ep.setEstado(TipoEstado.INICIO);
@@ -153,8 +149,6 @@ public class ServicioGestionPedido {
 		p.addEstado(ep);
 		// ItemPedido
 
-		// TODO: revisar como se recorre -> crear un metodo en itemPedido
-		// objeto itemPedido ya hechos o el listado para construirlo nosotros dentro
 		double total = 0;
 		for (Integer plato : platos.keySet()) {
 			ItemPedido ip = new ItemPedido();
