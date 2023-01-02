@@ -70,8 +70,6 @@ public class PedidoRestauranteList implements Serializable {
 		switch (estado) {
 		case "ACEPTADO":
 			servicio.editarEstado(id, TipoEstado.ACEPTADO);
-			servicio.pedidoNoEntregado(id);
-
 			break;
 		case "CANCELADO":
 			servicio.editarEstado(id, TipoEstado.CANCELADO);

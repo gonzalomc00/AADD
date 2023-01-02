@@ -39,7 +39,7 @@ public class EstadisticasWeb implements Serializable {
 
 	@PostConstruct
 	public void initLineChart() {
-		createLineModel(); //opinion
+		createLineModel(); // valoraciones
 	}
 
 	private void createLineModel() {

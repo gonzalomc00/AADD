@@ -109,14 +109,15 @@ Listado de restaurantes
 						<h:outputText value="Opinion:" />
 						<h:inputText value="#{restauranteOpinarWeb.opinion}"/>
 						<h:outputText value="Valoración" />
-						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10">
-						</p:rating>
+						<p:inputNumber id="valoracion" value="#{restauranteOpinarWeb.valoracion}" minValue="0"
+                                maxValue="10" decimalPlaces="1" />
+						
 						<p:commandButton value="Cerrar"
 							onclick="PF('nuevaOpinion').hide();" />
 						<p:commandButton value="Enviar"
 							actionListener="#{restauranteOpinarWeb.crearOpinion()}"
-							oncomplete="PF('nuevaOpinion').hide();"
-							onclick="PF('msgs').show()" />
+							onclick="PF('nuevaOpinion').hide();PF('msgs').show()"
+							/>
 					</h:panelGrid>
 					<p:ajaxStatus>
 						<f:facet name="start">

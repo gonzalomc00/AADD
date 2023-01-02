@@ -162,6 +162,7 @@ public class ServicioGestionPedido {
 		}
 		p.setImporte(total);
 		ObjectId id = pedidoDAO.save(p);
+		zeppelinumRemoto.pedidoNoPreparado(id);
 		zeppelinumRemoto.pedidoIniciado(id);
 
 		if (id != null) {
@@ -304,9 +305,6 @@ public class ServicioGestionPedido {
 		zeppelinumRemoto.pedidoNoEntregado(id_pedido); //al marcar el pedido como preparado se inicia
 	}
 	
-	public void pedidoNoPreparado(ObjectId id_pedido) {
-		zeppelinumRemoto.pedidoNoPreparado(id_pedido); //al marcar el pedido como preparado se inicia
-	}
 	public Integer getPedidosCliente(Integer idUsuario) {
 		return zeppelinumRemoto.getPedidosRealizadosByUsuario(idUsuario);
 	}

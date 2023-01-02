@@ -51,18 +51,18 @@ public class RestauranteOpinarWeb implements Serializable {
 	               new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe escribir una opinión"));
 	            return;
 	        }
-		if (valoracion == null ) {
+		if ( valoracion == null) {
 			facesContext.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe dar una valoración al restaurante"));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe dar una nota al restaurante entre 0 y 10"));
 			return;
-		}     
+		}
 		boolean done = servicioPedido.opinar(userId, restauranteId, opinion, valoracion);
 		if (done == false) {
 			facesContext.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido enviar la opinion", ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La opinión no ha podido realizarse"));
 		} else {
 			facesContext.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Opinion realizado correctamente", ""));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Opinión realizada correctamente"));
 		}
 	}
 
