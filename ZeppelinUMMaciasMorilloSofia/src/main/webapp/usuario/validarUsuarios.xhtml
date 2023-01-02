@@ -16,6 +16,9 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="menuUsuarios">
+
+			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+
 			<p:dataTable var="usuario" style="prueba"
 				value="#{validarUsuarioWeb.usuarios}" rows="50" id="listaUsuarios"
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
@@ -38,10 +41,17 @@
 				<p:column headerText="Validar usuario">
 					<p:commandButton
 						actionListener="#{validarUsuarioWeb.validarUsuario(usuario.id)}"
-						value="Validar usuario" update="listaUsuarios">
+						value="Validar usuario" update="listaUsuarios" onclick="PF('msgs').show()">
 					</p:commandButton>
 				</p:column>
+
 			</p:dataTable>
+			<h:messages id="errors" infoStyle="color:blue"
+				warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
+
 		</h:form>
+
+
+
 	</ui:define>
 </ui:composition>

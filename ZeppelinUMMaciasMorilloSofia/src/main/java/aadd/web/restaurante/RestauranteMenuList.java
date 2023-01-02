@@ -103,7 +103,7 @@ public class RestauranteMenuList implements Serializable {
 	public void crearPlato() {
 		boolean exito = servicio.nuevoPlato(titulo, descripcion, precio, idRestaurante);
 		if (exito) {
-			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plato creado", ""));
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Plato creado con éxito"));
 			loadMenu();
 		}
 	}
@@ -117,6 +117,11 @@ public class RestauranteMenuList implements Serializable {
 															// a media hora
 		} else {
 			esperado = LocalDateTime.now().plusMinutes(Integer.parseInt(entrega));
+		}
+		if (direccion == null || direccion.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Indique una dirección"));
+			return;
 		}
 
 		boolean realizado = servicioPedido.realizarPedido(userId, idRestaurante, comentario, direccion, pedido,

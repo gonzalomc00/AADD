@@ -3,6 +3,7 @@ package aadd.web.usuario;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -15,15 +16,12 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 @ViewScoped
 public class ValidarUsuarioWeb implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Inject
-	private FacesContext facesContext;
 	private ServicioGestionPlataforma servicio;
 	
 	private List<UsuarioDTO> usuarios;
+	
+	@Inject
+	protected FacesContext facesContext;
 	
 	public ValidarUsuarioWeb() {
 		servicio=ServicioGestionPlataforma.getServicioGestionPlataforma();
@@ -35,7 +33,15 @@ public class ValidarUsuarioWeb implements Serializable {
 	}
 	
 	public void validarUsuario(Integer usuario) {
-		servicio.validarUsuario(usuario);
+		boolean validado = servicio.validarUsuario(usuario);
+		
+		if (validado == true) {
+			facesContext.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Usuario validado correctamente"));
+
+	        } else{
+	        	facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El usuario no se ha podido validar"));
+	        }
 		loadUsuarios();
 	}
 

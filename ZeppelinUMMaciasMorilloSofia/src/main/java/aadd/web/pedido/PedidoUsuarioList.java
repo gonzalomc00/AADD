@@ -66,15 +66,21 @@ public class PedidoUsuarioList implements Serializable {
 	}
 
 	public void crearIncidencia() {
+		 if (textoIncidencia == null || textoIncidencia.trim().equals("")) {
+	            facesContext.addMessage(null, 
+	               new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar el motivo de la incidencia"));
+	            return;
+	        }
+		
 		Integer i = servicioPlataforma.registrarIncidencia(textoIncidencia, id, restauranteIdIncidencia);
 		if (i == null) {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"La incidencia no se ha podido creado correctamente", ""));
+					"Error", "La incidencia no se ha podido creado correctamente"));
 		} else {
 			servicio.editarEstado(pedidoIdIncidencia, TipoEstado.ERROR);
 			loadPedidosIncidencias();
 			facesContext.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "La incidencia se ha creado correctatmente", ""));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "", "La incidencia se ha creado correctamente"));
 		}
 
 	}

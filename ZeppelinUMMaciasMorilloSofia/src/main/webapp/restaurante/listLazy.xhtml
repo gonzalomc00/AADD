@@ -9,6 +9,7 @@ Listado de restaurantes
 </ui:define>
 	<ui:define name="content">
 		<h:form id="restaurantes">
+			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 			<div style="margin-top: 10px; margin-bottom: 10px;">
 				<h:panelGroup id="panelBuscador">
 					<p:fieldset legend="Buscador" collapsed="false" toggleable="true">
@@ -106,15 +107,16 @@ Listado de restaurantes
 					<h:panelGrid columns="2">
 
 						<h:outputText value="Opinion:" />
-						<h:inputText value="#{restauranteOpinarWeb.opinion}" required="true"/>
+						<h:inputText value="#{restauranteOpinarWeb.opinion}"/>
 						<h:outputText value="Valoración" />
-						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10" required="true">
+						<p:rating value="#{restauranteOpinarWeb.valoracion}" stars="10">
 						</p:rating>
 						<p:commandButton value="Cerrar"
 							onclick="PF('nuevaOpinion').hide();" />
 						<p:commandButton value="Enviar"
 							actionListener="#{restauranteOpinarWeb.crearOpinion()}"
-							oncomplete="PF('nuevaOpinion').hide();" />
+							oncomplete="PF('nuevaOpinion').hide();"
+							onclick="PF('msgs').show()" />
 					</h:panelGrid>
 					<p:ajaxStatus>
 						<f:facet name="start">
@@ -124,7 +126,7 @@ Listado de restaurantes
 
 				</p:outputPanel>
 			</p:dialog>
-				
+
 		</h:form>
 	</ui:define>
 </ui:composition>

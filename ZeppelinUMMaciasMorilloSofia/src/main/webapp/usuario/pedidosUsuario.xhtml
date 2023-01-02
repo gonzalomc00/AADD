@@ -15,6 +15,8 @@
 		<div class="card">
 			<h2>Informe de Pedidos realizados</h2>
 			<h:form id="tablaPedidos">
+				<p:growl id="msgs" showDetail="true"
+					skipDetailIfEqualsSummary="true" />
 				<p:dataTable id="listaPedidos" var="pedido"
 					value="#{pedidoUsuarioList.pedidos}"
 					rowKey="#{pedido.nombreRestaurante}">
@@ -52,7 +54,7 @@
 							action="#{pedidoUsuarioList.setDatosIncidencia(pedido.restauranteId,pedido.id)}"
 							rendered="#{not (pedido.ultimoEstado.nombreEstado eq 'ERROR')}"
 							oncomplete="PF('nuevaIncidencia').show();" update="tablaPedidos"></p:commandButton>
-				
+
 					</p:column>
 					<p:rowExpansion>
 						<div class="pedidoDetalles">
@@ -93,9 +95,9 @@
 				</p:dataTable>
 
 			</h:form>
-			
+
 			<h:form id="tablaIncidencias">
-			<p:dataTable id="listaIncidencias" var="incidencia"
+				<p:dataTable id="listaIncidencias" var="incidencia"
 					value="#{pedidoUsuarioList.incidencias}">
 
 					<f:facet name="header">
@@ -112,18 +114,18 @@
 					<p:column headerText="Descripción">
 						<h:outputText value="#{incidencia.descripcion}" />
 					</p:column>
-					<p:column headerText="Comentario del gerente" >
-						<h:outputText value="#{incidencia.comentario}"/>
-					
+					<p:column headerText="Comentario del gerente">
+						<h:outputText value="#{incidencia.comentario}" />
+
 					</p:column>
-							<p:column headerText="Fecha de cierre" >
-						<h:outputText value="#{incidencia.fechaCierre}"/>
-					
+					<p:column headerText="Fecha de cierre">
+						<h:outputText value="#{incidencia.fechaCierre}" />
+
 					</p:column>
 				</p:dataTable>
-			
-			
-			
+
+
+
 			</h:form>
 
 			<h:form id="dialog">
@@ -140,7 +142,8 @@
 							<p:commandButton value="Enviar"
 								actionListener="#{pedidoUsuarioList.crearIncidencia()}"
 								oncomplete="PF('nuevaIncidencia').hide();"
-								update="tablaIncidencias:listaIncidencias" />
+								update="tablaIncidencias:listaIncidencias" 
+								onclick="PF('msgs').show()"/>
 						</h:panelGrid>
 						<p:ajaxStatus>
 							<f:facet name="start">

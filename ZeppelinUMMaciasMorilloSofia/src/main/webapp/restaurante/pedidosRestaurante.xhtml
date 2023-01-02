@@ -159,11 +159,13 @@
 								<h:inputText
 									value="#{pedidoRestauranteList.comentarioIncidencia}" />
 								<p:commandButton value="Cerrar"
-									onclick="PF('nuevaIncidencia').hide();" />
+									onaction="PF('nuevaIncidencia').hide();"
+									onclick="PF('msgs').show()"/>
 								<p:commandButton value="Enviar"
 									actionListener="#{pedidoRestauranteList.cerrarIncidencia()}"
 									oncomplete="PF('nuevaIncidencia').hide();"
-									update="incidencias:listaIncidencias" />
+									update="incidencias:listaIncidencias" 
+									onclick="PF('msgs').show()"/>
 							</h:panelGrid>
 							<p:ajaxStatus>
 								<f:facet name="start">

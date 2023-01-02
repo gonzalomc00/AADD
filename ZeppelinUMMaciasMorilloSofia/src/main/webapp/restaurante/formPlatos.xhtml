@@ -88,7 +88,7 @@
 
 
 			<p:commandButton value="Realizar Pedido"
-				action="#{restauranteMenuList.crearPedido()}" />
+				action="#{restauranteMenuList.crearPedido()}" onclick="PF('msgs').show()" />
 
 
 			<p:growl showDetail="true" id="info2" />
@@ -108,7 +108,7 @@
 						<p:commandButton value="Cerrar" onclick="PF('nuevoPlato').hide();" />
 						<p:commandButton value="Crear plato" icon="fa fa-bowl-food"
 							actionListener="#{restauranteMenuList.crearPlato()}"
-							oncomplete="PF('nuevoPlato').hide();" update="tabla_header info2" />
+							oncomplete="PF('nuevoPlato').hide();" update="tabla_header info2" onclick="PF('msgs').show()"/>
 					</h:panelGrid>
 					<p:ajaxStatus>
 						<f:facet name="start">

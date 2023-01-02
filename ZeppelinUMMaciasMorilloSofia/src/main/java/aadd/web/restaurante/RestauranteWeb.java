@@ -86,13 +86,34 @@ public class RestauranteWeb implements Serializable{
 
     public void crearRestaurante() {
    
-        Integer restauranteId = servicio.registrarRestaurante(nombreRestaurante, responsableId, calle, codigoPostal, numero, ciudad, latitudSelected, longitudSelected, categoriasSel);
+    	if (nombreRestaurante == null || nombreRestaurante.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar el nombre del restaurante"));
+			return;
+		}     
+    	if (calle == null || calle.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar la calle del restaurante"));
+			return;
+		}        
+    	if (codigoPostal == null || codigoPostal.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar el código postal del restaurante"));
+			return;
+		}      
+    	if (ciudad == null || ciudad.trim().equals("")) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe indicar la ciudad en la que se encuentra"));
+			return;
+		}  	
+    	
+    	Integer restauranteId = servicio.registrarRestaurante(nombreRestaurante, responsableId, calle, codigoPostal, numero, ciudad, latitudSelected, longitudSelected, categoriasSel);
        if (restauranteId == null) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El restaurante no se ha podido crear", ""));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El restaurante no se ha podido crear"));
         } else {
             LatLng coord = new LatLng(latitudSelected, longitudSelected); //si se ha creado se actualiza la vista y se añade un marcador en el mapa para marcar el restaurante
             simpleModel.addOverlay(new Marker<Integer>(coord, nombreRestaurante, restauranteId));
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Restaurante creado correctamente", ""));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Restaurante creado correctamente"));
         }
         
     }

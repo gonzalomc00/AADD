@@ -45,7 +45,17 @@ public class RestauranteOpinarWeb implements Serializable {
 	}
 
 	public void crearOpinion() {
-
+		
+		 if (opinion == null || opinion.trim().equals("")) {
+	            facesContext.addMessage(null, 
+	               new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe escribir una opinión"));
+	            return;
+	        }
+		if (valoracion == null ) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe dar una valoración al restaurante"));
+			return;
+		}     
 		boolean done = servicioPedido.opinar(userId, restauranteId, opinion, valoracion);
 		if (done == false) {
 			facesContext.addMessage(null,
