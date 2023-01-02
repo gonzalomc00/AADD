@@ -20,7 +20,7 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 @ViewScoped
 public class InfoUsuariosWeb implements Serializable {
     @Inject
-    @Push(channel = "canalNoticias") //que nombre le hemos puesto al objeto en la vista
+    @Push(channel = "canalNoticias") 
     private PushContext canal;  
     @Inject
     private FacesContext facesContext;

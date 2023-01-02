@@ -201,8 +201,8 @@ public class ServicioGestionPlataforma {
 		try {
 			em.getTransaction().begin();
 
-			Incidencia i = IncidenciaDAO.getIncidenciaDAO().findById(incidencia); // recupera la entidad usuario de la BBDD
-			i.setComentario(comentario);//marco como validado
+			Incidencia i = IncidenciaDAO.getIncidenciaDAO().findById(incidencia);
+			i.setComentario(comentario);
 			i.setFechaCierre(LocalDateTime.now());
 
 			em.getTransaction().commit();

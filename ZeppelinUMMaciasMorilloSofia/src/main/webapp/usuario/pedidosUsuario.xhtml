@@ -7,7 +7,7 @@
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 	<ui:param name="menuseleccionado" value="estilo7" />
 	<ui:define name="title">
-		Pedidos de un restaurante
+		Pedidos del usuario
     </ui:define>
 
 
@@ -96,7 +96,7 @@
 
 			</h:form>
 
-			<h:form id="tablaIncidencias">
+	<h2>Inciendias impuestas</h2>
 				<p:dataTable id="listaIncidencias" var="incidencia"
 					value="#{pedidoUsuarioList.incidencias}">
 
@@ -126,7 +126,6 @@
 
 
 
-			</h:form>
 
 			<h:form id="dialog">
 				<p:dialog header="Realizar Incidencia" modal="true"
@@ -142,7 +141,7 @@
 							<p:commandButton value="Enviar"
 								actionListener="#{pedidoUsuarioList.crearIncidencia()}"
 								oncomplete="PF('nuevaIncidencia').hide();"
-								update="tablaIncidencias:listaIncidencias" 
+								update="listaIncidencias" 
 								onclick="PF('msgs').show()"/>
 						</h:panelGrid>
 						<p:ajaxStatus>
