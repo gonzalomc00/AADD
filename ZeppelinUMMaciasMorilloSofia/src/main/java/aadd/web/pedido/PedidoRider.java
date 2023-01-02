@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -46,7 +47,15 @@ public class PedidoRider implements Serializable {
 	}
 
 	public void asignarPedido(ObjectId id) {
+		if (id == null) {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Pedido no válido"));
+			loadPedidos();
+			return;
+		}
 		servicio.asignarRepartidor(id, id_repartidor);
+		facesContext.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Pedido asignado"));
 		loadPedidos();
 	}
 
