@@ -16,6 +16,8 @@
 			<div class="card">
 				<h2>Pedidos disponibles</h2>
 				<h:form id="tablaPedidos">
+					<p:growl id="msgs" showDetail="true"
+						skipDetailIfEqualsSummary="true" />
 					<p:dataTable id="listaPedidos" var="pedido"
 						value="#{pedidoRider.pedidosSinRider}"
 						rowKey="#{pedido.nombreRestaurante}">
@@ -55,7 +57,7 @@
 								styleClass="ui-button-success"
 								update="tablaPedidos tablaEntrega:listaEntregas"
 								action="#{pedidoRider.asignarPedido(pedido.id)}"
-								style="margin-bottom:5px" />
+								style="margin-bottom:5px" onclick="PF('msgs').show()" />
 
 						</p:column>
 						<p:rowExpansion>
@@ -184,7 +186,7 @@
 
 				</h:form>
 			</div>
-			</c:if>
+		</c:if>
 		<c:if test="#{not userSessionWeb.rider}">
 			<h1>No tienes permisos para acceder a esta funcionalidad</h1>
 		</c:if>
