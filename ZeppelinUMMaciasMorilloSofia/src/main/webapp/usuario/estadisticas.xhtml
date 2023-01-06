@@ -3,7 +3,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
 	<ui:define name="title">
 Estadísticas
 </ui:define>
@@ -17,28 +19,30 @@ Estadísticas
 							<h:form id="torneum">
 								<div class="ui-g ui-fluid">
 									<div class="ui-g-2">Número de visitas:
-										#{estadisticasWeb.numVisitas}
-										
+										#{estadisticasWeb.numVisitas}</div>
+
+									<c:if test="#{userSessionWeb.restaurante}">
+										<div>
+
+											<h1>Mis Restaurantes</h1>
+											<p:dataTable id="listaRestaurantesPropios" var="rest"
+												value="#{estadisticasWeb.listRestaurantePedidosHechos}">
+												<p:column headerText="Nombre">
+													<h:outputText value="#{rest.res}" />
+												</p:column>
+												<p:column headerText="Pedidos Gestionados">
+													<h:outputText value="#{rest.totalPedidos}" />
+												</p:column>
+												<p:column headerText="Incidencias recibididas">
+													<h:outputText value="#{rest.numIncidencias}" />
+												</p:column>
+											</p:dataTable>
 										</div>
-									
-									<div>
-										<h1>Mis Restaurantes</h1>
-										<p:dataTable id="listaRestaurantesPropios" var="rest"
-											value="#{estadisticasWeb.listRestaurantePedidosHechos}">
-											<p:column headerText="Nombre">
-												<h:outputText value="#{rest.res}" />
-											</p:column>
-											<p:column headerText="Pedidos Gestionados">
-												<h:outputText value="#{rest.totalPedidos}" />
-											</p:column>
-											<p:column headerText="Incidencias recibididas">
-												<h:outputText value="#{rest.numIncidencias}" />
-											</p:column>
-										</p:dataTable>
-									</div>
-				
-									
-									<div class="ui-g-6">									
+									</c:if>
+
+
+
+									<div class="ui-g-6">
 										<p:panel header="Valoraciones">
 											<p:lineChart model="#{estadisticasWeb.lineModel}"
 												style="width: 100%; height: 300px;" />
@@ -48,20 +52,20 @@ Estadísticas
 										<h1>Pedidos Realizados</h1>
 										<p:dataTable id="listaRestaurantes" var="res"
 											value="#{estadisticasWeb.listRestaurantePedidosRealizados}">
-										<p:column headerText="Nombre del Restaurante">
-											<h:outputText value="#{res.res}" />
-										</p:column>
-					
-										<p:column headerText="Pedidos Realizados">
-											<h:outputText value="#{res.totalPedidos}" />
-										</p:column>
-										<p:column headerText="Incidencias Interpuestas">
-											<h:outputText value="#{res.numIncidencias}" />
-										</p:column>
+											<p:column headerText="Nombre del Restaurante">
+												<h:outputText value="#{res.res}" />
+											</p:column>
+
+											<p:column headerText="Pedidos Realizados">
+												<h:outputText value="#{res.totalPedidos}" />
+											</p:column>
+											<p:column headerText="Incidencias Interpuestas">
+												<h:outputText value="#{res.numIncidencias}" />
+											</p:column>
 										</p:dataTable>
 										Total de pedidos realizados: #{estadisticasWeb.pedidosCliente}
 									</div>
-										
+
 								</div>
 							</h:form>
 						</div>
