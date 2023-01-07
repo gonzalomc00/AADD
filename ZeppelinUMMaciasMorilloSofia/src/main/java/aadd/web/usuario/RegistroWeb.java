@@ -44,7 +44,7 @@ public class RegistroWeb implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe poner una contraseña válida"));
 			return;
 		}
-		if (clave2.equals(clave)) {
+		if (!clave2.equals(clave) || clave2.trim().equals("")) {
 			facesContext.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las contraseñas deben ser iguales"));
 			return;

@@ -298,7 +298,10 @@ public class ServicioGestionPedido {
 	
 	//EJB
 	public void pedidoNoRecogido(ObjectId id_pedido) {
-		zeppelinumRemoto.pedidoNoRecogido(id_pedido); //al marcar el pedido como preparado se inicia
+			zeppelinumRemoto.pedidoNoRecogido(id_pedido); 
+
+		
+		
 	}
 	
 	public void pedidoNoEntregado(ObjectId id_pedido) {

@@ -41,6 +41,7 @@ public class ServicioGestionPlataforma {
 
 	public static ServicioGestionPlataforma getServicioGestionPlataforma() {
 		if (servicio == null) {
+			
 			try {
 				zeppelinumRemoto = (ZeppelinUMRemoto) InitialContextUtil.getInstance().lookup(
 						"ejb:AADD2022/ZeppelinUMMaciasManzanaresEJB/ZeppelinUMRemoto!aadd.zeppelinum.ZeppelinUMRemoto");
